@@ -1,8 +1,10 @@
-# {Project Name}
+# {Los Panas platformer game}
 
 ## Description
 
-{project description}
+{
+Disfruta lokuelo
+}
 
 ## Key Features
 
@@ -17,8 +19,8 @@
 
 ## Developers
 
- - {Dev01} - {Role(s)}
- - {Dev02} - {Role(s)}
+ - {Kerali - Victor Jara} - {Programmer}
+ - {Montuuh - David Montufo} - {Programmer}
  - {Dev03} - {Role(s)}
  - {Dev04} - {Role(s)}
  - {Dev05} - {Role(s)}
