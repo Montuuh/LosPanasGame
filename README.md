@@ -1,10 +1,10 @@
-# {Los Panas platformer game}
+# Los Panas platformer game
 
 ## Description
 
-{
+
 Disfruta lokuelo
-}
+
 
 ## Key Features
 
@@ -19,8 +19,8 @@ Disfruta lokuelo
 
 ## Developers
 
- - {Kerali - Victor Jara} - {Programmer}
- - {Montuuh - David Montufo} - {Programmer}
+ - Kerali - Victor Jara: Programmer
+ - Montuuh - David Montufo: Programmer
  - {Dev03} - {Role(s)}
  - {Dev04} - {Role(s)}
  - {Dev05} - {Role(s)}
