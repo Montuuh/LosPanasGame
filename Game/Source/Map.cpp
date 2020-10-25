@@ -35,6 +35,7 @@ void Map::Draw()
 	if (mapLoaded == false) return;
 
 	// L04: TODO 5: Prepare the loop to draw all tilesets + DrawTexture()
+	// L04: TODO 9: Complete the draw function
 	ListItem<MapLayer*>*L;
 	L = data.maplayer.start;
 	while (L != NULL) // Iterate all layers
@@ -53,9 +54,6 @@ void Map::Draw()
 
 		L = L->next;
 	}
-	
-	// L04: TODO 9: Complete the draw function
-
 }
 
 // L04: DONE 8: Create a method that translates x,y coordinates from map positions to world positions
@@ -168,14 +166,14 @@ bool Map::Load(const char* filename)
 	}
 
 	// L04: TODO 4: Iterate all layers and load each of them
-	pugi::xml_node layer;
-	for (layer = mapFile.child("map").child("layer"); layer && ret; layer = layer.next_sibling("layer"))
+	pugi::xml_node layerNode;
+	for (layerNode = mapFile.child("map").child("layer"); layerNode && ret; layerNode = layerNode.next_sibling("layer"))
 	{
-		MapLayer* set = new MapLayer(); // Create new tileset
+		MapLayer* layerSet = new MapLayer(); // Create new tileset
 
-		if (ret == true) ret = LoadLayer(layer, set);
+		if (ret == true) ret = LoadLayer(layerNode, layerSet);
 
-		data.maplayer.add(set); // Add the filled tileset to the list of tilesets
+		data.maplayer.add(layerSet); // Add the filled tileset to the list of tilesets
 	}
 
     if(ret == true)
@@ -203,15 +201,26 @@ bool Map::LoadMap()
 	{
 		// L03: TODO: Load map general properties
 		LOG("Filling Map info");
-		//data.version = map.attribute("version").as_string();
-		SString strType(map.attribute("orientation").as_string());
-		data.type = StrToMapType(strType);
 		//data.renderorder = map.attribute("renderorder").as_string();
 		data.width = map.attribute("width").as_int();
 		data.height = map.attribute("height").as_int();
 		data.tileWidth = map.attribute("tilewidth").as_int();
 		data.tileHeight = map.attribute("tileheight").as_int();
-		//data.nextObjectId = map.attribute("nextobjectid").as_int();
+		data.nextObjectId = map.attribute("nextobjectid").as_int();
+		
+		SString strType(map.attribute("orientation").as_string());
+		if (strType == "orthogonal")
+		{
+			data.type = MAPTYPE_ORTHOGONAL;
+		}
+		else if (strType == "isometric")
+		{
+			data.type = MAPTYPE_ISOMETRIC;
+		}
+		else if (strType == "staggered")
+		{
+			data.type = MAPTYPE_STAGGERED;
+		}
 	}
 
 	return ret;
@@ -283,8 +292,8 @@ bool Map::LoadLayer(pugi::xml_node& node, MapLayer* layer)
 	layer->height = node.attribute("height").as_int();
 	layer->data = new uint[(data.width * data.height * sizeof(uint))];
 	memset(layer->data, 0, size_t(data.width * data.height * sizeof(uint)));
+	
 	pugi::xml_node gidNode;
-
 	int i = 0;
 	for (gidNode = node.child("data").child("tile"); gidNode && ret; gidNode = gidNode.next_sibling("tile"))
 	{
@@ -295,6 +304,8 @@ bool Map::LoadLayer(pugi::xml_node& node, MapLayer* layer)
 	LOG("Layer <<%s>> has loaded %d tiles", layer->name.GetString(), i);
 	return ret;
 }
+
+
 MapTypes operator++(MapTypes& mode)
 {
 	mode = static_cast<MapTypes>((mode + 1) % 4);
