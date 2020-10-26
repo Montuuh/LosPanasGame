@@ -33,8 +33,11 @@ bool Scene::Start()
 {
 	// L03: DONE: Load map
 	app->map->Load("hello2.tmx");
+	img = app->tex->Load("Assets/maps/sewer_tileset.png");
+
 	//app->audio->PlayMusic("Assets/audio/music/music_spy.ogg");
 	app->audio->PlayMusic("Assets/audio/music/dondonmusic.wav");
+
 	return true;
 }
 
@@ -66,10 +69,12 @@ bool Scene::Update(float dt)
 	if(app->input->GetKey(SDL_SCANCODE_RIGHT) == KEY_REPEAT)
 		app->render->camera.x += 1;
 
-	//app->render->DrawTexture(img, 380, 100); // Placeholder not needed any more
+	
 
 	// Draw map
 	app->map->Draw();
+
+	app->render->DrawTexture(img, 0, 0); // Placeholder not needed any more
 
 	// L03: DONE 7: Set the window title with map/tileset info
 	SString title("Map:%dx%d Tiles:%dx%d Tilesets:%d",
