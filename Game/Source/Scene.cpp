@@ -102,6 +102,7 @@ bool Scene::PostUpdate()
 bool Scene::CleanUp()
 {
 	LOG("Freeing scene");
+	app->tex->UnLoad(img);
 
 	return true;
 }
