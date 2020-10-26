@@ -80,7 +80,7 @@ struct MapData
 	List<TileSet*> tilesets;
 
 	// L04: TODO 2: Add a list/array of layers to the map
-	List<MapLayer*> maplayer;
+	List<MapLayer*> mapLayers;
 };
 
 class Map : public Module
