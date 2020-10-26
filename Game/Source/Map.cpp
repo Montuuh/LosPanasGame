@@ -65,13 +65,35 @@ iPoint Map::MapToWorld(int x, int y) const
 		ret.x = x * data.tileWidth;
 		ret.y = y * data.tileHeight;
 	}
+	// L05: TOPO 1: Add isometric map to world coordinates
 	else if (MapTypes::MAPTYPE_ISOMETRIC)
 	{
-		
+		ret.x = x * (app->map->data.tileWidth / 2) - y * (app->map->data.tileWidth / 2);
+		ret.y = x * (app->map->data.tileHeight / 2) - y * (app->map->data.tileHeight / 2);
 	}
 
 	return ret;
 }
+
+// L05: TODO 2: Add ortographic world to maap coordinates
+iPoint Map::WorldToMap(int x, int y) const
+{
+	iPoint ret(0, 0);
+	if (data.type == MAPTYPE_ORTHOGONAL)
+	{
+		ret.x = x / data.tileWidth;
+		ret.y = y / data.tileHeight;
+	}
+	// L05: TODO 3: Add the case for isometric maps to WorldMap
+	else if (data.type == MAPTYPE_ISOMETRIC)
+	{
+		ret.x = (x / (data.tileWidth / 2)) - (y / (data.tileWidth / 2));
+		ret.y = (x / (data.tileHeight / 2)) - (y / (data.tileHeight / 2));
+	}
+
+	return ret;
+}
+
 
 // Get relative Tile rectangle
 SDL_Rect TileSet::GetTileRect(int id) const

@@ -107,6 +107,9 @@ public:
 	// L04: DONE 8: Create a method that translates x,y coordinates from map positions to world positions
 	iPoint MapToWorld(int x, int y) const;
 
+	// LO5: TODO 2: Add ortographic world to map coordinates
+	iPoint WorldToMap(int x, int y) const;
+
 private:
 
 	// L03: Methods to load all required map data
