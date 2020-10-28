@@ -311,7 +311,7 @@ bool App::LoadGame()
 	else
 	{
 		LOG("Starting to LoadState of each Module");
-		docNode = docData.child("save_state");
+		docNode = docData.child("game_state");
 
 		ListItem<Module*>* item;
 		item = modules.start;
@@ -351,7 +351,7 @@ bool App::SaveGame() const
 	else
 	{
 		LOG("Starting to SaveState of each Module");
-		docNode = docData.child("save_state");
+		docNode = docData.child("game_state");
 
 		ListItem<Module*>* item;
 		item = modules.start;
