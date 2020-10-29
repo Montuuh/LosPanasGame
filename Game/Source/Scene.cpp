@@ -74,7 +74,7 @@ bool Scene::Update(float dt)
 	// Draw map
 	app->map->Draw();
 
-	app->render->DrawTexture(img, 0, 0); // Placeholder not needed any more
+	// app->render->DrawTexture(img, 0, 0); // Placeholder not needed any more
 
 	// L03: DONE 7: Set the window title with map/tileset info
 	SString title("Map:%dx%d Tiles:%dx%d Tilesets:%d",

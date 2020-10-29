@@ -36,19 +36,34 @@ void Map::Draw()
 
 	// L04: TODO 5: Prepare the loop to draw all tilesets + DrawTexture()
 	// L04: TODO 9: Complete the draw function
+	// L06: TODO 4: Make sure we draw all the layers and not just the first one
+
 	ListItem<MapLayer*>*L;
 	L = data.mapLayers.start;
 	while (L != NULL) // Iterate all layers
 	{
+		MapLayer* layer = L->data;
 		for (int j = 0; j < L->data->height; ++j) // Start at first row
 		{
 			for (int i = 0; i < L->data->width; ++i) // Iterate all collumns
 			{
-				uint u= L->data->Get(i, j);
-				LOG("%u", u);
-				SDL_Rect n = data.tilesets.start->data->GetTileRect(u);
-				iPoint pos = MapToWorld(i, j);
-				app->render->DrawTexture(data.tilesets.start->data->texture, pos.x, pos.y, &n);
+				/*
+					uint u = L->data->Get(i, j);
+					LOG("%u", u);
+					SDL_Rect n = data.tilesets.start->data->GetTileRect(u);
+					iPoint pos = MapToWorld(i, j);
+					app->render->DrawTexture(data.tilesets.start->data->texture, pos.x, pos.y, &n);
+				*/
+				int tileId = layer->Get(i, j);
+				if (tileId > 0)
+				{
+					TileSet* tileset = GetTilesetFromTileId(tileId);
+
+					SDL_Rect r = tileset->GetTileRect(tileId);
+					iPoint pos = MapToWorld(i, j);
+
+					app->render->DrawTexture(tileset->texture, pos.x, pos.y, &r);
+				}
 			}
 		}
 
@@ -65,11 +80,17 @@ iPoint Map::MapToWorld(int x, int y) const
 		ret.x = x * data.tileWidth;
 		ret.y = y * data.tileHeight;
 	}
-	// L05: TOPO 1: Add isometric map to world coordinates
+	// L05: DONE 1: Add isometric map to world coordinates
 	else if (MapTypes::MAPTYPE_ISOMETRIC)
 	{
 		ret.x = x * (app->map->data.tileWidth / 2) - y * (app->map->data.tileWidth / 2);
 		ret.y = x * (app->map->data.tileHeight / 2) - y * (app->map->data.tileHeight / 2);
+	}
+	else
+	{
+		LOG("Unknown map type");
+		ret.x = x;
+		ret.y = y;
 	}
 
 	return ret;
@@ -84,37 +105,54 @@ iPoint Map::WorldToMap(int x, int y) const
 		ret.x = x / data.tileWidth;
 		ret.y = y / data.tileHeight;
 	}
-	// L05: TODO 3: Add the case for isometric maps to WorldMap
+	// L05: DONE 3: Add the case for isometric maps to WorldMap
 	else if (data.type == MAPTYPE_ISOMETRIC)
 	{
-		ret.x = (x / (data.tileWidth / 2)) - (y / (data.tileWidth / 2));
-		ret.y = (x / (data.tileHeight / 2)) - (y / (data.tileHeight / 2));
+		float halfWidth = data.tileWidth * 0.5f;
+		float halfHeight = data.tileHeight * 0.5f;
+		ret.x = int((x / halfWidth + y / halfHeight) / 2);
+		ret.y = int((y /halfHeight - x / halfWidth) / 2);
+	}
+	else
+	{
+		LOG("Unknown map type");
+		ret.x = x;
+		ret.y = y;
 	}
 
 	return ret;
 }
 
+// L06: TODO 3: Pick the right Tileset based on a tile id
+TileSet* Map::GetTilesetFromTileId(int id) const
+{
+	ListItem<TileSet*>* tilesetsList = data.tilesets.start;
+	TileSet* tileset = tilesetsList->data;
+	while (tilesetsList != NULL)
+	{
+		if (id < tilesetsList->data->firstgid)
+		{
+			tileset = tilesetsList->prev->data;
+			break;
+		}
+		tileset = tilesetsList->data;
+		tilesetsList = tilesetsList->next;
+	}
+	return tileset;
+}
 
 // Get relative Tile rectangle
 SDL_Rect TileSet::GetTileRect(int id) const
 {
 	SDL_Rect rect = { 0 };
 	
-	// L04: TODO 7: Get relative Tile rectangle
-	iPoint p = { 0,this->margin };
-	int targetId = firstgid;
-	for (int i = 0; i < this->numTilesHeight; ++i)
-	{
-		p.x = this->spacing;
-		for (int j = 0; j < this->numTilesWidth; ++j)
-		{
-			if (id == targetId)
-				return SDL_Rect({ p.x,p.y,this->tile_width,tile_height });
-			p.x += this->tile_width + this->spacing;
-			++targetId;
-		}
-		p.y += this->tile_height + this->spacing;
-	}
+	// L04: DONE 7: Get relative Tile rectangle
+	int relativeId = id - firstgid;
+	rect.w = tileWidth;
+	rect.h = tileHeight;
+	rect.x = margin + ((rect.w + spacing) * (relativeId % numTilesWidth));
+	rect.y = margin + ((rect.h + spacing) * (relativeId / numTilesWidth));
+
 	return rect;
 }
 
@@ -187,19 +225,22 @@ bool Map::Load(const char* filename)
 		data.tilesets.add(tilesetLayerSet); // Add the filled tileset to the list of tilesets
 	}
 
-	// L04: TODO 4: Iterate all layers and load each of them
+	// L04: DONE 4: Iterate all layers and load each of them
+	// Load layer info
 	pugi::xml_node layerNode;
 	for (layerNode = mapFile.child("map").child("layer"); layerNode && ret; layerNode = layerNode.next_sibling("layer"))
 	{
 		MapLayer* mapLayerSet = new MapLayer(); // Create new map layer
 
-		if (ret == true) ret = LoadLayer(layerNode, mapLayerSet);
+		ret = LoadLayer(layerNode, mapLayerSet);
 
-		data.mapLayers.add(mapLayerSet); // Add the filled map layer to the list of map layers
+		if (ret == true) data.mapLayers.add(mapLayerSet); // Add the filled map layer to the list of map layers
 	}
 
     if(ret == true)
     {
+		// L03: TODO 5: LOG all the data loaded iterate all tilesets and LOG everything
+		// L04: TODO 4: LOG the info for each loaded layer
 		LogInfo();
     }
 
@@ -261,8 +302,8 @@ bool Map::LoadTilesetDetails(pugi::xml_node& tileset_node, TileSet* set)
 	LOG("Filling TilesetDetails");
 	set->firstgid = tileset_node.attribute("firstgid").as_int();
 	set->name = tileset_node.attribute("name").as_string();
-	set->tile_width = tileset_node.attribute("tilewidth").as_int();
-	set->tile_height = tileset_node.attribute("tileheight").as_int();
+	set->tileWidth = tileset_node.attribute("tilewidth").as_int();
+	set->tileHeight = tileset_node.attribute("tileheight").as_int();
 	set->spacing = tileset_node.attribute("spacing").as_int();
 	set->margin = tileset_node.attribute("margin").as_int();
 
@@ -289,8 +330,8 @@ bool Map::LoadTilesetImage(pugi::xml_node& tileset_node, TileSet* set)
 		set->texWidth = image.attribute("width").as_int();
 		set->texHeight = image.attribute("height").as_int();
 
-		set->numTilesWidth = set->texWidth / set->tile_width;
-		set->numTilesHeight = set->texHeight / set->tile_height;
+		set->numTilesWidth = set->texWidth / set->tileWidth;
+		set->numTilesHeight = set->texHeight / set->tileHeight;
 		set->offsetX = 0;
 		set->offsetY = 0;
 	}
@@ -314,40 +355,68 @@ bool Map::LoadLayer(pugi::xml_node& node, MapLayer* layer)
 	int i = 0;
 	for (gidNode = node.child("data").child("tile"); gidNode && ret; gidNode = gidNode.next_sibling("tile"))
 	{
-		if (ret == true) ret = StoreId(gidNode, layer, i);
+		if (ret == true) layer->data[i] = gidNode.attribute("gid").as_uint();
 		++i;
 	}
 
 	LOG("Layer <<%s>> has loaded %d tiles", layer->name.GetString(), i);
 	return ret;
 }
-bool Map::StoreId(pugi::xml_node& node, MapLayer* layer, int index)
+
+// L06: TODO 6: Load a group of properties from a node and fill a list with it
+bool Map::LoadProperties(pugi::xml_node& node, Properties& properties)
 {
-	bool ret = true;
+	bool ret = false;
 
-	layer->data[index] = node.attribute("gid").as_uint();
+	pugi::xml_node propertiesNode;
+	propertiesNode = node.child("properties");
 
+	pugi::xml_node propertyNode = propertiesNode.child("property");
+
+	int i = 0;
+	while (propertyNode != NULL)
+	{
+		Properties::Property* prop = new Properties::Property();
+
+		prop->name = propertyNode.attribute("name").as_string();
+
+		if (propertyNode.attribute("type"))
+		{
+			prop->value = propertyNode.attribute("value").as_bool();
+		}
+		else
+		{
+			prop->value = StringToBool(propertyNode.attribute("value").as_string());
+		}
+
+		properties.list.add(prop);
+		propertyNode = propertyNode.next_sibling("property");
+	}
+
+	//...
 	return ret;
 }
 
-
-
-MapTypes operator++(MapTypes& mode)
+bool Map::StringToBool(const char* string)
 {
-	mode = static_cast<MapTypes>((mode + 1) % 4);
-	return mode;
+	bool result = false;
+	if (string == "true") result = true;
+	else if (string == "false") result = false;
+	return result;
 }
-MapTypes Map::StrToMapType(SString s)
+
+// L06: TODO 7: Ask for the value of a custom property
+int Properties::GetProperty(const char* nameProperty, int defaultValue) const
 {
-	SString StrType[4];
-	StrType[0]="unknown", StrType[1]="orthogonal", StrType[2]="isometric", StrType[3]="staggered";
-	MapTypes type = MapTypes::MAPTYPE_UNKNOWN;
-	for (int i = 0; i < 4; ++i)
+	//...
+	ListItem<Property*>* propertyList = list.start;
+	while (propertyList != NULL)
 	{
-		if (s == StrType[i])
-			return ++type;
+		if (propertyList->data->name == nameProperty)
+			return propertyList->data->value;
+		propertyList = propertyList->next;
 	}
-	return MAPTYPE_UNKNOWN;
+	return defaultValue;
 }
 
 void Map::LogInfo()
@@ -371,8 +440,8 @@ void Map::LogInfo()
 		LOG("Firstgid=%d", tilesetsList->data->firstgid);
 		LOG("Margin=%d", tilesetsList->data->margin);
 		LOG("Spacing=%d", tilesetsList->data->spacing);
-		LOG("Tile_width=%d", tilesetsList->data->tile_width);
-		LOG("Tile_height=%d", tilesetsList->data->tile_height);
+		LOG("Tile_width=%d", tilesetsList->data->tileWidth);
+		LOG("Tile_height=%d", tilesetsList->data->tileHeight);
 
 		LOG("texWidth=%d", tilesetsList->data->texWidth);
 		LOG("texHeight=%d", tilesetsList->data->texHeight);

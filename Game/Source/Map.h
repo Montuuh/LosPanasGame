@@ -15,8 +15,8 @@ struct TileSet
 	int	firstgid;
 	int margin;
 	int	spacing;
-	int	tile_width;
-	int	tile_height;
+	int	tileWidth;
+	int	tileHeight;
 
 	SDL_Texture* texture;
 	int	texWidth;
@@ -40,6 +40,33 @@ enum MapTypes
 	MAPTYPE_STAGGERED
 };
 
+// L06: TODO 5: Create a generic structure to hold properties
+struct Properties
+{
+	struct Property
+	{
+		//...
+		SString name;
+		int value;
+	};
+
+	~Properties()
+	{
+		//...
+		ListItem<Properties::Property*>* propertiesList = list.start;
+		while (propertiesList != NULL)
+		{
+			RELEASE(propertiesList->data);
+			propertiesList = propertiesList->next;
+		}
+		list.clear();
+	}
+
+	// L06: TODO 7: Method to ask for the value of a custom property
+	int GetProperty(const char* name, int default_value = 0) const;
+
+	List<Property*> list;
+};
 
 // L04: DONE 1: Create a struct for the map layer
 struct MapLayer
@@ -48,6 +75,9 @@ struct MapLayer
 	int width;
 	int height;
 	uint* data;
+
+	// L06: DONE 1: Support custom properties
+	Properties properties;
 
 	MapLayer() : data(NULL)
 	{}
@@ -118,13 +148,18 @@ private:
 	bool LoadTilesetImage(pugi::xml_node& tileset_node, TileSet* set);
 	bool LoadLayer(pugi::xml_node& node, MapLayer* layer);
 
-	bool StoreId(pugi::xml_node& node, MapLayer* layer, int index);
 	void LogInfo();
+
+	// L06: TODO 6: Load a group of properties 
+	bool LoadProperties(pugi::xml_node& node, Properties& properties);
+	bool StringToBool(const char* string);
+	// L06: TODO 3: Pick the right Tileset based on a tile id
+	TileSet* GetTilesetFromTileId(int id) const;
 public:
 
     // L03: DONE 1: Add your struct for map info
 	MapData data;
-	MapTypes StrToMapType(SString s);
+
 private:
 
     pugi::xml_document mapFile;
