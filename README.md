@@ -26,4 +26,4 @@ Disfruta lokuelo
 
 This project is licensed under an unmodified MIT license, which is an OSI-certified license that allows static linking with closed source software. Check [LICENSE](LICENSE) for further details.
 
-{AdditionalLicenses}
+All assets are under this licence: https://creativecommons.org/publicdomain/zero/1.0/
