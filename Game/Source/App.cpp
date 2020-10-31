@@ -7,6 +7,7 @@
 #include "Scene.h"
 #include "Map.h"
 
+
 #include "Defs.h"
 #include "Log.h"
 
@@ -25,7 +26,7 @@ App::App(int argc, char* args[]) : argc(argc), args(args)
 	audio = new Audio();
 	scene = new Scene();
 	map = new Map();
-
+	
 	// Ordered for awake / Start / Update
 	// Reverse order of CleanUp
 	AddModule(win);
@@ -34,6 +35,7 @@ App::App(int argc, char* args[]) : argc(argc), args(args)
 	AddModule(audio);
 	AddModule(scene);
 	AddModule(map);
+	
 
 	// Render last to swap buffer
 	AddModule(render);
