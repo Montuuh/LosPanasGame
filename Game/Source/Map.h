@@ -47,25 +47,26 @@ struct Properties
 	{
 		//...
 		SString name;
+		SString type;
 		int value;
 	};
 
 	~Properties()
 	{
 		//...
-		ListItem<Properties::Property*>* propertiesList = list.start;
+		ListItem<Properties::Property*>* propertiesList = propertyList.start;
 		while (propertiesList != NULL)
 		{
 			RELEASE(propertiesList->data);
 			propertiesList = propertiesList->next;
 		}
-		list.clear();
+		propertyList.clear();
 	}
 
 	// L06: TODO 7: Method to ask for the value of a custom property
 	int GetProperty(const char* name, int default_value = 0) const;
 
-	List<Property*> list;
+	List<Property*> propertyList;
 };
 
 // L04: DONE 1: Create a struct for the map layer

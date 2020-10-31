@@ -32,11 +32,12 @@ bool Scene::Awake()
 bool Scene::Start()
 {
 	// L03: DONE: Load map
-	app->map->Load("hello2.tmx");
-	img = app->tex->Load("Assets/maps/sewer_tileset.png");
+	//app->map->Load("hello2.tmx");
+	app->map->Load("mapaguapo.tmx");
+	//img = app->tex->Load("Assets/maps/sewer_tileset.png");
 
 	//app->audio->PlayMusic("Assets/audio/music/music_spy.ogg");
-	app->audio->PlayMusic("Assets/audio/music/dondonmusic.wav");
+	//app->audio->PlayMusic("Assets/audio/music/dondonmusic.wav");
 
 	return true;
 }
@@ -58,18 +59,26 @@ bool Scene::Update(float dt)
 		app->SaveGameRequest();
 
 	if(app->input->GetKey(SDL_SCANCODE_UP) == KEY_REPEAT)
-		app->render->camera.y -= 1;
+		app->render->camera.y += 10;
 
 	if(app->input->GetKey(SDL_SCANCODE_DOWN) == KEY_REPEAT)
-		app->render->camera.y += 1;
+		app->render->camera.y -= 10;
 
 	if(app->input->GetKey(SDL_SCANCODE_LEFT) == KEY_REPEAT)
-		app->render->camera.x -= 1;
+		app->render->camera.x += 5;
 
 	if(app->input->GetKey(SDL_SCANCODE_RIGHT) == KEY_REPEAT)
-		app->render->camera.x += 1;
-
+		app->render->camera.x -= 30;
 	
+	if(app->input->GetKey(SDL_SCANCODE_F9) == KEY_DOWN)
+
+
+
+	// Set the camera limits
+	if (app->render->camera.x > 0) app->render->camera.x = 0;
+	if (app->render->camera.x < -1600 * 6/5) app->render->camera.x = -1600 * 6/5;
+	if (app->render->camera.y > 0) app->render->camera.y = 0;
+	if (app->render->camera.y < -800 * 1.1) app->render->camera.y = -800 * 1.1;
 
 	// Draw map
 	app->map->Draw();

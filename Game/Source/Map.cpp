@@ -40,24 +40,24 @@ void Map::Draw()
 
 	ListItem<MapLayer*>*L;
 	L = data.mapLayers.start;
+
+	TileSet* tileset = NULL;
 	while (L != NULL) // Iterate all layers
 	{
-		MapLayer* layer = L->data;
+		if (L->data->properties.GetProperty("Drawable", 1) == 0) // Drawable property is false
+		{
+			L = L->next;
+			continue;
+		}
+		
 		for (int j = 0; j < L->data->height; ++j) // Start at first row
 		{
 			for (int i = 0; i < L->data->width; ++i) // Iterate all collumns
 			{
-				/*
-					uint u = L->data->Get(i, j);
-					LOG("%u", u);
-					SDL_Rect n = data.tilesets.start->data->GetTileRect(u);
-					iPoint pos = MapToWorld(i, j);
-					app->render->DrawTexture(data.tilesets.start->data->texture, pos.x, pos.y, &n);
-				*/
-				int tileId = layer->Get(i, j);
+				int tileId = L->data->Get(i, j);
 				if (tileId > 0)
 				{
-					TileSet* tileset = GetTilesetFromTileId(tileId);
+					tileset = GetTilesetFromTileId(tileId);
 
 					SDL_Rect r = tileset->GetTileRect(tileId);
 					iPoint pos = MapToWorld(i, j);
@@ -237,6 +237,7 @@ bool Map::Load(const char* filename)
 		if (ret == true) data.mapLayers.add(mapLayerSet); // Add the filled map layer to the list of map layers
 	}
 
+
     if(ret == true)
     {
 		// L03: TODO 5: LOG all the data loaded iterate all tilesets and LOG everything
@@ -359,6 +360,8 @@ bool Map::LoadLayer(pugi::xml_node& node, MapLayer* layer)
 		++i;
 	}
 
+	LoadProperties(node, layer->properties);
+
 	LOG("Layer <<%s>> has loaded %d tiles", layer->name.GetString(), i);
 	return ret;
 }
@@ -366,34 +369,20 @@ bool Map::LoadLayer(pugi::xml_node& node, MapLayer* layer)
 // L06: TODO 6: Load a group of properties from a node and fill a list with it
 bool Map::LoadProperties(pugi::xml_node& node, Properties& properties)
 {
-	bool ret = false;
-
-	pugi::xml_node propertiesNode;
-	propertiesNode = node.child("properties");
-
-	pugi::xml_node propertyNode = propertiesNode.child("property");
-
-	int i = 0;
-	while (propertyNode != NULL)
+	bool ret = true;
+	pugi::xml_node propertyNode = node.child("properties").child("property");
+	while (propertyNode != NULL && ret)
 	{
 		Properties::Property* prop = new Properties::Property();
 
-		prop->name = propertyNode.attribute("name").as_string();
+		prop->name = propertyNode.attribute("name").as_string("Not found");
+		prop->type = propertyNode.attribute("type").as_string("Not found");
+		prop->value = propertyNode.attribute("value").as_int(0);
 
-		if (propertyNode.attribute("type"))
-		{
-			prop->value = propertyNode.attribute("value").as_bool();
-		}
-		else
-		{
-			prop->value = StringToBool(propertyNode.attribute("value").as_string());
-		}
+		properties.propertyList.add(prop);
 
-		properties.list.add(prop);
 		propertyNode = propertyNode.next_sibling("property");
 	}
-
-	//...
 	return ret;
 }
 
@@ -409,12 +398,12 @@ bool Map::StringToBool(const char* string)
 int Properties::GetProperty(const char* nameProperty, int defaultValue) const
 {
 	//...
-	ListItem<Property*>* propertyList = list.start;
-	while (propertyList != NULL)
+	ListItem<Property*>* item = propertyList.start;
+	while (item != NULL)
 	{
-		if (propertyList->data->name == nameProperty)
-			return propertyList->data->value;
-		propertyList = propertyList->next;
+		if (item->data->name == nameProperty)
+			return item->data->value;
+		item = item->next;
 	}
 	return defaultValue;
 }
