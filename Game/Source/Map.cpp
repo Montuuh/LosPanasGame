@@ -390,14 +390,14 @@ int Map::LoadCollisions()
 				tileset = GetTilesetFromTileId(tileId);
 				int relativeId = tileset->GetRelativeId(tileId);
 
-				switch (relativeId)
-				{
-				case 0: // Void --> Do nothing
-				case 1: // Red color --> Lava
-					// AddCollider(r, Collider::Type::LAVA)
-				case 2: // Blue color --> Block
-					// AddCollider(r, Collider::Type::BLOCK)
-				}
+				//switch (relativeId)
+				//{
+				//case 0: // Void --> Do nothing
+				//case 1: // Red color --> Lava
+				//	// AddCollider(r, Collider::Type::LAVA)
+				//case 2: // Blue color --> Block
+				//	// AddCollider(r, Collider::Type::BLOCK)
+				//}
 					
 			}
 		}
