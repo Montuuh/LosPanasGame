@@ -123,38 +123,6 @@ iPoint Map::WorldToMap(int x, int y) const
 	return ret;
 }
 
-// L06: TODO 3: Pick the right Tileset based on a tile id
-TileSet* Map::GetTilesetFromTileId(int id) const
-{
-	ListItem<TileSet*>* tilesetsList = data.tilesets.start;
-	TileSet* tileset = tilesetsList->data;
-	while (tilesetsList != NULL)
-	{
-		if (id < tilesetsList->data->firstgid)
-		{
-			tileset = tilesetsList->prev->data;
-			break;
-		}
-		tileset = tilesetsList->data;
-		tilesetsList = tilesetsList->next;
-	}
-	return tileset;
-}
-
-// Get relative Tile rectangle
-SDL_Rect TileSet::GetTileRect(int id) const
-{
-	SDL_Rect rect = { 0 };
-	
-	// L04: DONE 7: Get relative Tile rectangle
-	int relativeId = id - firstgid;
-	rect.w = tileWidth;
-	rect.h = tileHeight;
-	rect.x = margin + ((rect.w + spacing) * (relativeId % numTilesWidth));
-	rect.y = margin + ((rect.h + spacing) * (relativeId / numTilesWidth));
-
-	return rect;
-}
 
 // Called before quitting
 bool Map::CleanUp()
@@ -386,12 +354,56 @@ bool Map::LoadProperties(pugi::xml_node& node, Properties& properties)
 	return ret;
 }
 
-bool Map::StringToBool(const char* string)
+int Map::LoadCollisions()
 {
-	bool result = false;
-	if (string == "true") result = true;
-	else if (string == "false") result = false;
-	return result;
+	int count = 0;
+
+	ListItem<MapLayer*>* listLayers;
+	listLayers = data.mapLayers.start;
+	SString colliderTilesetName("colliders");
+	while (listLayers != NULL)
+	{
+		SString name = listLayers->data->name;
+		if (name == colliderTilesetName)
+		{
+			break;
+		}
+		listLayers = listLayers->next;
+	}
+
+	TileSet* tileset = NULL;
+	for (int j = 0; j < data.height; ++j)
+	{
+		for (int i = 0; i < data.width; ++i)
+		{
+			int tileId = listLayers->data->Get(i, j);
+			if (tileId > 0)
+			{
+				iPoint pos = MapToWorld(i, j);
+				SDL_Rect r =
+				{
+					pos.x,
+					pos.y,
+					data.tileWidth,
+					data.tileHeight
+				};
+				tileset = GetTilesetFromTileId(tileId);
+				int relativeId = tileset->GetRelativeId(tileId);
+
+				switch (relativeId)
+				{
+				case 0: // Void --> Do nothing
+				case 1: // Red color --> Lava
+					// AddCollider(r, Collider::Type::LAVA)
+				case 2: // Blue color --> Block
+					// AddCollider(r, Collider::Type::BLOCK)
+				}
+					
+			}
+		}
+	}
+	// count = getcolliderscount
+	return count;
 }
 
 // L06: TODO 7: Ask for the value of a custom property
@@ -406,6 +418,53 @@ int Properties::GetProperty(const char* nameProperty, int defaultValue) const
 		item = item->next;
 	}
 	return defaultValue;
+}
+
+// L06: TODO 3: Pick the right Tileset based on a tile id
+TileSet* Map::GetTilesetFromTileId(int id) const
+{
+	ListItem<TileSet*>* tilesetsList = data.tilesets.start;
+	TileSet* tileset = tilesetsList->data;
+	while (tilesetsList != NULL)
+	{
+		if (id < tilesetsList->data->firstgid)
+		{
+			tileset = tilesetsList->prev->data;
+			break;
+		}
+		tileset = tilesetsList->data;
+		tilesetsList = tilesetsList->next;
+	}
+	return tileset;
+}
+
+// Get relative Tile rectangle
+SDL_Rect TileSet::GetTileRect(int id) const
+{
+	SDL_Rect rect = { 0 };
+
+	// L04: DONE 7: Get relative Tile rectangle
+	int relativeId = id - firstgid;
+	rect.w = tileWidth;
+	rect.h = tileHeight;
+	rect.x = margin + ((rect.w + spacing) * (relativeId % numTilesWidth));
+	rect.y = margin + ((rect.h + spacing) * (relativeId / numTilesWidth));
+
+	return rect;
+}
+
+int TileSet::GetRelativeId(int tileId)const
+{
+	int relativeId = tileId - firstgid;
+	return relativeId;
+}
+
+bool Map::StringToBool(const char* string)
+{
+	bool result = false;
+	if (string == "true") result = true;
+	else if (string == "false") result = false;
+	return result;
 }
 
 void Map::LogInfo()

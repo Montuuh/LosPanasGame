@@ -28,6 +28,7 @@ struct TileSet
 
 	// L04: TODO 7: Create a method that receives a tile id and returns it's Rectfind the Rect associated with a specific tile id
 	SDL_Rect GetTileRect(int id) const;
+	int GetRelativeId(int tileId) const;
 };
 
 // L03: DONE 1: We create an enum for map type, just for convenience,
@@ -144,18 +145,20 @@ public:
 private:
 
 	// L03: Methods to load all required map data
+	// L06: TODO 6: Load a group of properties 
 	bool LoadMap();
 	bool LoadTilesetDetails(pugi::xml_node& tileset_node, TileSet* set);
 	bool LoadTilesetImage(pugi::xml_node& tileset_node, TileSet* set);
 	bool LoadLayer(pugi::xml_node& node, MapLayer* layer);
-
-	void LogInfo();
-
-	// L06: TODO 6: Load a group of properties 
 	bool LoadProperties(pugi::xml_node& node, Properties& properties);
-	bool StringToBool(const char* string);
+	int LoadCollisions();
+
 	// L06: TODO 3: Pick the right Tileset based on a tile id
 	TileSet* GetTilesetFromTileId(int id) const;
+
+	bool StringToBool(const char* string);
+
+	void LogInfo();
 public:
 
     // L03: DONE 1: Add your struct for map info
