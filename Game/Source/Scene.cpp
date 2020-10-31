@@ -63,14 +63,10 @@ bool Scene::Update(float dt)
 		app->render->camera.y -= 10;
 
 	if(app->input->GetKey(SDL_SCANCODE_LEFT) == KEY_REPEAT)
-		app->render->camera.x += 5;
+		app->render->camera.x += 40;
 
 	if(app->input->GetKey(SDL_SCANCODE_RIGHT) == KEY_REPEAT)
 		app->render->camera.x -= 30;
-	
-	if(app->input->GetKey(SDL_SCANCODE_F9) == KEY_DOWN)
-
-
 
 	// Set the camera limits
 	if (app->render->camera.x > 0) app->render->camera.x = 0;
