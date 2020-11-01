@@ -141,9 +141,10 @@ bool Player::Start()
 	LOG("Loading player textures...");
 	texture = app->tex->Load("Assets/textures/Characters/Main/spritesheet.png");
 
+	playerPos = { 32, 736 };
 	position = { 32, 736 };
-
-	playerCollider = app->collisions->AddCollider(SDL_Rect({ position.x, position.y, 16, 16 }), Collider::Type::PLAYER, this);
+	collider = app->collisions->AddCollider({ position.x, position.y, 16,16 }, Collider::Type::PLAYER, this);
+	playerCollider = app->collisions->AddCollider(SDL_Rect({ playerPos.x, playerPos.y, 16, 16 }), Collider::Type::PLAYER, this);
 
 	currentTexture = &texture;
 	currentAnim = &idleRightAnim;
@@ -199,7 +200,7 @@ void Player::Input()
 {
 	if ((app->input->GetKey(SDL_SCANCODE_A) == KEY_REPEAT))
 	{
-		position.x -= velocity.x;
+		playerPos.x -= velocity.x;
 
 		if (currentAnim != &runLeftAnim)
 		{
@@ -210,7 +211,7 @@ void Player::Input()
 
 	if ((app->input->GetKey(SDL_SCANCODE_D) == KEY_REPEAT))
 	{
-		position.x += velocity.x;
+		playerPos.x += velocity.x;
 
 		if (currentAnim != &runRightAnim)
 		{
@@ -220,11 +221,11 @@ void Player::Input()
 	}
 	if (app->input->GetKey(SDL_SCANCODE_W) == KEY_REPEAT)
 	{
-		position.y -= velocity.y;
+		playerPos.y -= velocity.y;
 	}
 	if (app->input->GetKey(SDL_SCANCODE_S) == KEY_REPEAT)
 	{
-		position.y += velocity.y;
+		playerPos.y += velocity.y;
 	}
 
 
@@ -256,17 +257,17 @@ void Player::Input()
 
 void Player::Logic(float dt)
 {
-	if (!isGround)
+	/*if (!isGround)
 	{
 
-	}
+	}*/
 
 
 	// If player is in ground
-	if (isGround)
+	/*if (isGround)
 	{
 
-	}
+	}*/
 	// If player is in the air
 	//if ((isAir || collisionExist == false) && !godMode && !destroyed)
 	//{
@@ -302,10 +303,11 @@ void Player::Logic(float dt)
 	//	velocity.x += -1.0f * velocity.x * dt;
 	//	if (fabs(velocity.x) < 0.01f)
 	//		velocity.x = 0;
-}
+
 
 	// Animation changed if player dies
-	if (destroyed)
+	
+	if (destroyed == true)
 	{
 		if (velocity.x > 0)
 			currentAnim = &dieRightAnim;
@@ -317,38 +319,18 @@ void Player::Logic(float dt)
 	playerCollider->SetPos(position.x, position.y);
 
 	// Borders for the player
-	if (position.x < 0)
-		position.x = 0;
-	if (position.x + playerCollider->rect.w > 100 * 16)
-		position.x = 100 * 16 - playerCollider->rect.w;
-	if (position.y < 0)
-		position.y = 0;
-	if (position.y + playerCollider->rect.h > 50 * 16)
-		position.y = 50 * 16 - playerCollider->rect.y;
+	if (playerPos.x < 0)
+		playerPos.x = 0;
+	if (playerPos.x + playerCollider->rect.w > 100 * 16)
+		playerPos.x = 100 * 16 - playerCollider->rect.w;
+	if (playerPos.y < 0)
+		playerPos.y = 0;
+	if (playerPos.y + playerCollider->rect.h > 50 * 16)
+		playerPos.y = 50 * 16 - playerCollider->rect.y;
 	
 
 	// Setting collider position && player position
-	position.x = position.x + velocity.x * dt;
-	playerPos.y = playerPos.y + velocity.y * dt;
-
 	playerCollider->SetPos(playerPos.x, playerPos.y);
-
-	// Moving camera
-	/*if (!destroyed)
-	{
-		app->render->camera.x = app->render->camera.w / 2 - playerPos.x - playerCollider->rect.w;
-		app->render->camera.y = app->render->camera.h / 2 - playerPos.y;
-	}*/
-
-	// Max velocities
-	//if (velocity.x > MAXVELOCITY_X)
-	//	velocity.x = MAXVELOCITY_X;
-	//if (velocity.x < -MAXVELOCITY_X)
-	//	velocity.x = -MAXVELOCITY_X;
-	//if (velocity.y > MAXVELOCITY_Y)
-	//	velocity.y = MAXVELOCITY_Y;
-	//if (velocity.y < -MAXVELOCITY_Y)
-	//	velocity.y = -MAXVELOCITY_Y;
 }
 
 bool Player::PostUpdate()
@@ -368,49 +350,49 @@ bool Player::OnCollision(Collider* c1, Collider* c2)
 {
 	bool ret = false;
 
-	if (c2->type == Collider::Type::BLOCK)
-	{
-		isGround = true;
-		isAir = false;
-		isJumping = false;
-		if (position.y + playerCollider->rect.h - 1 >= c2->rect.y)
-		{
-			position.y = c2->rect.y - playerCollider->rect.h + 1;
-			velocity.y = 0;
-		}
+	//if (c2->type == Collider::Type::BLOCK)
+	//{
+	//	isGround = true;
+	//	isAir = false;
+	//	isJumping = false;
+	//	if (position.y + playerCollider->rect.h - 1 >= c2->rect.y)
+	//	{
+	//		position.y = c2->rect.y - playerCollider->rect.h + 1;
+	//		velocity.y = 0;
+	//	}
 
-	}
-	else
-	{
-		if (((playerCollider->rect.y < c2->rect.y) || (playerCollider->rect.y > c2->rect.y)) && (playerCollider->rect.y + playerCollider->rect.h > c2->rect.y + c2->rect.h / 2))
-		{
-			collisionFromBelow = true;
-			LOG("Player through the ground");
-			ret = false;
-		}
-		else
-			collisionFromBelow = false;
+	//}
+	//else
+	//{
+	//	if (((playerCollider->rect.y < c2->rect.y) || (playerCollider->rect.y > c2->rect.y)) && (playerCollider->rect.y + playerCollider->rect.h > c2->rect.y + c2->rect.h / 2))
+	//	{
+	//		collisionFromBelow = true;
+	//		LOG("Player through the ground");
+	//		ret = false;
+	//	}
+	//	else
+	//		collisionFromBelow = false;
 
-		if (collisionFromBelow == false)
-		{
-			// Maintain the feet to the ground
-			if ((playerCollider->rect.y + playerCollider->rect.h >= c2->rect.y) && (playerCollider->rect.y + playerCollider->rect.h <= c2->rect.y + 4))
-			{
-				playerPos.y = c2->rect.y - playerCollider->rect.h;
-				isGround = true;
-				isAir = false;
-				LOG("Player feet on ground");
-				ret = true;
-			}
-		}
-	}
-	else
-	{
-		isGround = false;
-		isAir = true;
-	}
-	if (c2->type == Collider::Type::LAVA && godMode == false)
-		destroyed = true;
+	//	if (collisionFromBelow == false)
+	//	{
+	//		// Maintain the feet to the ground
+	//		if ((playerCollider->rect.y + playerCollider->rect.h >= c2->rect.y) && (playerCollider->rect.y + playerCollider->rect.h <= c2->rect.y + 4))
+	//		{
+	//			playerPos.y = c2->rect.y - playerCollider->rect.h;
+	//			isGround = true;
+	//			isAir = false;
+	//			LOG("Player feet on ground");
+	//			ret = true;
+	//		}
+	//	}
+	//}
+	//else
+	//{
+	//	isGround = false;
+	//	isAir = true;
+	//}
+	//if (c2->type == Collider::Type::LAVA && godMode == false)
+	//	destroyed = true;
 
 	return ret;
 }
@@ -447,10 +429,7 @@ bool Player::CleanUp()
 {
 	bool ret = true;
 
-	app->tex->UnLoad(idleTexture);
-	app->tex->UnLoad(jumpTexture);
-	app->tex->UnLoad(runTexture);
-	app->tex->UnLoad(dieTexture);
+	app->tex->UnLoad(texture);
 
 	return ret;
 }

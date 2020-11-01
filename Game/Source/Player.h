@@ -43,9 +43,11 @@ public:
 
 
 public:
-	iPoint position;
+	iPoint playerPos;
 	iPoint velocity = { 0 , 0 };
 	Collider* playerCollider = nullptr;
+	Collider* collider = nullptr;
+	iPoint position;
 
 	Animation* currentAnim = nullptr;
 	Animation idleLeftAnim;
@@ -66,8 +68,8 @@ public:
 
 	bool destroyed = false;
 	bool collisionExist = false;
-	bool destroyed = false;
 	bool door = false;
+
 
 private:
 	
@@ -75,6 +77,7 @@ private:
 
 	bool isGround = false;
 	bool isAir = true;
+	bool isJumping = false;
 	bool isGoingRight = false;
 	bool collisionFromBelow = false;
 	bool isDead = false;
