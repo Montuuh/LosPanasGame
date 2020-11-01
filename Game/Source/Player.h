@@ -43,28 +43,28 @@ public:
 
 
 public:
-	iPoint playerPos;
+	iPoint position;
 	iPoint velocity = { 0 , 0 };
 	Collider* playerCollider = nullptr;
 
 	Animation* currentAnim = nullptr;
-	Animation leftIdleAnim;
-	Animation rightIdleAnim;
-	Animation leftRunAnim;
-	Animation rightRunAnim;
+	Animation idleLeftAnim;
+	Animation idleRightAnim;
+	Animation runLeftAnim;
+	Animation runRightAnim;
+	Animation attackLeftAnim;
+	Animation attackRightAnim;
+	Animation dieLeftAnim;
+	Animation dieRightAnim;
 	Animation jumpLeftAnim;
 	Animation jumpRightAnim;
-	Animation dieAnim;
+	Animation fallLeftAnim;
+	Animation fallRightAnim;
 
 	SDL_Texture** currentTexture = nullptr;
 	SDL_Texture* texture = nullptr;
-	SDL_Texture* idleTexture = nullptr;
-	SDL_Texture* runTexture = nullptr;
-	SDL_Texture* jumpTexture = nullptr;
-	SDL_Texture* dieTexture = nullptr;
 
-
-
+	bool destroyed = false;
 	bool collisionExist = false;
 	bool destroyed = false;
 	bool door = false;
