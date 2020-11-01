@@ -3,6 +3,7 @@
 #include "Render.h"
 #include "Textures.h"
 #include "Map.h"
+#include "Collisions.h"
 
 #include "Defs.h"
 #include "Log.h"
@@ -238,8 +239,11 @@ bool Map::LoadMap()
 		data.height = mapNode.attribute("height").as_int();
 		data.tileWidth = mapNode.attribute("tilewidth").as_int();
 		data.tileHeight = mapNode.attribute("tileheight").as_int();
-		data.nextObjectId = mapNode.attribute("nextobjectid").as_int();
-		
+		SString color(mapNode.attribute("backgroundcolor").as_string());
+		color.Trim();
+		sscanf_s(color.GetString(), "%02x%02x%02x", (uint)&data.backgroundColor.r, (uint)&data.backgroundColor.g, (uint)&data.backgroundColor.b);
+		data.backgroundColor.a = 255;
+
 		SString strType(mapNode.attribute("orientation").as_string());
 		if (strType == "orthogonal")
 		{
@@ -263,27 +267,27 @@ bool Map::LoadMap()
 }
 
 // L03: TODO: Load Tileset attributes
-bool Map::LoadTilesetDetails(pugi::xml_node& tileset_node, TileSet* set)
+bool Map::LoadTilesetDetails(pugi::xml_node& tilesetNode, TileSet* set)
 {
 	bool ret = true;
 	
 	// L03: TODO: Load Tileset attributes
 	LOG("Filling TilesetDetails");
-	set->firstgid = tileset_node.attribute("firstgid").as_int();
-	set->name = tileset_node.attribute("name").as_string();
-	set->tileWidth = tileset_node.attribute("tilewidth").as_int();
-	set->tileHeight = tileset_node.attribute("tileheight").as_int();
-	set->spacing = tileset_node.attribute("spacing").as_int();
-	set->margin = tileset_node.attribute("margin").as_int();
+	set->firstgid = tilesetNode.attribute("firstgid").as_int();
+	set->name = tilesetNode.attribute("name").as_string();
+	set->tileWidth = tilesetNode.attribute("tilewidth").as_int();
+	set->tileHeight = tilesetNode.attribute("tileheight").as_int();
+	set->spacing = tilesetNode.attribute("spacing").as_int();
+	set->margin = tilesetNode.attribute("margin").as_int();
 
 	return ret;
 }
 
 // L03: TODO: Load Tileset image
-bool Map::LoadTilesetImage(pugi::xml_node& tileset_node, TileSet* set)
+bool Map::LoadTilesetImage(pugi::xml_node& tilesetNode, TileSet* set)
 {
 	bool ret = true;
-	pugi::xml_node image = tileset_node.child("image");
+	pugi::xml_node image = tilesetNode.child("image");
 
 	if (image == NULL)
 	{
@@ -354,21 +358,19 @@ bool Map::LoadProperties(pugi::xml_node& node, Properties& properties)
 	return ret;
 }
 
-int Map::LoadCollisions()
+bool Map::LoadCollisions()
 {
-	int count = 0;
-
-	ListItem<MapLayer*>* listLayers;
-	listLayers = data.mapLayers.start;
-	SString colliderTilesetName("colliders");
-	while (listLayers != NULL)
+	ListItem<MapLayer*>* L;
+	L = data.mapLayers.start;
+	SString colliderTilesetName("Colliders");
+	while (L != NULL)
 	{
-		SString name = listLayers->data->name;
+		SString name = L->data->name;
 		if (name == colliderTilesetName)
 		{
 			break;
 		}
-		listLayers = listLayers->next;
+		L = L->next;
 	}
 
 	TileSet* tileset = NULL;
@@ -376,7 +378,7 @@ int Map::LoadCollisions()
 	{
 		for (int i = 0; i < data.width; ++i)
 		{
-			int tileId = listLayers->data->Get(i, j);
+			int tileId = L->data->Get(i, j);
 			if (tileId > 0)
 			{
 				iPoint pos = MapToWorld(i, j);
@@ -390,20 +392,22 @@ int Map::LoadCollisions()
 				tileset = GetTilesetFromTileId(tileId);
 				int relativeId = tileset->GetRelativeId(tileId);
 
-				//switch (relativeId)
-				//{
-				//case 0: // Void --> Do nothing
-				//case 1: // Red color --> Lava
-				//	// AddCollider(r, Collider::Type::LAVA)
-				//case 2: // Blue color --> Block
-				//	// AddCollider(r, Collider::Type::BLOCK)
-				//}
+				switch (relativeId)
+				{
+				case 0: // Void --> Do nothing
+				case 1: // Red color --> Lava
+					app->collisions->AddCollider(r, Collider::Type::LAVA, nullptr);
+					break;
+				case 2: // Blue color --> Block
+					app->collisions->AddCollider(r, Collider::Type::BLOCK, nullptr);
+					break;
+				}
 					
 			}
 		}
 	}
-	// count = getcolliderscount
-	return count;
+	
+	return true;
 }
 
 // L06: TODO 7: Ask for the value of a custom property

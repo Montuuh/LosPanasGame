@@ -6,7 +6,8 @@
 #include "Audio.h"
 #include "Scene.h"
 #include "Map.h"
-#include "ModuleCollisions.h"
+#include "Collisions.h"
+#include "Player.h"
 
 
 #include "Defs.h"
@@ -26,8 +27,9 @@ App::App(int argc, char* args[]) : argc(argc), args(args)
 	tex = new Textures();
 	audio = new Audio();
 	scene = new Scene();
+	player = new Player();
 	map = new Map();
-	/*collisions = new ModuleCollisions();*/
+	collisions = new Collisions();
 	
 	// Ordered for awake / Start / Update
 	// Reverse order of CleanUp
@@ -36,8 +38,9 @@ App::App(int argc, char* args[]) : argc(argc), args(args)
 	AddModule(tex);
 	AddModule(audio);
 	AddModule(scene);
+	AddModule(player);
 	AddModule(map);
-	/*AddModule(collisions);*/
+	AddModule(collisions);
 	
 
 	// Render last to swap buffer

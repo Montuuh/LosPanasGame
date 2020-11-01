@@ -6,6 +6,6 @@
 	<audio />
 	<scene />
 	<renderer>
-		<camera x="-188" y="-878" />
+		<camera x="0" y="-880" />
 	</renderer>
 </game_state>

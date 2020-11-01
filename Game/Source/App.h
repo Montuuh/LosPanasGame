@@ -16,8 +16,9 @@ class Render;
 class Textures;
 class Audio;
 class Scene;
+class Player;
 class Map;
-//class ModuleCollisions;
+class Collisions;
 
 class App
 {
@@ -88,8 +89,9 @@ public:
 	Textures* tex;
 	Audio* audio;
 	Scene* scene;
+	Player* player;
 	Map* map;
-	/*ModuleCollisions* collisions;*/
+	Collisions* collisions;
 	
 
 private:
