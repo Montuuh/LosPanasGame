@@ -33,10 +33,11 @@ bool Scene::Start()
 {
 	// L03: DONE: Load map
 	app->map->Load("Level1.tmx");
-
+	app->map->LoadCollisions();
 	//app->audio->PlayMusic("Assets/audio/music/music_spy.ogg");
 	//app->audio->PlayMusic("Assets/audio/music/dondonmusic.wav");
-
+	app->render->camera.x = 0;
+	app->render->camera.y = -1000;
 	return true;
 }
 
@@ -98,6 +99,8 @@ bool Scene::PostUpdate()
 	if(app->input->GetKey(SDL_SCANCODE_ESCAPE) == KEY_DOWN)
 		ret = false;
 
+
+
 	return ret;
 }
 
@@ -106,6 +109,7 @@ bool Scene::CleanUp()
 {
 	LOG("Freeing scene");
 	app->tex->UnLoad(img);
+	
 
 	return true;
 }
