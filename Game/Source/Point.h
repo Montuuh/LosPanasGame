@@ -27,7 +27,7 @@ public:
 		this->y = y;
 	}
 
-	Point& create(const TYPE& x, const TYPE& y)
+	Point& Create(const TYPE& x, const TYPE& y)
 	{
 		this->x = x;
 		this->y = y;
@@ -127,5 +127,5 @@ public:
 
 typedef Point<int> iPoint;
 typedef Point<float> fPoint;
-
+typedef Point<uint> uPoint;
 #endif // __POINT_H__

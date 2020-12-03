@@ -6,22 +6,24 @@
 #include "PugiXml/src/pugixml.hpp"
 
 class App;
+struct Collider;
 
 class Module
 {
 public:
 
-	Module() : active(false)
+	Module(bool startEnabled = true) : active(false) 
 	{
+		isEnabled = startEnabled;
 	}
-
+	
 	void Init()
 	{
 		active = true;
 	}
 
 	// Called before render is available
-	// L01: DONE 5: Sending config file to all modules
+	// TODO 5: Sending config file to all modules
 	virtual bool Awake(pugi::xml_node&)
 	{
 		return true;
@@ -54,10 +56,34 @@ public:
 	// Called before quitting
 	virtual bool CleanUp()
 	{
+		active = false;
+		isEnabled = false;
 		return true;
 	}
 
-    // L02: DONE 2: Create new virtual methods to Load / Save state
+	// Switches isEnabled and calls Start() method
+	void Enable()
+	{
+		if (!isEnabled)
+		{
+			isEnabled = true;
+			Start();
+		}
+	}
+
+	// Switches isEnabled and calls CleanUp() method
+	void Disable()
+	{
+		if (isEnabled)
+		{
+			isEnabled = false;
+			CleanUp();
+		}
+	}
+
+	inline bool IsEnabled() const { return isEnabled; }
+
+	// L02: DONE 2: Create new virtual methods to Load / Save state
 	virtual bool LoadState(pugi::xml_node&)
 	{
 		return true;
@@ -68,11 +94,18 @@ public:
 		return true;
 	}
 
+	virtual bool OnCollision(Collider* c1, Collider* c2)
+	{
+		return true;
+	}
+
 public:
 
 	SString name;
 	bool active;
 
+private:
+	bool isEnabled = true;
 };
 
 #endif // __MODULE_H__

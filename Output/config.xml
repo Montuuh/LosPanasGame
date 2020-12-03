@@ -1,16 +1,17 @@
 <!-- Config file for the game -->
 <!-- L01: DONE 1: Create configuration file-->
 <config>
-  <app>
-    <title>Platformer Game, by Los Panas</title>
+  <app framerate_cap="60">
+    <title>Game Development Testbed</title>
     <organization>UPC</organization>
   </app>
 
   <renderer>
-    <vsync value="true"/>
+    <vsync value="false"/>
   </renderer>
+
   <window>
-    <resolution width="1280" height="720" scale="2"/>
+    <resolution width="1280" height="720" scale="1"/>
     <fullscreen value="false"/>
     <borderless value="false"/>
     <resizable value="false"/>

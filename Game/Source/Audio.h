@@ -12,7 +12,7 @@ class Audio : public Module
 {
 public:
 
-	Audio();
+	Audio(bool audioOn = true);
 
 	// Destructor
 	virtual ~Audio();
@@ -31,8 +31,6 @@ public:
 
 	// Play a previously loaded WAV
 	bool PlayFx(unsigned int fx, int repeat = 0);
-
-	bool UnloadFx(unsigned int id);
 
 private:
 

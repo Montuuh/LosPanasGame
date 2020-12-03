@@ -11,6 +11,8 @@ public:
 
 	Scene();
 
+	Scene(bool b);
+
 	// Destructor
 	virtual ~Scene();
 
@@ -32,8 +34,14 @@ public:
 	// Called before quitting
 	bool CleanUp();
 
+	int resetCounter = 0;
+
 private:
 	SDL_Texture* img;
+	SDL_Texture* bg;
+
+public:
+	
 };
 
 #endif // __SCENE_H__

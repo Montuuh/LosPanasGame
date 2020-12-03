@@ -2,14 +2,15 @@
 #define __ANIMATION_H__
 
 #include "SDL/include/SDL_rect.h"
-#define MAX_FRAMES 100
+#define MAX_FRAMES 25
 
 class Animation
 {
 public:
 	float speed = 1.0f;
 	SDL_Rect frames[MAX_FRAMES];
-	bool loop = false;
+	bool loop = true;
+	// Allows the animation to keep going back and forth
 	bool pingpong = false;
 
 private:
@@ -19,6 +20,7 @@ private:
 	int pingpongDirection = 1;
 
 public:
+
 	void PushBack(const SDL_Rect& rect)
 	{
 		frames[totalFrames++] = rect;
@@ -28,7 +30,7 @@ public:
 	{
 		currentFrame = 0;
 	}
-
+	
 	bool HasFinished()
 	{
 		return !loop && !pingpong && loopCount > 0;
@@ -53,27 +55,8 @@ public:
 		if (pingpongDirection == -1)
 			actualFrame = totalFrames - currentFrame;
 
-		return frames[actualFrame];;
-	}
-
-	void GenerateAnimation(const SDL_Rect& rect, int rows, int columns)
-	{
-		int frameWidth = rect.w / columns;
-		int frameHeight = rect.h / rows;
-
-		for (int i = 0; i < rows; i++)
-		{
-			for (int j = 0; j < columns; j++)
-			{
-				SDL_Rect frame;
-				frame.x = rect.x + (j * frameWidth);
-				frame.y = rect.y + (i * frameHeight);
-				frame.w = frameWidth;
-				frame.h = frameHeight;
-				PushBack(frame);
-			}
-		}
+		return frames[actualFrame];
 	}
 };
-#endif // !__ANIMATION_H__
 
+#endif

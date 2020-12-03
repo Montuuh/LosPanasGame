@@ -5,7 +5,14 @@
 	<textures />
 	<audio />
 	<scene />
+	<player>
+		<position x="1510.68262" y="476.342377" />
+	</player>
 	<renderer>
-		<camera x="0" y="-880" />
+		<camera x="-1696" y="253" />
 	</renderer>
+	<entity>
+		<entitiesCount Num="0" />
+		<entitiesList />
+	</entity>
 </game_state>
