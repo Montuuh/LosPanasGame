@@ -63,7 +63,7 @@ void Map::Draw()
 	TileSet* tileset = NULL;
 	while (layer != NULL)
 	{
-		if (layer->data->properties.GetProperty("Nodraw") == 0) // Layer draw property is false
+		if (layer->data->properties.GetProperty("noDraw") == 0) // Layer draw property is false
 		{
 			layer = layer->next;
 			continue;
@@ -516,14 +516,14 @@ bool Map::LoadProperties(pugi::xml_node& node, Properties& properties)
 	//...
 	return ret;
 }
-
+/*
 int Map::LoadColliders()
 {
 	int count = 0;
 
 	ListItem<MapLayer*>* layers;
 	layers = data.layers.start;
-	SString collLayerStr("Meta");
+	SString collLayerStr("Colliders");
 	while (layers != NULL)
 	{
 		SString name = layers->data->name;
@@ -571,4 +571,65 @@ int Map::LoadColliders()
 	}
 	count = app->collisions->GetColliderCount();
 	return count;
+}
+*/
+int Map::LoadColliders()
+{
+	ListItem<MapLayer*>* L;
+	L = data.layers.start;
+	SString colliderTilesetName("Colliders");
+	while (L != NULL)
+	{
+		SString name = L->data->name;
+		if (name == colliderTilesetName)
+		{
+			break;
+		}
+		L = L->next;
+	}
+
+	TileSet* tileset = NULL;
+	for (int j = 0; j < data.height; ++j)
+	{
+		for (int i = 0; i < data.width; ++i)
+		{
+			int tileId = L->data->Get(i, j);
+			if (tileId > 0)
+			{
+				iPoint pos = MapToWorld(i, j);
+				SDL_Rect r =
+				{
+					pos.x,
+					pos.y,
+					data.tileWidth,
+					data.tileHeight
+				};
+				tileset = GetTilesetFromTileId(tileId);
+				int relativeId = tileset->GetTileRelativeId(tileId);
+
+				switch (relativeId)
+				{
+				case 0: // Void --> Do nothing
+					break;
+				case 1: // Red color --> Lava
+					app->collisions->AddCollider(r, Collider::Type::DEATH, nullptr);
+					break;
+				case 2: // Blue color --> Block
+					app->collisions->AddCollider(r, Collider::Type::GROUND, nullptr);
+					break;
+				case 3: // Green color --> Items
+					app->collisions->AddCollider(r, Collider::Type::ITEM, nullptr);
+					break;
+				case 4: // Black blue color --> Checkpoints
+					checkpointsList.Add(app->collisions->AddCollider(r, Collider::Type::CHECKPOINT));
+					break;
+				case 5: // Orange color --> Win
+					checkpointsList.Add(app->collisions->AddCollider(r, Collider::Type::WIN));
+					break;
+				}
+			}
+		}
+	}
+
+	return true;
 }

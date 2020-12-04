@@ -151,26 +151,23 @@ void ModuleCollisions::DebugDraw()
 		
 		switch(list1->data->type)
 		{
-			case Collider::Type::TYPE_NONE: // white
-			app->render->DrawRectangle(list1->data->rect, 255, 255, 255, alpha);
+			case Collider::Type::GROUND: // Light blue
+			app->render->DrawRectangle(list1->data->rect, 173, 216, 230, alpha);
 			break;
-			case Collider::Type::GROUND: // blue
-			app->render->DrawRectangle(list1->data->rect, 255, 255, 0, alpha);
-			break;
-			case Collider::Type::PLAYER: // green
-			app->render->DrawRectangle(list1->data->rect, 0, 255, 0, alpha);
+			case Collider::Type::PLAYER: // Light green
+			app->render->DrawRectangle(list1->data->rect, 144, 138, 144, alpha);
 			break;
 			case Collider::Type::DEATH: // red
 			app->render->DrawRectangle(list1->data->rect, 255, 0, 0, alpha);
 			break;
-			case Collider::Type::WIN: // pink
-			app->render->DrawRectangle(list1->data->rect, 255, 192, 203, alpha);
+			case Collider::Type::WIN: // orange
+			app->render->DrawRectangle(list1->data->rect, 255, 165, 0, alpha);
 			break;
-			case Collider::Type::CHECKPOINT: // mediumspringgreen	
-			app->render->DrawRectangle(list1->data->rect, 0, 250, 154, alpha);
+			case Collider::Type::CHECKPOINT: // Dark blue	
+			app->render->DrawRectangle(list1->data->rect, 0, 0, 139, alpha);
 			break;
-			case Collider::Type::ITEM: // Olive	
-			app->render->DrawRectangle(list1->data->rect, 128, 128, 0, alpha);
+			case Collider::Type::ITEM: // Green	
+			app->render->DrawRectangle(list1->data->rect, 0, 255, 0, alpha);
 			break;
 			case Collider::Type::ENEMY_HITBOX: // maroon	
 			app->render->DrawRectangle(list1->data->rect, 128, 0, 0, alpha);

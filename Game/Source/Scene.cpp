@@ -47,7 +47,7 @@ bool Scene::Awake()
 // Called before the first frame
 bool Scene::Start()
 {
-	app->map->Load("Level1.tmx");
+	app->map->Load("Level1mine.tmx");
 
 	app->render->background = { 200,210,222,0 };
 	app->audio->PlayMusic("Assets/audio/music/wiiMusic.ogg");

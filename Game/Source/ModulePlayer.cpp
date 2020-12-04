@@ -131,7 +131,7 @@ ModulePlayer::ModulePlayer(bool b) : Module(b)
 	dieLeftAnim.PushBack({ 32, 64, 16, 16 });
 	dieLeftAnim.PushBack({ 64, 64, 16, 16 });
 	dieLeftAnim.PushBack({ 96, 64, 16, 16 });
-	dieLeftAnim.loop = true;
+	dieLeftAnim.loop = false;
 	dieLeftAnim.speed = 0.1f;
 
 	// Right Die Animation
@@ -139,7 +139,7 @@ ModulePlayer::ModulePlayer(bool b) : Module(b)
 	dieRightAnim.PushBack({ 48, 64, 16, 16 });
 	dieRightAnim.PushBack({ 80, 64, 16, 16 });
 	dieRightAnim.PushBack({ 112, 64, 16, 16 });
-	dieRightAnim.loop = true;
+	dieRightAnim.loop = false;
 	dieRightAnim.speed = 0.1f;
 
 	// Left Jump Animation
