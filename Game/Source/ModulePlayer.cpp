@@ -255,7 +255,7 @@ void ModulePlayer::Input(float dt)
 	if (app->input->GetKey(SDL_SCANCODE_A) == KEY_REPEAT)
 	{
 		// Controlling player movement based on if they are on the ground or air.
-		velocity.x += -VELOCITY*1.5f*dt;
+		velocity.x += -VELOCITY*0.5f*dt;
 
 		if (currentAnimation != &runLeftAnim)
 		{
@@ -273,12 +273,16 @@ void ModulePlayer::Input(float dt)
 			counterWalking.Start();
 		}
 	}
+	if (app->input->GetKey(SDL_SCANCODE_A) == KEY_UP && isJump == false)
+	{
+		velocity.x = 0;
+	}
 
 	if (app->input->GetKey(SDL_SCANCODE_D) == KEY_REPEAT)
 	{
 		// Controlling player movement based on if they are on the ground or air.
 		//velocity.x += (isGround ? VELOCITY : VELOCITY) * dt;
-		velocity.x += VELOCITY *1.5f*dt;
+		velocity.x += VELOCITY *0.5f*dt;
 
 		if (currentAnimation != &runRightAnim)
 		{
@@ -296,6 +300,10 @@ void ModulePlayer::Input(float dt)
 			counterWalking.Start();
 		}
 	}
+	if (app->input->GetKey(SDL_SCANCODE_D) == KEY_UP && isJump == false)
+	{
+		velocity.x = 0;
+	}
 
 	if (app->input->GetKey(SDL_SCANCODE_S) == KEY_REPEAT && godMode)
 	{
@@ -312,7 +320,7 @@ void ModulePlayer::Input(float dt)
 		velocity.x = velocity.x / 2;
 		if (velocity.y == 0)
 		{
-			velocity.y = -80.0f * 2;
+			velocity.y = -85.0f * 2;
 			playerState = ON_AIR;
 			isJump = true;
 			app->audio->PlayFx(jumpingSfx);
