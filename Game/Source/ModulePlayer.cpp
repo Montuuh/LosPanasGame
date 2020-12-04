@@ -198,7 +198,7 @@ bool ModulePlayer::Start()
 	jumpingSfx = app->audio->LoadFx("Assets/Audio/Fx/player_jump.wav");
 	shootingSfx = app->audio->LoadFx("Assets/Audio/Fx/player_shot.wav");
 
-	//Starting position of the Mario
+	//Starting position of the player
 	playerWh = { 66.0f,79.0f };
 	// playerCollider = app->collisions->AddCollider({(int)playerPos.x + (int)playerWh.x / 2,(int)playerPos.y,(int)playerWh.x/2,(int)playerWh.y}, Collider::Type::PLAYER, (Module*)app->player);
 	playerCollider = app->collisions->AddCollider({ (int)playerPos.x ,(int)playerPos.y,16,16 }, Collider::Type::PLAYER, (Module*)app->player);
@@ -312,7 +312,7 @@ void ModulePlayer::Input(float dt)
 		velocity.x = velocity.x / 2;
 		if (velocity.y == 0)
 		{
-			velocity.y = -160.0f * 2;
+			velocity.y = -85.0f * 2;
 			playerState = ON_AIR;
 			isJump = true;
 			app->audio->PlayFx(jumpingSfx);

@@ -69,7 +69,7 @@ bool Scene::Start()
 
 	app->player->destroyed = false;
 	app->player->win = false;
-	app->player->playerPos = { 30*32, 9*32 };
+	app->player->playerPos = { 6*32, 20*32 };
 	
 	app->player->velocity.y = 0;
 	app->player->cameraFollow = true;
