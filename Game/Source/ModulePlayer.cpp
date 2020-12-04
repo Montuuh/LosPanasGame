@@ -312,7 +312,7 @@ void ModulePlayer::Input(float dt)
 		velocity.x = velocity.x / 2;
 		if (velocity.y == 0)
 		{
-			velocity.y = -85.0f * 2;
+			velocity.y = -80.0f * 2;
 			playerState = ON_AIR;
 			isJump = true;
 			app->audio->PlayFx(jumpingSfx);
