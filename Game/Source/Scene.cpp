@@ -95,6 +95,19 @@ bool Scene::PreUpdate()
 // Called each loop iteration
 bool Scene::Update(float dt)
 {
+	// The camera follows player(at the center)
+	if (app->win->GetScale() == 1)
+	{
+		app->render->camera.x = app->render->camera.w / 2 - app->player->playerPos.x - app->player->playerWh.x;
+		app->render->camera.y = app->render->camera.h / 2 - app->player->playerPos.y;
+	}
+	else if (app->win->GetScale() == 2)
+	{
+		app->render->camera.x = app->render->camera.w / 2 - app->player->playerPos.x * app->win->GetScale();
+		app->render->camera.y = app->render->camera.h / 2 - app->player->playerPos.y * app->win->GetScale();
+	}
+
+
     // L02: DONE 3: Request Load / Save when pressing L/S
 	if(app->input->GetKey(SDL_SCANCODE_F6) == KEY_DOWN)
 		app->LoadGameRequest();
@@ -103,16 +116,16 @@ bool Scene::Update(float dt)
 		app->SaveGameRequest();
 
 	if(app->input->GetKey(SDL_SCANCODE_UP) == KEY_REPEAT)
-		app->render->camera.y -= 2;
+		app->render->camera.y += 10;
 
 	if(app->input->GetKey(SDL_SCANCODE_DOWN) == KEY_REPEAT)
-		app->render->camera.y += 2;
+		app->render->camera.y -= 10;
 
 	if(app->input->GetKey(SDL_SCANCODE_LEFT) == KEY_REPEAT)
-		app->render->camera.x -= 2;
+		app->render->camera.x += 30;
 
 	if(app->input->GetKey(SDL_SCANCODE_RIGHT) == KEY_REPEAT)
-		app->render->camera.x += 2;
+		app->render->camera.x -= 30;
 		
 	if (app->input->GetKey(SDL_SCANCODE_F1) == KEY_UP || app->input->GetKey(SDL_SCANCODE_F3) == KEY_UP)
 		app->fade->FadeToBlack(this, (Module*)app->scene);
@@ -151,6 +164,11 @@ bool Scene::Update(float dt)
 	iPoint mapPos = app->map->WorldToMap(app->player->playerPos.x, app->player->playerPos.y);
 	//printf("Position in MAP X = %d\nPosition in MAP Y = %d\n\n", mapPos.x,mapPos.y);
 	
+	// Set the camera limits
+	if (app->render->camera.x > 0) app->render->camera.x = 0;
+	if (app->render->camera.x < -1600 * 6 / 5) app->render->camera.x = -1600 * 6 / 5;
+	if (app->render->camera.y > 0) app->render->camera.y = 0;
+	if (app->render->camera.y < -800 * 1.1) app->render->camera.y = -800 * 1.1;
 
 	return true;
 }

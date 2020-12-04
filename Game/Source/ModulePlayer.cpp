@@ -421,11 +421,17 @@ void ModulePlayer::Logic(float dt)
 		playerPos.x = playerPos.x + velocity.x * dt;
 		playerPos.y = playerPos.y + velocity.y * dt;
 
-		playerCollider->SetPos(playerPos.x, playerPos.y);
+		// Borders for the player
+		if (playerPos.x < 0)
+			playerPos.x = 0;
+		if (playerPos.x + playerCollider->rect.w > 100 * 16)
+			playerPos.x = 100 * 16 - playerCollider->rect.w;
+		if (playerPos.y < 0)
+			playerPos.y = 0;
+		if (playerPos.y + playerCollider->rect.h > 50 * 16)
+			playerPos.y = 50 * 16 - playerCollider->rect.y;
 
-		//The camera follows player(at the center)
-		app->render->camera.x = app->render->camera.w / 2 - playerPos.x - playerWh.x;
-		app->render->camera.y = app->render->camera.h / 2 - playerPos.y;
+		playerCollider->SetPos(playerPos.x, playerPos.y);
 	}
 
 	// Limit max velocities
