@@ -149,8 +149,8 @@ bool Scene::Update(float dt)
 		}
 			
 	}
-	printf("lives = %u\n", app->player->lives);
-	printf("health = %u\n", app->player->health);
+	/*printf("lives = %u\n", app->player->lives);
+	printf("health = %u\n", app->player->health);*/
 
 	if (app->input->GetKey(SDL_SCANCODE_F11) == KEY_UP || app->player->win == true)
 		app->fade->FadeToBlack(this, (Module*)app->winScreen);

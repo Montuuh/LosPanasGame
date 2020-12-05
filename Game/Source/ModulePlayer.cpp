@@ -408,8 +408,8 @@ void ModulePlayer::BulletLogic(float dt)
 	direction = { direction.x / magnitude, direction.y / magnitude }; // Vector unitario/dirección
 	direction.Negate();
 
-	printf("mouse = %f %f\n", center.x, center.y);
-	printf("dir = %f %f\n", direction.x, direction.y);
+	/*printf("mouse = %f %f\n", center.x, center.y);
+	printf("dir = %f %f\n", direction.x, direction.y);*/
 
 	if ((app->input->GetKey(SDL_SCANCODE_B) == KEY_DOWN))
 	{
@@ -431,7 +431,7 @@ void ModulePlayer::Logic(float dt)
 		destroyed = true;
 
 	printf("Velocity in X = %f\nVelocity in Y = %f\n\n", velocity.x, velocity.y);
-	printf("Position in X = %f\nPosition in Y = %f\n\n", playerPos.x, playerPos.y);
+	/*printf("Position in X = %f\nPosition in Y = %f\n\n", playerPos.x, playerPos.y);*/
 
 	// Integrators
 	if (destroyed == false)
@@ -465,7 +465,7 @@ void ModulePlayer::Logic(float dt)
 
 	/*printf("Ground = %s\n", isGround ? "true" : "false");
 	printf("Air = %s\n", isAir ? "true" : "false");*/
-	printf("Jump = %s\n", isJump ? "true" : "false");
+	/*printf("Jump = %s\n", isJump ? "true" : "false");*/
 }
 
 void ModulePlayer::CheckPlayerState(float dt)
@@ -517,18 +517,20 @@ void ModulePlayer::CheckPlayerState(float dt)
 		currentTexture = &texture;
 		if (currentAnimation == &jumpLeftAnim)
 		{
+			velocity.x = 0;
 			currentAnimation = &idleLeftAnim;
 		}
 		else if (currentAnimation == &jumpRightAnim)
 		{
+			velocity.x = 0;
 			currentAnimation = &idleRightAnim;
 		}
 		if (playerState != ON_AIR && godMode == false)
 		{
 			velocity.y = 0;
 		}
-		velocity.x += -3.0f * velocity.x * dt; // Resistence/Friction in the ground
-		if (fabs(velocity.x) < 0.01f) // Stop the player once velocity is too small
+		velocity.x += -3.2f * velocity.x * dt; // Resistence/Friction in the ground
+		if (fabs(velocity.x) < 0.5f) // Stop the player once velocity is too small
 			velocity.x = 0;
 	}
 
