@@ -252,7 +252,7 @@ bool ModulePlayer::Update(float dt)
 
 void ModulePlayer::Input(float dt)
 {
-	if (app->input->GetKey(SDL_SCANCODE_A) == KEY_REPEAT)
+	if (app->input->GetKey(SDL_SCANCODE_A) == KEY_REPEAT && !godMode)
 	{
 		// Controlling player movement based on if they are on the ground or air.
 		
@@ -278,12 +278,19 @@ void ModulePlayer::Input(float dt)
 			velocity.x += -VELOCITY * 1.2f * dt;
 		}
 	}
-	if (app->input->GetKey(SDL_SCANCODE_A) == KEY_UP && isJump == false)
+	if (app->input->GetKey(SDL_SCANCODE_A) == KEY_UP && isJump == false && !godMode)
 	{
 		velocity.x = 0;
 	}
-
-	if (app->input->GetKey(SDL_SCANCODE_D) == KEY_REPEAT)
+	if (app->input->GetKey(SDL_SCANCODE_A) == KEY_REPEAT && godMode)
+	{
+		velocity.x = -VELOCITY;
+	}
+	if (app->input->GetKey(SDL_SCANCODE_A) == KEY_UP && godMode)
+	{
+		velocity.x = 0;
+	}
+	if (app->input->GetKey(SDL_SCANCODE_D) == KEY_REPEAT && !godMode)
 	{
 		// Controlling player movement based on if they are on the ground or air.
 		//velocity.x += (isGround ? VELOCITY : VELOCITY) * dt;
@@ -310,19 +317,38 @@ void ModulePlayer::Input(float dt)
 			velocity.x += VELOCITY * 1.2f * dt;
 		}
 	}
-	if (app->input->GetKey(SDL_SCANCODE_D) == KEY_UP && isJump == false)
+	if (app->input->GetKey(SDL_SCANCODE_D) == KEY_UP && isJump == false && !godMode)
+	{
+		velocity.x = 0;
+	}
+	if (app->input->GetKey(SDL_SCANCODE_D) == KEY_UP && godMode)
 	{
 		velocity.x = 0;
 	}
 
+	if (app->input->GetKey(SDL_SCANCODE_D) == KEY_REPEAT && godMode)
+	{
+		velocity.x = VELOCITY;
+	}
+
 	if (app->input->GetKey(SDL_SCANCODE_S) == KEY_REPEAT && godMode)
 	{
-		velocity.y += VELOCITY*dt;
+		velocity.y = VELOCITY;
+	}
+	if (app->input->GetKey(SDL_SCANCODE_S) == KEY_UP && godMode)
+	{
+		velocity.y = 0;
 	}
 	if (app->input->GetKey(SDL_SCANCODE_W) == KEY_REPEAT && godMode)
 	{
-		velocity.y -= VELOCITY*dt;
+		velocity.y = -VELOCITY;
 	}
+	if (app->input->GetKey(SDL_SCANCODE_W) == KEY_UP && godMode)
+	{
+		velocity.y = 0;
+	}
+	
+
 
 	if (app->input->GetKey(SDL_SCANCODE_SPACE) == KEY_DOWN && playerState == ON_GROUND)
 	{
