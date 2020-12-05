@@ -201,7 +201,7 @@ bool ModulePlayer::Start()
 	//Starting position of the player
 	playerWh = { 66.0f,79.0f };
 	// playerCollider = app->collisions->AddCollider({(int)playerPos.x + (int)playerWh.x / 2,(int)playerPos.y,(int)playerWh.x/2,(int)playerWh.y}, Collider::Type::PLAYER, (Module*)app->player);
-	playerCollider = app->collisions->AddCollider({ (int)playerPos.x ,(int)playerPos.y,16,16 }, Collider::Type::PLAYER, (Module*)app->player);
+	playerCollider = app->collisions->AddCollider({ (int)playerPos.x +2,(int)playerPos.y,12,16 }, Collider::Type::PLAYER, (Module*)app->player);
 	
 
 	currentAnimation = &idleRightAnim;
@@ -255,7 +255,7 @@ void ModulePlayer::Input(float dt)
 	if (app->input->GetKey(SDL_SCANCODE_A) == KEY_REPEAT)
 	{
 		// Controlling player movement based on if they are on the ground or air.
-		velocity.x += -VELOCITY*0.5f*dt;
+		
 
 		if (currentAnimation != &runLeftAnim)
 		{
@@ -264,6 +264,7 @@ void ModulePlayer::Input(float dt)
 		}
 		if (playerState == ON_GROUND)
 		{
+			velocity.x += -VELOCITY * 1.5f * dt;
 			if (isWalking == false) 
 				isWalking = app->audio->PlayFx(walkingSfx);
 			if (counterWalking.Read() >= 20.0f)
@@ -271,6 +272,10 @@ void ModulePlayer::Input(float dt)
 				isWalking = false;
 			}
 			counterWalking.Start();
+		}
+		else
+		{
+			velocity.x += -VELOCITY * 1.2f * dt;
 		}
 	}
 	if (app->input->GetKey(SDL_SCANCODE_A) == KEY_UP && isJump == false)
@@ -282,7 +287,7 @@ void ModulePlayer::Input(float dt)
 	{
 		// Controlling player movement based on if they are on the ground or air.
 		//velocity.x += (isGround ? VELOCITY : VELOCITY) * dt;
-		velocity.x += VELOCITY *0.5f*dt;
+		
 
 		if (currentAnimation != &runRightAnim)
 		{
@@ -291,6 +296,7 @@ void ModulePlayer::Input(float dt)
 		}
 		if (playerState == ON_GROUND)
 		{
+			velocity.x += VELOCITY * 1.5f * dt;
 			if (isWalking == false)
 				isWalking = app->audio->PlayFx(walkingSfx);
 			if (counterWalking.Read() >= 20.0f)
@@ -298,6 +304,10 @@ void ModulePlayer::Input(float dt)
 				isWalking = false;
 			}
 			counterWalking.Start();
+		}
+		else
+		{
+			velocity.x += VELOCITY * 1.2f * dt;
 		}
 	}
 	if (app->input->GetKey(SDL_SCANCODE_D) == KEY_UP && isJump == false)
@@ -498,7 +508,7 @@ void ModulePlayer::CheckPlayerState(float dt)
 
 		if (velocity.x) // Make player lose some velocity in x while is in air
 		{
-			velocity.x += -0.8f * velocity.x * dt; // Resistence/Friction in the air
+			velocity.x += -0.9f * velocity.x * dt; // Resistence/Friction in the air
 		}
 	}
 
@@ -517,7 +527,7 @@ void ModulePlayer::CheckPlayerState(float dt)
 		{
 			velocity.y = 0;
 		}
-		velocity.x += -1.0f * velocity.x * dt; // Resistence/Friction in the ground
+		velocity.x += -3.0f * velocity.x * dt; // Resistence/Friction in the ground
 		if (fabs(velocity.x) < 0.01f) // Stop the player once velocity is too small
 			velocity.x = 0;
 	}
