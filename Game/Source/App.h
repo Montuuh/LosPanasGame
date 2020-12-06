@@ -32,6 +32,7 @@ class ModuleCollisions;
 class Entities;
 class ModuleHud;
 class ModuleParticles;
+class PathFinding;
 
 class App
 {
@@ -110,6 +111,7 @@ public:
 	ModuleHud* hud;
 	Map* map;
 	ModulePlayer* player;
+	PathFinding* pathfinding;
 
 	ModuleCollisions* collisions;
 	ModuleParticles* particles;

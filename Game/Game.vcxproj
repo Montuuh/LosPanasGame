@@ -98,6 +98,7 @@
     <ClCompile Include="Source\App.cpp" />
     <ClCompile Include="Source\Collider.cpp" />
     <ClCompile Include="Source\DeathScene.cpp" />
+    <ClCompile Include="Source\EnemyFlying.cpp" />
     <ClCompile Include="Source\ItemHealth.cpp" />
     <ClCompile Include="Source\Entity.cpp" />
     <ClCompile Include="Source\ItemDiamond.cpp" />
@@ -114,6 +115,7 @@
     <ClCompile Include="Source\ModuleParticles.cpp" />
     <ClCompile Include="Source\ModulePlayer.cpp" />
     <ClCompile Include="Source\Particle.cpp" />
+    <ClCompile Include="Source\Pathfinding.cpp" />
     <ClCompile Include="Source\PerfTimer.cpp" />
     <ClCompile Include="Source\Render.cpp" />
     <ClCompile Include="Source\Scene.cpp" />
@@ -126,6 +128,7 @@
     <ClInclude Include="Source\App.h" />
     <ClInclude Include="Source\Collider.h" />
     <ClInclude Include="Source\DeathScene.h" />
+    <ClInclude Include="Source\EnemyFlying.h" />
     <ClInclude Include="Source\ItemHealth.h" />
     <ClInclude Include="Source\Entity.h" />
     <ClInclude Include="Source\ItemDiamond.h" />
@@ -140,6 +143,7 @@
     <ClInclude Include="Source\ModuleParticles.h" />
     <ClInclude Include="Source\ModulePlayer.h" />
     <ClInclude Include="Source\Particle.h" />
+    <ClInclude Include="Source\Pathfinding.h" />
     <ClInclude Include="Source\PerfTimer.h" />
     <ClInclude Include="Source\Queue.h" />
     <ClInclude Include="Source\Audio.h" />

@@ -14,36 +14,7 @@ ItemHealth::ItemHealth(int x, int y) : Entity(x, y)
 	collider = app->collisions->AddCollider({1, 0, 8 , 16 }, Collider::Type::ITEM, (Module*) app->entities, Collider::Items::HEALTH);
 }
 
-void ItemHealth::Update()
+void ItemHealth::Update(float dt)
 {
-	
-	// Fire Minion position update
-	//if (spawnDelay >  60) {
-	//	position.x += enemySpeed.x;
-	//}
-	//spawnDelay++;
-
-	//// Fire Minion animations
-	//if (App->hammer->hammerExist)
-	//{
-	//	if (enemySpeed.x < 0)
-	//		currentAnim = &enemy_FireMinionLeftAnimHammer;
-	//	else if (enemySpeed.x > 0) currentAnim = &enemy_FireMinionRightAnimHammer;
-	//}
-	//else
-	//{
-	//	if (enemySpeed.x < 0) 
-	//		currentAnim = &anim;
-	//	else if (enemySpeed.x > 0) currentAnim = &enemy_FireMinionRightAnim;
-	//}
-	//if (/*			!isGround			*//*			climbingUP || climbingDOWN			*/0) {
-	//	collider->rect.w = 5;
-	//	tempx = 4;
-	//}
-	//else {
-	//	collider->rect.w = 15;
-	//	tempx = 0;
-	//}
-	//collider->SetPos(position.x + tempx, position.y);
-	Entity::Update();
+	Entity::Update(dt);
 }

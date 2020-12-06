@@ -11,12 +11,14 @@ enum class EntityType
 	NO_TYPE,
 	ITEM_HEALTH,
 	ITEM_DIAMOND,
+	ENEMY_FLYING,
 };
 
 struct EntitySpawnpoint
 {
 	EntityType type = EntityType::NO_TYPE;
 	int x, y;
+	bool isDead = false;
 };
 
 class Entity;
@@ -67,6 +69,8 @@ public:
 
 	// Destroys any enemies that have moved outside the camera limits
 	void HandleEnemiesDespawn();
+
+	
 
 private:
 	// Spawns a new enemy using the data from the queue

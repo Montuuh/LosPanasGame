@@ -14,7 +14,7 @@
 #include "ModuleInitialScreen.h"
 #include "ModuleCollisions.h"
 #include "WinScreen.h"
-
+#include "Pathfinding.h"
 #include "ModuleEntities.h"
 #include "ModuleParticles.h"
 
@@ -48,6 +48,7 @@ App::App(int argc, char* args[]) : argc(argc), args(args)
 	collisions = new ModuleCollisions(true);
 	entities = new Entities(false);
 	particles = new ModuleParticles(false);
+	pathfinding = new PathFinding();
 
 	// Ordered for awake / Start / Update
 	// Reverse order of CleanUp
@@ -65,6 +66,7 @@ App::App(int argc, char* args[]) : argc(argc), args(args)
 	AddModule(winScreen);
 	AddModule(player);
 	AddModule(hud);
+	AddModule(pathfinding);
 
 	AddModule(entities);
 	AddModule(particles);

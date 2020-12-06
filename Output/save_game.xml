@@ -6,18 +6,13 @@
 	<audio />
 	<scene />
 	<player>
-		<position x="1572.77234" y="332.799988" />
+		<position x="64" y="736" />
 	</player>
 	<renderer>
 		<camera x="-1696" y="253" />
 	</renderer>
 	<entity>
-		<entitiesCount Num="4" />
-		<entitiesList>
-			<entities Num="0" Item="1" Type="6" x="768" y="112" />
-			<entities Num="1" Item="1" Type="6" x="1408" y="288" />
-			<entities Num="2" Item="1" Type="6" x="1328" y="160" />
-			<entities Num="3" Item="1" Type="6" x="768" y="112" />
-		</entitiesList>
+		<entitiesCount Num="0" />
+		<entitiesList />
 	</entity>
 </game_state>

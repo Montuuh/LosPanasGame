@@ -3,6 +3,7 @@
 
 #include "Point.h"
 #include "Animation.h"
+#include "ModuleEntities.h"
 
 struct SDL_Texture;
 struct Collider;
@@ -10,6 +11,8 @@ struct Collider;
 class Entity
 {
 public:
+
+	enum DirectionState { LEFT, RIGHT, UP, DOWN, IDLE };
 	// Constructor
 	// Saves the spawn position for later movement calculations
 	Entity(int x, int y);
@@ -22,7 +25,7 @@ public:
 
 	// Called from inhering enemies' Udpate
 	// Updates animation and collider position
-	virtual void Update();
+	virtual void Update(float dt);
 
 	// Called from ModuleEnemies' Update
 	virtual void Draw();
@@ -37,28 +40,36 @@ public:
 	// The current position in the world
 	iPoint position;
 
+	// The enemy's collider
+	Collider* collider = nullptr;
+
 	// The enemy's texture
 	SDL_Texture* texture = nullptr;
+	SDL_Texture* debugTexture = nullptr;
 
 	// Sound fx when destroyed
 	int destroyedFx = 0;
 
 	// A flag for the enemy removal. Important! We do not delete objects instantly
 	bool pendingToDelete = false;
+	SString name = SString("NONE");
+	
+	bool isDead = false;
+
+	EntityType entityType;
 
 protected:
 	// A ptr to the current animation
 	Animation* currentAnim = nullptr;
-
-	// The enemy's collider
-	Collider* collider = nullptr;
 
 	// Original spawn position. Stored for movement calculations
 	iPoint spawnPos;
 
 	iPoint entitySpeed = { 0,0 };
 
-	enum DirectionState { LEFT,RIGHT,UP,DOWN, };
+	DirectionState direction = IDLE;
+	float counter = 0;
+	bool inCollision = false;
 
 	bool goingLeft = true;
 
@@ -66,7 +77,6 @@ protected:
 
 	bool climbingDOWN = false;
 
-	bool inCollision = false;
 
 	int tempx = 0;
 };

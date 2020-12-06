@@ -9,7 +9,7 @@
 #include "Log.h"
 #include "List.h"
 #include "ModuleCollisions.h"
-
+#include "EnemyFlying.h"
 #include "Entity.h"
 
 #include "ItemHealth.h"
@@ -96,7 +96,7 @@ bool Entities::Update(float dt)
 	for (int i = 0; i < entities.Count(); ++i)
 	{
 		if (list != NULL)
-			list->data->Update();
+			list->data->Update(dt);
 		list = list->next;
 	}
 
@@ -247,6 +247,16 @@ void Entities::SpawnEnemy(const EntitySpawnpoint& info)
 		newEntity->destroyedFx = itemPickedFx;
 		break;
 	}
+	/*case EntityType::ENEMY_FLYING:
+	{
+		newEntity = new EnemyFlying(info.x, info.y);
+		newEntity->texture = texture;
+		newEntity->debugTexture = texture;
+		newEntity->name = "EnemyFlying";
+		newEntity->entityType = EntityType::ENEMY_FLYING;
+		newEntity->isDead = info.isDead;
+		break;
+	}*/
 	}
 	entities.Add(newEntity);
 }

@@ -14,8 +14,8 @@ ItemDiamond::ItemDiamond(int x, int y) : Entity(x, y)
 	collider = app->collisions->AddCollider({ 1, 0, 13, 10 }, Collider::Type::ITEM, (Module*)app->entities, Collider::Items::DIAMOND);
 }
 
-void ItemDiamond::Update()
+void ItemDiamond::Update(float dt)
 {
 
-	Entity::Update();
+	Entity::Update(dt);
 }
