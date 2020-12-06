@@ -10,7 +10,7 @@ enum class EntityType
 {
 	NO_TYPE,
 	ITEM_HEALTH,
-	ITEM_STAR,
+	ITEM_DIAMOND,
 };
 
 struct EntitySpawnpoint

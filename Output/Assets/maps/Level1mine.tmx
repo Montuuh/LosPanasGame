@@ -9,7 +9,7 @@
  <tileset firstgid="2509" name="colliders" tilewidth="16" tileheight="16" tilecount="7" columns="7">
   <image source="colliders.png" width="112" height="16"/>
  </tileset>
- <layer id="2" name="FONDO" width="100" height="50" visible="0">
+ <layer id="2" name="FONDO" width="100" height="50">
   <properties>
    <property name="noDraw" type="bool" value="true"/>
   </properties>
@@ -5016,7 +5016,7 @@
    <tile gid="95"/>
   </data>
  </layer>
- <layer id="7" name="calaveras" width="100" height="50" visible="0">
+ <layer id="7" name="calaveras" width="100" height="50">
   <properties>
    <property name="noDraw" type="bool" value="true"/>
   </properties>
@@ -10023,7 +10023,7 @@
    <tile/>
   </data>
  </layer>
- <layer id="3" name="Fondo 2" width="100" height="50" visible="0">
+ <layer id="3" name="Fondo 2" width="100" height="50">
   <properties>
    <property name="noDraw" type="bool" value="true"/>
   </properties>
@@ -15030,7 +15030,7 @@
    <tile/>
   </data>
  </layer>
- <layer id="5" name="fondo3" width="100" height="50" visible="0">
+ <layer id="5" name="fondo3" width="100" height="50">
   <properties>
    <property name="noDraw" type="bool" value="true"/>
   </properties>
@@ -20037,7 +20037,7 @@
    <tile/>
   </data>
  </layer>
- <layer id="1" name="Nivel" width="100" height="50" visible="0">
+ <layer id="1" name="Nivel" width="100" height="50">
   <properties>
    <property name="noDraw" type="bool" value="true"/>
   </properties>
@@ -20790,7 +20790,7 @@
    <tile/>
    <tile/>
    <tile/>
-   <tile gid="2280"/>
+   <tile gid="2509"/>
    <tile/>
    <tile/>
    <tile/>
@@ -21125,7 +21125,7 @@
    <tile gid="542"/>
    <tile gid="542"/>
    <tile gid="542"/>
-   <tile gid="2280"/>
+   <tile gid="2509"/>
    <tile gid="270"/>
    <tile gid="223"/>
    <tile gid="223"/>
@@ -21930,7 +21930,7 @@
    <tile/>
    <tile/>
    <tile/>
-   <tile gid="2280"/>
+   <tile gid="2509"/>
    <tile/>
    <tile/>
    <tile/>
@@ -23215,7 +23215,7 @@
    <tile/>
    <tile/>
    <tile/>
-   <tile gid="1127"/>
+   <tile gid="2509"/>
    <tile/>
    <tile/>
    <tile/>
@@ -25797,7 +25797,7 @@
    <tile/>
    <tile/>
    <tile/>
-   <tile gid="2512"/>
+   <tile gid="2509"/>
    <tile/>
    <tile/>
    <tile/>
@@ -26132,7 +26132,7 @@
    <tile/>
    <tile/>
    <tile/>
-   <tile gid="2512"/>
+   <tile gid="2509"/>
    <tile/>
    <tile gid="2511"/>
    <tile/>
@@ -26937,7 +26937,7 @@
    <tile/>
    <tile/>
    <tile/>
-   <tile gid="2512"/>
+   <tile gid="2509"/>
    <tile/>
    <tile/>
    <tile/>
@@ -28222,7 +28222,7 @@
    <tile/>
    <tile/>
    <tile/>
-   <tile gid="2512"/>
+   <tile gid="2509"/>
    <tile/>
    <tile/>
    <tile/>

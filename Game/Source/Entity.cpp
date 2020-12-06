@@ -50,7 +50,7 @@ void Entity::OnCollision(Collider* collider)
 		case Collider::Items::HEALTH:
 			this->SetToDelete();
 			break;
-		case Collider::Items::STAR:
+		case Collider::Items::DIAMOND:
 			this->SetToDelete();
 			break;
 		default:

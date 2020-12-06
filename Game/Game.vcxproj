@@ -100,7 +100,7 @@
     <ClCompile Include="Source\DeathScene.cpp" />
     <ClCompile Include="Source\ItemHealth.cpp" />
     <ClCompile Include="Source\Entity.cpp" />
-    <ClCompile Include="Source\ItemStar.cpp" />
+    <ClCompile Include="Source\ItemDiamond.cpp" />
     <ClCompile Include="Source\Main.cpp" />
     <ClCompile Include="Source\Audio.cpp" />
     <ClCompile Include="Source\Input.cpp" />
@@ -128,7 +128,7 @@
     <ClInclude Include="Source\DeathScene.h" />
     <ClInclude Include="Source\ItemHealth.h" />
     <ClInclude Include="Source\Entity.h" />
-    <ClInclude Include="Source\ItemStar.h" />
+    <ClInclude Include="Source\ItemDiamond.h" />
     <ClInclude Include="Source\Map.h" />
     <ClInclude Include="Source\Module.h" />
     <ClInclude Include="Source\ModuleCollisions.h" />

@@ -10,6 +10,7 @@
 #include "Audio.h"
 #include "ModulePlayer.h"
 #include "Log.h"
+#include "ModuleHud.h"
 
 DeathScene::DeathScene(bool b) : Module(b)
 {
@@ -23,6 +24,11 @@ DeathScene::~DeathScene() {}
 bool DeathScene::Start()
 {
 	bool ret = true;
+
+	if (app->hud->IsEnabled() == true)
+	{
+		app->hud->Disable();
+	}
 
 	startTime = SDL_GetTicks();
 	actualTime = 0;

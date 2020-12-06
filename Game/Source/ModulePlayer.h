@@ -97,7 +97,8 @@ private:
 	bool isJump = false;
 	bool collisionFromBelow = false;
 	bool godMode = false;
-
+	bool goingLeft = false;
+	bool goingRight = false;
 	void Input(float dt);
 	void Logic(float dt);
 	bool CheckCollisions(float dt);
@@ -113,7 +114,7 @@ public:
 
 	uint lives;
 	uint health;
-	uint stars;
+	uint diamonds;
 
 public:
 

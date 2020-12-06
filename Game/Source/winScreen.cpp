@@ -9,6 +9,7 @@
 #include "Window.h"
 #include "ModulePlayer.h"
 #include "Log.h"
+#include "ModuleHud.h"
 
 WinScreen::WinScreen(bool b) : Module(b)
 {
@@ -22,6 +23,11 @@ WinScreen::~WinScreen() {}
 bool WinScreen::Start()
 {
 	bool ret = true;
+
+	if (app->hud->IsEnabled() == true)
+	{
+		app->hud->Disable();
+	}
 
 	startTime = SDL_GetTicks();
 	actualTime = 0;

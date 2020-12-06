@@ -65,20 +65,27 @@ bool Scene::Start()
 	if (app->particles->IsEnabled() == false)
 		app->particles->Enable();
 
+	if (app->hud->IsEnabled() == false)
+	{
+		app->hud->Enable();
+	}
 	app->map->LoadColliders();
 
 	app->player->destroyed = false;
 	app->player->win = false;
-	app->player->playerPos = { 6*32, 20*32 };
+	app->player->playerPos = { 4*16, 46*16 };
 	
 	app->player->velocity.y = 0;
 	app->player->cameraFollow = true;
-	app->player->lives = 3;
+	app->player->lives = 2;
 	app->player->health = 3;
 
-	//app->entities->AddEntity(EntityType::ITEM_HEALTH, 38 * 32, 11 * 32);
-	app->entities->AddEntity(EntityType::ITEM_STAR, 40 * 32, 11 * 32);
-	app->entities->AddEntity(EntityType::ITEM_HEALTH, 43 * 32, 11 * 32);
+	app->entities->AddEntity(EntityType::ITEM_HEALTH, 73 * 16, 31 * 16);
+	app->entities->AddEntity(EntityType::ITEM_HEALTH, 72 * 16, 11 * 16);
+	app->entities->AddEntity(EntityType::ITEM_DIAMOND, 88 * 16, 18 * 16);
+	app->entities->AddEntity(EntityType::ITEM_DIAMOND, 83 * 16, 10 * 16);
+	app->entities->AddEntity(EntityType::ITEM_DIAMOND, 48 * 16, 7 * 16);
+	app->entities->AddEntity(EntityType::ITEM_DIAMOND, 77 * 16, 25 * 16);
 
 	resetCounter = 0;
 
@@ -196,5 +203,6 @@ bool Scene::CleanUp()
 	app->entities->Disable();
 	app->particles->Disable();
 	app->map->CleanUp();
+	
 	return true;
 }

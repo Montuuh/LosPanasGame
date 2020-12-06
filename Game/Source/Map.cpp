@@ -612,6 +612,10 @@ int Map::LoadColliders()
 				case 0: // Void --> Do nothing
 					break;
 				case 1: // Red color --> Lava
+					r.w = 10;
+					r.x += 3;
+					r.h = 12;
+					r.y += 2;
 					app->collisions->AddCollider(r, Collider::Type::DEATH, nullptr);
 					break;
 				case 2: // Blue color --> Block

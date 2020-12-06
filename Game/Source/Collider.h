@@ -11,7 +11,7 @@ struct Collider
 	{
 		ITEM_NONE = -1,
 		HEALTH,
-		STAR,
+		DIAMOND,
 	};
 
 	enum Type

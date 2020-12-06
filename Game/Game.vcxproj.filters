@@ -66,15 +66,15 @@
     <ClCompile Include="Source\ItemHealth.cpp">
       <Filter>Entities</Filter>
     </ClCompile>
-    <ClCompile Include="Source\ItemStar.cpp">
-      <Filter>Entities</Filter>
-    </ClCompile>
     <ClCompile Include="Source\Entity.cpp">
       <Filter>Entities</Filter>
     </ClCompile>
     <ClCompile Include="Source\ModuleParticles.cpp" />
     <ClCompile Include="Source\Particle.cpp">
       <Filter>Particles</Filter>
+    </ClCompile>
+    <ClCompile Include="Source\ItemDiamond.cpp">
+      <Filter>Entities</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
@@ -167,15 +167,15 @@
     <ClInclude Include="Source\ItemHealth.h">
       <Filter>Entities</Filter>
     </ClInclude>
-    <ClInclude Include="Source\ItemStar.h">
-      <Filter>Entities</Filter>
-    </ClInclude>
     <ClInclude Include="Source\Entity.h">
       <Filter>Entities</Filter>
     </ClInclude>
     <ClInclude Include="Source\ModuleParticles.h" />
     <ClInclude Include="Source\Particle.h">
       <Filter>Particles</Filter>
+    </ClInclude>
+    <ClInclude Include="Source\ItemDiamond.h">
+      <Filter>Entities</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>

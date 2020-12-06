@@ -13,7 +13,7 @@
 #include "Entity.h"
 
 #include "ItemHealth.h"
-#include "ItemStar.h"
+#include "ItemDiamond.h"
 //#include "Item_Iron.h"
 //#include "Item_Umbrella.h"
 //#include "Item_Bag.h"
@@ -42,7 +42,7 @@ bool Entities::Start()
 	enemyDestroyedFx = app->audio->LoadFx("Assets/Music/SFX_Kill.wav");
 	
 	itemPickedFx = app->audio->LoadFx("Assets/Music/SFX_Bonus.wav");*/
-	texture = app->tex->Load("Assets/Common/spritesheet_items.png");
+	texture = app->tex->Load("Assets/maps/def_tileset.png");
 	itemPickedFx = app->audio->LoadFx("Assets/Audio/Fx/item_taken.wav");
 
 
@@ -240,9 +240,9 @@ void Entities::SpawnEnemy(const EntitySpawnpoint& info)
 
 		break;
 	}
-	case EntityType::ITEM_STAR:
+	case EntityType::ITEM_DIAMOND:
 	{
-		newEntity = new ItemStar(info.x, info.y);
+		newEntity = new ItemDiamond(info.x, info.y);
 		newEntity->texture = texture;
 		newEntity->destroyedFx = itemPickedFx;
 		break;

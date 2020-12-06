@@ -8,10 +8,10 @@ ItemHealth::ItemHealth(int x, int y) : Entity(x, y)
 {
 	spawnDelay = 0;
 
-	anim.PushBack({ 97,123,22,22 });
+	anim.PushBack({ 419,400,10,16 });
 	currentAnim = &anim;
 
-	collider = app->collisions->AddCollider({0, 0, 22, 22 }, Collider::Type::ITEM, (Module*) app->entities, Collider::Items::HEALTH);
+	collider = app->collisions->AddCollider({1, 0, 8 , 16 }, Collider::Type::ITEM, (Module*) app->entities, Collider::Items::HEALTH);
 }
 
 void ItemHealth::Update()

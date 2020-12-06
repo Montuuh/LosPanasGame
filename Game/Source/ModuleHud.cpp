@@ -10,7 +10,9 @@
 #include <stdio.h>
 ModuleHud::ModuleHud( bool start_enabled) : Module(start_enabled)
 {
-
+	spriteHearts = { 432, 880, 16, 16 };
+	spriteEmptyHearts = { 416, 880, 16, 16 };
+	spriteDiamonds = { 560, 816, 16, 16 };
 }
 
 
@@ -28,15 +30,11 @@ bool ModuleHud::Start()
 	bool ret = true;
 
 	char lookupTableNumbers[] = { "0123456789" };
-	//char lookupTableTextAndLives[] = { "ABCDEFGHIJKLMNOPQRSTUVWXYZ.-," }; // "," is LIVES SPRITE!!!!!!!!!
-	//whiteFont = app->fonts->Load("pinball/fonts/score.png", lookupTableNumbers, 1);
-	//redFont = app->fonts->Load("pinball/fonts/Lives_Font.png", lookupTableNumbers, 1);
-	//greenFont = app->fonts->Load("pinball/fonts/previousScore.png", lookupTableNumbers, 1);
-	//lightBlueFont = App->fonts->Load("Assets/Fonts/Fonts_LIGHTBLUE.png", lookupTableTextAndLives, 1);
-	//darkBlueFont = App->fonts->Load("Assets/Fonts/Fonts_DARKBLUE.png", lookupTableNumbers, 1);
-	score = 0;
-	previousScore = 0;
-	highScore = 0;
+	
+	heartsTexture = app->tex->Load("Assets/maps/def_tileset.png");
+	emptyHeartsTexture = app->tex->Load("Assets/maps/def_tileset.png");
+	diamondsTexture = app->tex->Load("Assets/maps/def_tileset.png");
+
 	return ret;
 }
 
@@ -71,6 +69,64 @@ bool ModuleHud::PostUpdate()
 			App->fonts->BlitText(78, 185, lightBlueFont, "GAME");
 			App->fonts->BlitText(120, 185, lightBlueFont, "OVER");
 		}*/
+	}
+
+	
+	if (app->player->lives == 0)
+	{
+		app->render->DrawTexture(heartsTexture, 2 * 16, 2 * 16, &spriteHearts, 0.0f);
+		app->render->DrawTexture(emptyHeartsTexture, 3 * 16, 2 * 16, &spriteEmptyHearts, 0.0f);
+		app->render->DrawTexture(emptyHeartsTexture, 4 * 16, 2 * 16, &spriteEmptyHearts, 0.0f);
+	}
+	if (app->player->lives == 1)
+	{
+		app->render->DrawTexture(heartsTexture, 2 * 16, 2 * 16, &spriteHearts, 0.0f);
+		app->render->DrawTexture(heartsTexture, 3 * 16, 2 * 16, &spriteHearts, 0.0f);
+		app->render->DrawTexture(emptyHeartsTexture, 4 * 16, 2 * 16, &spriteEmptyHearts, 0.0f);
+	}
+	if (app->player->lives == 2)
+	{
+		app->render->DrawTexture(heartsTexture, 2 * 16, 2 * 16, &spriteHearts, 0.0f);
+		app->render->DrawTexture(heartsTexture, 3 * 16, 2 * 16, &spriteHearts, 0.0f);
+		app->render->DrawTexture(heartsTexture, 4 * 16, 2 * 16, &spriteHearts, 0.0f);
+	}
+	if (app->player->lives == 3)
+	{
+		app->render->DrawTexture(heartsTexture, 2 * 16, 2 * 16, &spriteHearts, 0.0f);
+		app->render->DrawTexture(heartsTexture, 3 * 16, 2 * 16, &spriteHearts, 0.0f);
+		app->render->DrawTexture(heartsTexture, 4 * 16, 2 * 16, &spriteHearts, 0.0f);
+		app->render->DrawTexture(heartsTexture, 5 * 16, 2 * 16, &spriteHearts, 0.0f);
+	}
+	if (app->player->lives == 4)
+	{
+		app->render->DrawTexture(heartsTexture, 2 * 16, 2 * 16, &spriteHearts, 0.0f);
+		app->render->DrawTexture(heartsTexture, 3 * 16, 2 * 16, &spriteHearts, 0.0f);
+		app->render->DrawTexture(heartsTexture, 4 * 16, 2 * 16, &spriteHearts, 0.0f);
+		app->render->DrawTexture(heartsTexture, 5 * 16, 2 * 16, &spriteHearts, 0.0f);
+		app->render->DrawTexture(heartsTexture, 6 * 16, 2 * 16, &spriteHearts, 0.0f);
+	}
+
+	if (app->player->diamonds == 1)
+	{
+		app->render->DrawTexture(diamondsTexture, 2 * 16, 3.5 * 16, &spriteDiamonds, 0.0f);
+	}
+	if (app->player->diamonds == 2)
+	{
+		app->render->DrawTexture(diamondsTexture, 2 * 16, 3.5 * 16, &spriteDiamonds, 0.0f);
+		app->render->DrawTexture(diamondsTexture, 3 * 16, 3.5 * 16, &spriteDiamonds, 0.0f);
+	}
+	if (app->player->diamonds == 3)
+	{
+		app->render->DrawTexture(diamondsTexture, 2 * 16, 3.5 * 16, &spriteDiamonds, 0.0f);
+		app->render->DrawTexture(diamondsTexture, 3 * 16, 3.5 * 16, &spriteDiamonds, 0.0f);
+		app->render->DrawTexture(diamondsTexture, 4 * 16, 3.5 * 16, &spriteDiamonds, 0.0f);
+	}
+	if (app->player->diamonds == 4)
+	{
+		app->render->DrawTexture(diamondsTexture, 2 * 16, 3.5 * 16, &spriteDiamonds, 0.0f);
+		app->render->DrawTexture(diamondsTexture, 3 * 16, 3.5 * 16, &spriteDiamonds, 0.0f);
+		app->render->DrawTexture(diamondsTexture, 4 * 16, 3.5 * 16, &spriteDiamonds, 0.0f);
+		app->render->DrawTexture(diamondsTexture, 5 * 16, 3.5 * 16, &spriteDiamonds, 0.0f);
 	}
 
 

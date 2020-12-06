@@ -1,6 +1,10 @@
 
 #include "Module.h"
 #include "List.h"
+#include "SDL/include/SDL_rect.h"
+#include "Textures.h"
+
+struct SDL_Rect;
 
 
 class ModuleHud: public Module
@@ -26,9 +30,12 @@ public:
 	uint highScore = 0;
 	uint previousScore = 0;
 
-	int whiteFont = -1;
-	int redFont = -1;
-	int greenFont = -1;
+	SDL_Texture* diamondsTexture = nullptr;
+	SDL_Texture* heartsTexture = nullptr;
+	SDL_Texture* emptyHeartsTexture = nullptr;
+	SDL_Rect spriteHearts;
+	SDL_Rect spriteEmptyHearts;
+	SDL_Rect spriteDiamonds;
 
 	char scoreText[10] = { "\0" };
 	char highScoreText[10] = { "\0" };

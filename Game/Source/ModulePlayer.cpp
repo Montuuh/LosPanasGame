@@ -252,11 +252,11 @@ bool ModulePlayer::Update(float dt)
 
 void ModulePlayer::Input(float dt)
 {
-	if (app->input->GetKey(SDL_SCANCODE_A) == KEY_REPEAT && !godMode)
+	if (app->input->GetKey(SDL_SCANCODE_A) == KEY_REPEAT && !godMode && !destroyed)
 	{
 		// Controlling player movement based on if they are on the ground or air.
 		
-
+		goingLeft = true;
 		if (currentAnimation != &runLeftAnim)
 		{
 			runLeftAnim.Reset();
@@ -280,22 +280,25 @@ void ModulePlayer::Input(float dt)
 	}
 	if (app->input->GetKey(SDL_SCANCODE_A) == KEY_UP && isJump == false && !godMode)
 	{
+		goingLeft = false;
 		velocity.x = 0;
 	}
 	if (app->input->GetKey(SDL_SCANCODE_A) == KEY_REPEAT && godMode)
 	{
+		goingLeft = true;
 		velocity.x = -VELOCITY;
 	}
 	if (app->input->GetKey(SDL_SCANCODE_A) == KEY_UP && godMode)
 	{
+		goingLeft = false;
 		velocity.x = 0;
 	}
-	if (app->input->GetKey(SDL_SCANCODE_D) == KEY_REPEAT && !godMode)
+	if (app->input->GetKey(SDL_SCANCODE_D) == KEY_REPEAT && !godMode && !destroyed)
 	{
 		// Controlling player movement based on if they are on the ground or air.
 		//velocity.x += (isGround ? VELOCITY : VELOCITY) * dt;
 		
-
+		goingRight = true;
 		if (currentAnimation != &runRightAnim)
 		{
 			runRightAnim.Reset();
@@ -319,14 +322,17 @@ void ModulePlayer::Input(float dt)
 	}
 	if (app->input->GetKey(SDL_SCANCODE_D) == KEY_UP && isJump == false && !godMode)
 	{
+		goingRight = false;
 		velocity.x = 0;
 	}
 	if (app->input->GetKey(SDL_SCANCODE_D) == KEY_REPEAT && godMode)
 	{
+		goingRight = true;
 		velocity.x = VELOCITY;
 	}
 	if (app->input->GetKey(SDL_SCANCODE_D) == KEY_UP && godMode)
 	{
+		goingRight = false;
 		velocity.x = 0;
 	}
 	
@@ -370,14 +376,16 @@ void ModulePlayer::Input(float dt)
 	}
 
 	// If last movement was left, set the current animation back to left idle
-	if (app->input->GetKey(SDL_SCANCODE_A) == KeyState::KEY_UP)
+	if (app->input->GetKey(SDL_SCANCODE_A) == KeyState::KEY_UP && !destroyed)
 	{
+		goingLeft = false;
 		currentAnimation = &idleLeftAnim;
 	}
 
 	// If last movement was right, set the current animation back to left idle
-	if (app->input->GetKey(SDL_SCANCODE_D) == KeyState::KEY_UP)
+	if (app->input->GetKey(SDL_SCANCODE_D) == KeyState::KEY_UP && !destroyed)
 	{
+		goingRight = false;
 		currentAnimation = &idleRightAnim;
 	}
 
@@ -619,8 +627,9 @@ bool ModulePlayer::OnCollision(Collider* c1, Collider* c2)
 		if (((playerCollider->rect.y < c2->rect.y) || (playerCollider->rect.y > c2->rect.y)) && (playerCollider->rect.y + playerCollider->rect.h > c2->rect.y +c2->rect.h/2))
 		{
 			collisionFromBelow = true;
-			LOG("Player through the ground");
 			ret = false;
+			playerPos.y = c2->rect.y + c2->rect.h + 1;
+			velocity.y = 10;
 		}
 		else
 			collisionFromBelow = false;
@@ -649,6 +658,20 @@ bool ModulePlayer::OnCollision(Collider* c1, Collider* c2)
 				LOG("Player feet on ground");
 				ret = true;
 			}
+			else if (goingRight)
+			{
+				if (playerCollider->rect.x + playerCollider->rect.w > c2->rect.x)
+				{
+					playerPos.x = c2->rect.x - playerCollider->rect.w - 1;
+				}
+			}
+			else if (goingLeft)
+			{
+				if (playerCollider->rect.x < c2->rect.x + c2->rect.w)
+				{
+					playerPos.x = c2->rect.x + c2->rect.w;
+				}
+			}
 		}
 
 		previousCollision = c2;
@@ -669,7 +692,7 @@ bool ModulePlayer::OnCollision(Collider* c1, Collider* c2)
 
 	if (c2->type == Collider::Type::ENEMY_HITBOX && previousCollision->type != Collider::Type::ENEMY_HITBOX && godMode == false)
 	{
-		health -= 1;
+		lives -= 1;
 		previousCollision = c2;
 	}
 
@@ -679,12 +702,12 @@ bool ModulePlayer::OnCollision(Collider* c1, Collider* c2)
 		switch (c2->item)
 		{
 		case Collider::Items::HEALTH:
-			health += 1;
+			lives += 1;
 			previousCollision = c2;
 			c2->listener->OnCollision(c2, c1);
 			break;
-		case Collider::Items::STAR:
-			stars += 1;
+		case Collider::Items::DIAMOND:
+			diamonds += 1;
 			previousCollision = c2;
 			c2->listener->OnCollision(c2, c1);
 			break;

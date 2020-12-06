@@ -1,12 +1,12 @@
 #include "Entity.h"
 
-class ItemStar : public Entity
+class ItemDiamond : public Entity
 {
 public:
 
 	// Constructor (x y coordinates in the world)
 	// Creates animation data and the collider
-	ItemStar(int x, int y);
+	ItemDiamond(int x, int y);
 
 	// The enemy is going to perform a sinusoidal movement
 	void Update() override;
