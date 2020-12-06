@@ -321,15 +321,15 @@ void ModulePlayer::Input(float dt)
 	{
 		velocity.x = 0;
 	}
-	if (app->input->GetKey(SDL_SCANCODE_D) == KEY_UP && godMode)
-	{
-		velocity.x = 0;
-	}
-
 	if (app->input->GetKey(SDL_SCANCODE_D) == KEY_REPEAT && godMode)
 	{
 		velocity.x = VELOCITY;
 	}
+	if (app->input->GetKey(SDL_SCANCODE_D) == KEY_UP && godMode)
+	{
+		velocity.x = 0;
+	}
+	
 
 	if (app->input->GetKey(SDL_SCANCODE_S) == KEY_REPEAT && godMode)
 	{
