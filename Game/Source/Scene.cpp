@@ -47,10 +47,10 @@ bool Scene::Awake()
 // Called before the first frame
 bool Scene::Start()
 {
-	app->map->Load("Level1mine.tmx");
+	app->map->Load("level1.tmx");
 
 	app->render->background = { 200,210,222,0 };
-	app->audio->PlayMusic("Assets/audio/music/wiiMusic.ogg");
+	app->audio->PlayMusic("Assets/Audio/Music/wii_music.ogg");
 	// Layers gets gid correctly
 	
 	if (app->collisions->IsEnabled() == false)
@@ -156,12 +156,21 @@ bool Scene::Update(float dt)
 		}
 			
 	}
-	/*printf("lives = %u\n", app->player->lives);
-	printf("health = %u\n", app->player->health);*/
-
-	if (app->input->GetKey(SDL_SCANCODE_F11) == KEY_UP || app->player->win == true)
-		app->fade->FadeToBlack(this, (Module*)app->winScreen);
-
+	if (app->input->GetKey(SDL_SCANCODE_F11) == KEY_DOWN)
+	{
+		if (capFrameRate)
+		{
+			storeFrameRateCap = app->cappedMs;
+			app->cappedMs = 1000 / 30;
+			capFrameRate = false;
+		}
+		else
+		{
+			app->cappedMs = storeFrameRateCap;
+			capFrameRate = true;
+		}
+	}
+	
 	SString title("Map:%dx%d Tiles:%dx%d Tilesets:%d",
 				   app->map->data.width, app->map->data.height,
 				   app->map->data.tileWidth, app->map->data.tileHeight,
@@ -169,7 +178,6 @@ bool Scene::Update(float dt)
 
 	//app->win->SetTitle(title.GetString());
 	iPoint mapPos = app->map->WorldToMap(app->player->playerPos.x, app->player->playerPos.y);
-	//printf("Position in MAP X = %d\nPosition in MAP Y = %d\n\n", mapPos.x,mapPos.y);
 	
 	// Set the camera limits
 	if (app->render->camera.x > 0) app->render->camera.x = 0;

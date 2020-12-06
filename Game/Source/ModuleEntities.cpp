@@ -37,12 +37,8 @@ Entities::~Entities()
 
 bool Entities::Start()
 {
-	/*texture = app->tex->Load("Assets/Background2.png");
-	
-	enemyDestroyedFx = app->audio->LoadFx("Assets/Music/SFX_Kill.wav");
-	
-	itemPickedFx = app->audio->LoadFx("Assets/Music/SFX_Bonus.wav");*/
-	texture = app->tex->Load("Assets/maps/def_tileset.png");
+
+	texture = app->tex->Load("Assets/Maps/def_tileset.png");
 	itemPickedFx = app->audio->LoadFx("Assets/Audio/Fx/item_taken.wav");
 
 

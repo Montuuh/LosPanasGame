@@ -35,7 +35,7 @@ bool WinScreen::Start()
 
 	// Include logo
 
-	app->audio->PlayMusic("Assets/Audio/music/win_soundtrack.ogg");
+	app->audio->PlayMusic("Assets/Audio/Music/wii_music.ogg");
 
 	logoTex = app->tex->Load("Assets/textures/winScreenLittle.png");
 	app->render->background = { 0,0,0,0 };

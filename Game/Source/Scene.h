@@ -40,6 +40,9 @@ private:
 	SDL_Texture* img;
 	SDL_Texture* bg;
 
+	int storeFrameRateCap;
+	bool capFrameRate = true;
+
 public:
 	
 };

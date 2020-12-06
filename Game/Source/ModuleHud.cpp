@@ -31,9 +31,9 @@ bool ModuleHud::Start()
 
 	char lookupTableNumbers[] = { "0123456789" };
 	
-	heartsTexture = app->tex->Load("Assets/maps/def_tileset.png");
-	emptyHeartsTexture = app->tex->Load("Assets/maps/def_tileset.png");
-	diamondsTexture = app->tex->Load("Assets/maps/def_tileset.png");
+	heartsTexture = app->tex->Load("Assets/Maps/def_tileset.png");
+	emptyHeartsTexture = app->tex->Load("Assets/Maps/def_tileset.png");
+	diamondsTexture = app->tex->Load("Assets/Maps/def_tileset.png");
 
 	return ret;
 }

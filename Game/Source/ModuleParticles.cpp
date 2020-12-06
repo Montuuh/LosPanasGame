@@ -25,7 +25,7 @@ ModuleParticles::~ModuleParticles()
 bool ModuleParticles::Start()
 {
 	LOG("Loading particles");
-	texture = app->tex->Load("Assets/Common/spritesheet_items.png");
+	texture = app->tex->Load("Assets/Maps/def_tileset.png");
 	// Do pushbacks of particle animations:
 	// Particle->Anim->Pushback... etx
 	bullet.anim.PushBack({ 74,77,24,22});

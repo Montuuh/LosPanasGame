@@ -193,10 +193,7 @@ bool ModulePlayer::Start()
 	fallTexture = app->tex->Load("Assets/textures/spritesheet.png");
 
 	// Audio of the player's actions
-
-	walkingSfx = app->audio->LoadFx("Assets/Audio/Fx/player_walking.wav");
 	jumpingSfx = app->audio->LoadFx("Assets/Audio/Fx/player_jump.wav");
-	shootingSfx = app->audio->LoadFx("Assets/Audio/Fx/player_shot.wav");
 
 	//Starting position of the player
 	playerWh = { 66.0f,79.0f };
@@ -620,7 +617,7 @@ bool ModulePlayer::OnCollision(Collider* c1, Collider* c2)
 {
 	bool ret = false;
 
-	if (c2->type == Collider::Type::GROUND)
+	if (c2->type == Collider::Type::GROUND && !godMode)
 	{
 		//If player head enters the ground first collisionFromBelow = true
 		//If collider of the ground is between the top of the head and the waist

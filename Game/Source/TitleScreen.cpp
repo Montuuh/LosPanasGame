@@ -31,7 +31,7 @@ bool TitleScreen::Start()
 
 	// Include title
 
-	app->audio->PlayMusic("Assets/Audio/music/wiiMusic.ogg");
+	app->audio->PlayMusic("Assets/Audio/Music/wii_music.ogg");
 
 	titleTex = app->tex->Load("Assets/textures/introScreenEnterLittle.png");
 	app->render->background = { 0,0,0,0 };
