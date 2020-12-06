@@ -30,8 +30,9 @@ bool ModuleInitialScreen::Start()
 
 	// Include logo
 
-	logoTex = app->tex->Load("Assets/textures/logoScreenmineLittle.png");
+	logoTex = app->tex->Load("Assets/textures/logo_screen.png");
 	app->render->background = { 0,0,0,0 };
+	if (logoTex == nullptr)
 	if (logoTex == nullptr)
 	{
 		ret = false;

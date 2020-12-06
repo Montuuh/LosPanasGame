@@ -37,7 +37,7 @@ bool DeathScene::Start()
 	app->render->background = { 0,0,0,0 };
 	// Include logo
 	app->render->camera = { 0,0,1280,720 };
-	logoTex = app->tex->Load("Assets/textures/DeathScreenLittle.png");
+	logoTex = app->tex->Load("Assets/textures/death_screen.png");
 
 
 

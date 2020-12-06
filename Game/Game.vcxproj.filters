@@ -36,6 +36,7 @@
     <ClCompile Include="Source\App.cpp" />
     <ClCompile Include="Source\EnemyFlying.cpp" />
     <ClCompile Include="Source\Pathfinding.cpp" />
+    <ClCompile Include="Source\EnemyWalking.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Source\Defs.h">
@@ -97,6 +98,7 @@
     <ClInclude Include="Source\App.h" />
     <ClInclude Include="Source\EnemyFlying.h" />
     <ClInclude Include="Source\Pathfinding.h" />
+    <ClInclude Include="Source\EnemyWalking.h" />
   </ItemGroup>
   <ItemGroup>
     <Filter Include="External">
