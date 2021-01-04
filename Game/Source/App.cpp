@@ -47,11 +47,9 @@ App::App(int argc, char* args[]) : argc(argc), args(args)
 	initialScreen = new ModuleInitialScreen(true);
 	collisions = new ModuleCollisions(true);
 	entities = new Entities(false);
-	particles = new ModuleParticles(false);
+	/*particles = new ModuleParticles(false);*/
 	pathfinding = new PathFinding();
 
-	// Ordered for awake / Start / Update
-	// Reverse order of CleanUp
 	AddModule(win);
 	AddModule(input);
 	AddModule(tex);
@@ -69,7 +67,7 @@ App::App(int argc, char* args[]) : argc(argc), args(args)
 	AddModule(pathfinding);
 
 	AddModule(entities);
-	AddModule(particles);
+	/*AddModule(particles);*/
 	AddModule(collisions);
 	AddModule(fade);
 
@@ -82,7 +80,6 @@ App::App(int argc, char* args[]) : argc(argc), args(args)
 // Destructor
 App::~App()
 {
-	// release modules
 	ListItem<Module*>* item = modules.end;
 
 	while(item != NULL)

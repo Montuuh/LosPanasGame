@@ -42,23 +42,15 @@ public:
 public:
 	// Position of the player in the map
 	fPoint playerPos;
-	fPoint playerWh; // Data that contains width and height of player
 	fPoint colliderPos;
 
 	// The speed in which we move the player (pixels per frame)
 	fPoint velocity = { 0,0 };
 
-	SDL_Texture* texture = nullptr;
 	Collider* playerCollider = nullptr;
 	Collider* previousCollision = nullptr;
 
 	Animation* currentAnimation = nullptr;
-	//Animation idleAnim;
-	//Animation leftRunAnim;
-	//Animation rightRunAnim;
-	//Animation jumpAnim;
-	//Animation dieAnimation;
-	//Animation fallAnim;
 	Animation idleLeftAnim;
 	Animation idleRightAnim;
 	Animation runLeftAnim;
@@ -73,9 +65,7 @@ public:
 	Animation fallRightAnim;
 
 	SDL_Texture** currentTexture = nullptr;
-	SDL_Texture* jumpTexture = nullptr;
-	SDL_Texture* dieTexture = nullptr;
-	SDL_Texture* fallTexture = nullptr;
+	SDL_Texture* texture = nullptr;
 
 	// Collision callback, called when the player intersects with another collider
 	bool OnCollision(Collider* c1, Collider* c2);
@@ -88,14 +78,15 @@ public:
 	bool collisionExist = false;
 	bool destroyed = false;
 	bool win = false;
+
 private:
 	enum PlayerState {ON_GROUND, ON_AIR};
-	PlayerState playerState = ON_AIR;
+	PlayerState playerState = ON_GROUND;
 	enum PlayerDirection {RIGHT,LEFT,UP,DOWN};
 	PlayerDirection playerDirection;
 
 	bool isJump = false;
-	bool collisionFromBelow = false;
+	bool colliderAbove = false;
 	bool godMode = false;
 	bool goingLeft = false;
 	bool goingRight = false;
@@ -104,26 +95,15 @@ private:
 	bool CheckCollisions(float dt);
 
 	void CheckPlayerState(float dt);
-	void BulletLogic(float dt);
 
 public:
-	// Player loses life and it is tp to checpoint
-	void PlayerDied();
-	// Player has lost all lives
-	void PlayerLost();
+	void PlayerDied(); // Player loses a life and returns to the last checkpoint/start
 
 	uint lives;
 	uint health;
 	uint diamonds;
 
-public:
-
-	uint walkingSfx;
-	uint jumpingSfx;
-	uint shootingSfx;
-
 	int isWalking = false;
-	//float counterWalking = 0.0f;
 	Timer counterWalking;
 };
 

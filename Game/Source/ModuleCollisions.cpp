@@ -20,21 +20,43 @@ ModuleCollisions::ModuleCollisions(bool b) : Module(b)
 	matrix[Collider::Type::GROUND][Collider::Type::PLAYER] = true;
 	matrix[Collider::Type::GROUND][Collider::Type::DEATH] = false;
 	matrix[Collider::Type::GROUND][Collider::Type::WIN] = false;
+	matrix[Collider::Type::GROUND][Collider::Type::CHECKPOINT] = false;
+	matrix[Collider::Type::GROUND][Collider::Type::ITEM] = false;
 
 	matrix[Collider::Type::PLAYER][Collider::Type::GROUND] = true;
 	matrix[Collider::Type::PLAYER][Collider::Type::PLAYER] = false;
 	matrix[Collider::Type::PLAYER][Collider::Type::DEATH] = true;
 	matrix[Collider::Type::PLAYER][Collider::Type::WIN] = true;
+	matrix[Collider::Type::PLAYER][Collider::Type::CHECKPOINT] = true;
+	matrix[Collider::Type::PLAYER][Collider::Type::ITEM] = true;
 
 	matrix[Collider::Type::DEATH][Collider::Type::GROUND] = false;
 	matrix[Collider::Type::DEATH][Collider::Type::PLAYER] = true;
 	matrix[Collider::Type::DEATH][Collider::Type::DEATH] = false;
 	matrix[Collider::Type::DEATH][Collider::Type::WIN] = false;
+	matrix[Collider::Type::DEATH][Collider::Type::CHECKPOINT] = false;
+	matrix[Collider::Type::DEATH][Collider::Type::ITEM] = false;
 
 	matrix[Collider::Type::WIN][Collider::Type::GROUND] = false;
 	matrix[Collider::Type::WIN][Collider::Type::PLAYER] = true;
 	matrix[Collider::Type::WIN][Collider::Type::DEATH] = false;
 	matrix[Collider::Type::WIN][Collider::Type::WIN] = false;
+	matrix[Collider::Type::WIN][Collider::Type::CHECKPOINT] = false;
+	matrix[Collider::Type::WIN][Collider::Type::ITEM] = false;
+
+	matrix[Collider::Type::CHECKPOINT][Collider::Type::GROUND] = false;
+	matrix[Collider::Type::CHECKPOINT][Collider::Type::PLAYER] = true;
+	matrix[Collider::Type::CHECKPOINT][Collider::Type::DEATH] = false;
+	matrix[Collider::Type::CHECKPOINT][Collider::Type::WIN] = false;
+	matrix[Collider::Type::CHECKPOINT][Collider::Type::CHECKPOINT] = false;
+	matrix[Collider::Type::CHECKPOINT][Collider::Type::ITEM] = false;
+
+	matrix[Collider::Type::ITEM][Collider::Type::GROUND] = false;
+	matrix[Collider::Type::ITEM][Collider::Type::PLAYER] = true;
+	matrix[Collider::Type::ITEM][Collider::Type::DEATH] = false;
+	matrix[Collider::Type::ITEM][Collider::Type::WIN] = false;
+	matrix[Collider::Type::ITEM][Collider::Type::CHECKPOINT] = false;
+	matrix[Collider::Type::ITEM][Collider::Type::ITEM] = false;
 }
 
 // Destructor
@@ -48,72 +70,72 @@ bool ModuleCollisions::PreUpdate()
 	bool ret = true;
 
 	// Remove all colliders scheduled for deletion
-	ListItem<Collider*>* listColl;
-	listColl = colliders.start;
+	ListItem<Collider*>* L;
+	L = colliders.start;
 	for (int i = 0 ; i < colliders.Count(); ++i)
 	{
-		if (listColl != NULL && listColl->data->pendingToDelete == true)
+		if (L != NULL && L->data->pendingToDelete == true)
 		{
-			colliders.Del(listColl);
+			colliders.Del(L);
 		}
-		listColl = listColl->next;
+		L = L->next;
 	}
 
-	//Collider* c1;
-	//Collider* c2;
+	Collider* c1;
+	Collider* c2;
 
-	//app->player->collisionExist = false;
-	//
-	//ListItem<Collider*>* list1;
-	//list1 = colliders.start;
-	//for(int i = 0; i < colliders.Count(); ++i)
-	//{
-	//	// skip empty colliders
-	//	if (list1 == NULL)
-	//	{
-	//		list1 = list1->next;
-	//		continue;
-	//	}
+	app->player->collisionExist = false;
+	
+	ListItem<Collider*>* list1;
+	list1 = colliders.start;
+	for(int i = 0; i < colliders.Count(); ++i)
+	{
+		// skip empty colliders
+		if (list1 == NULL)
+		{
+			list1 = list1->next;
+			continue;
+		}
 
-	//	c1 = list1->data;
+		c1 = list1->data;
 
-	//	ListItem<Collider*>* list2;
-	//	list2 = colliders.start;
-	//	// avoid checking collisions already checked
-	//	for(int k = i+1; k < colliders.Count(); ++k)
-	//	{
-	//		// skip empty colliders
-	//		if (list2 == NULL)
-	//		{
-	//			if (list2->next == NULL)
-	//				break;
-	//			list2 = list2->next;
-	//			continue;
-	//		}
+		ListItem<Collider*>* list2;
+		list2 = colliders.start;
+		// avoid checking collisions already checked
+		for(int k = i+1; k < colliders.Count(); ++k)
+		{
+			// skip empty colliders
+			if (list2 == NULL)
+			{
+				if (list2->next == NULL)
+					break;
+				list2 = list2->next;
+				continue;
+			}
 
-	//		c2 = list2->data;
+			c2 = list2->data;
 
-	//		if(c1->Intersects(c2->rect))
-	//		{
-	//			if (matrix[c1->type][c2->type] && c1->listener)
-	//			{
-	//				if (c1->type == Collider::Type::PLAYER)
-	//				{
-	//					app->player->collisionExist = c1->listener->OnCollision(c1, c2);
-	//				}
-	//				else
-	//					c1->listener->OnCollision(c1, c2); //efecto de la colisión
-	//			}
-	//				
-	//		
-	//			if(matrix[c2->type][c1->type] && c2->listener) 
-	//				c2->listener->OnCollision(c2, c1);
-	//		}
+			if(c1->Intersects(c2->rect))
+			{
+				if (matrix[c1->type][c2->type] && c1->listener)
+				{
+					if (c1->type == Collider::Type::PLAYER)
+					{
+						app->player->collisionExist = c1->listener->OnCollision(c1, c2);
+					}
+					else
+						c1->listener->OnCollision(c1, c2); //efecto de la colisión
+				}
+					
+			
+				if(matrix[c2->type][c1->type] && c2->listener) 
+					c2->listener->OnCollision(c2, c1);
+			}
 
-	//		list2 = list2->next;
-	//	}
-	//	list1 = list1->next;
-	//}
+			list2 = list2->next;
+		}
+		list1 = list1->next;
+	}
 
 	return ret;
 }
@@ -140,7 +162,7 @@ void ModuleCollisions::DebugDraw()
 {
 	ListItem<Collider*>* list1;
 	list1 = colliders.start;
-	Uint8 alpha = 80;
+	Uint8 alpha = 150;
 	for(int i = 0; i < colliders.Count(); ++i)
 	{
 		if (list1 == NULL)
@@ -166,18 +188,9 @@ void ModuleCollisions::DebugDraw()
 			case Collider::Type::CHECKPOINT: // Dark blue	
 			app->render->DrawRectangle(list1->data->rect, 0, 0, 139, alpha);
 			break;
-			case Collider::Type::ITEM: // Green	
-			app->render->DrawRectangle(list1->data->rect, 0, 255, 0, alpha);
-			break;
-			case Collider::Type::ENEMY_HITBOX: // maroon	
-			app->render->DrawRectangle(list1->data->rect, 128, 0, 0, alpha);
-			break;
-			case Collider::Type::ENEMY_HURTBOX: // Olive	
-			app->render->DrawRectangle(list1->data->rect, 128, 128, 0, alpha);
-			break;
-			case Collider::Type::BULLET: // Hot pink	
-			app->render->DrawRectangle(list1->data->rect, 255, 0, 208, alpha);
-			break;
+			case Collider::Type::ITEM: // Dark blue	
+				app->render->DrawRectangle(list1->data->rect, 238, 130, 238, alpha);
+				break;
 		}
 		list1 = list1->next;
 	}

@@ -29,47 +29,6 @@ ModulePlayer::ModulePlayer(bool b) : Module(b)
 {
 	name.Create("player");
 
-	// left idle animation
-	/*leftIdleAnim.PushBack({ 66, 24, 12, 16 });
-	leftIdleAnim.loop = true;
-	leftIdleAnim.speed = 0.1f;*/
-
-	//// right idle animation
-	//idleAnim.PushBack({ 0, 298, 66, 80 });
-	//idleAnim.loop = true;
-	//idleAnim.speed = 0.1f;
-
-	//rightRunAnim.PushBack({ 0, 0, 66, 79 });
-	//rightRunAnim.PushBack({ 73, 0, 66, 78 });
-	//rightRunAnim.PushBack({ 145, 0, 66, 75 });
-	//rightRunAnim.PushBack({ 219, 0, 94, 59 });
-	//rightRunAnim.PushBack({ 319, 0, 73, 66 });
-	//rightRunAnim.loop = true;
-	//rightRunAnim.speed = 0.15f;
-
-	//leftRunAnim.PushBack({ 327, 96, 66, 79 }); // movement left 1
-	//leftRunAnim.PushBack({ 255, 96, 66, 78 }); // idle left
-	//leftRunAnim.PushBack({ 181, 96, 66, 75 }); // movement left 2
-	//leftRunAnim.PushBack({ 79, 96, 94, 59 }); // idle left
-	//leftRunAnim.PushBack({ 0, 96, 73, 66 });
-	//leftRunAnim.loop = true;
-	//leftRunAnim.speed = 0.15f;
-
-	//jumpAnim.PushBack({ 0, 298, 66, 80 });
-	//jumpAnim.PushBack({ 81, 300, 67, 74 });
-	//jumpAnim.PushBack({ 165, 310, 64, 56 });
-	//jumpAnim.loop = false;
-	//jumpAnim.pingpong = false;
-	//jumpAnim.speed = 0.15f;
-
-	//dieAnimation.PushBack({ 264, 205, 63, 66 });
-	//dieAnimation.loop = false;
-	//dieAnimation.speed = 0.15f;
-
-	//fallAnim.PushBack({ 0,188,66,79 });
-	//fallAnim.loop = false;
-	//fallAnim.speed = 0.15f;
-
 	// Left Idle Animation
 	idleLeftAnim.PushBack({ 0, 0, 16, 16 });
 	idleLeftAnim.PushBack({ 32, 0, 16, 16 });
@@ -188,25 +147,19 @@ bool ModulePlayer::Start()
 	bool ret = true;
 
 	texture = app->tex->Load("Assets/textures/spritesheet.png"); 
-	jumpTexture = app->tex->Load("Assets/textures/spritesheet.png");
-	dieTexture = app->tex->Load("Assets/textures/spritesheet.png");
-	fallTexture = app->tex->Load("Assets/textures/spritesheet.png");
 
-	// Audio of the player's actions
-	jumpingSfx = app->audio->LoadFx("Assets/Audio/Fx/player_jump.wav");
-
-	//Starting position of the player
-	playerWh = { 66.0f,79.0f };
-	// playerCollider = app->collisions->AddCollider({(int)playerPos.x + (int)playerWh.x / 2,(int)playerPos.y,(int)playerWh.x/2,(int)playerWh.y}, Collider::Type::PLAYER, (Module*)app->player);
+	// Starting position of the player
+	playerPos = { 66.0f,78.0f };
+	
+	// Setting starting position of the player's collider
 	playerCollider = app->collisions->AddCollider({ (int)playerPos.x +2,(int)playerPos.y,12,16 }, Collider::Type::PLAYER, (Module*)app->player);
 	
-
+	// Loading starting animation && texture
 	currentAnimation = &idleRightAnim;
 	currentTexture = &texture;
 
 	playerState = ON_AIR;
-	collisionExist = false;
-	collisionFromBelow = false;
+
 	godMode = false;
 
 	isWalking = false;
@@ -228,17 +181,6 @@ bool ModulePlayer::Update(float dt)
 	Logic(dt);
 	CheckCollisions(dt);
 
-	if (velocity.y>=250.f/*dt*1000.0f > app->cappedMs*/)
-	{
-		float newDt = dt/25.0f;
-		for (int i = 0; i < 5; ++i)
-		{
-			Logic(newDt);
-			CheckCollisions(newDt);
-		}
-		LOG("---------SUBSTEPPING---------");
-	}
-
 	if (currentAnimation != NULL)
 	{
 		currentAnimation->Update();
@@ -249,141 +191,123 @@ bool ModulePlayer::Update(float dt)
 
 void ModulePlayer::Input(float dt)
 {
-	if (app->input->GetKey(SDL_SCANCODE_A) == KEY_REPEAT && !godMode && !destroyed)
+
+	// Player movement when going to the left
+	if ((app->input->GetKey(SDL_SCANCODE_A) == KEY_REPEAT) && (!godMode) && (!destroyed))
 	{
-		// Controlling player movement based on if they are on the ground or air.
-		
 		goingLeft = true;
 		if (currentAnimation != &runLeftAnim)
 		{
 			runLeftAnim.Reset();
 			currentAnimation = &runLeftAnim;
 		}
-		if (playerState == ON_GROUND)
-		{
-			velocity.x += -VELOCITY * 1.5f * dt;
-			if (isWalking == false) 
-				isWalking = app->audio->PlayFx(walkingSfx);
-			if (counterWalking.Read() >= 20.0f)
-			{
-				isWalking = false;
-			}
-			counterWalking.Start();
-		}
-		else
-		{
+		if (playerState == ON_GROUND)                   // If player moves to the right when in ground
 			velocity.x += -VELOCITY * 1.2f * dt;
-		}
+		else                                            // If player moves to the right when in air
+			velocity.x += -VELOCITY * 0.5f * dt;
 	}
-	if (app->input->GetKey(SDL_SCANCODE_A) == KEY_UP && isJump == false && !godMode)
+
+	// Stop left movement when player stop pressing to the left
+	if ((app->input->GetKey(SDL_SCANCODE_A) == KEY_UP) && (playerState == ON_GROUND) && (!godMode) && (!destroyed))
 	{
 		goingLeft = false;
 		velocity.x = 0;
+		currentAnimation = &idleLeftAnim;
 	}
-	if (app->input->GetKey(SDL_SCANCODE_A) == KEY_REPEAT && godMode)
+
+	// God Mode movement 
+	if ((app->input->GetKey(SDL_SCANCODE_A) == KEY_REPEAT) && (godMode))
 	{
 		goingLeft = true;
-		velocity.x = -VELOCITY;
+		if (currentAnimation != &runLeftAnim)
+		{
+			runLeftAnim.Reset();
+			currentAnimation = &runLeftAnim;
+		}
+		velocity.x = -VELOCITY / 2;
 	}
-	if (app->input->GetKey(SDL_SCANCODE_A) == KEY_UP && godMode)
+	if ((app->input->GetKey(SDL_SCANCODE_A) == KEY_UP) && (godMode))
 	{
 		goingLeft = false;
 		velocity.x = 0;
+		currentAnimation = &idleLeftAnim;
 	}
-	if (app->input->GetKey(SDL_SCANCODE_D) == KEY_REPEAT && !godMode && !destroyed)
+
+	// Player movement when going to the right
+	if ((app->input->GetKey(SDL_SCANCODE_D) == KEY_REPEAT) && (!godMode) && (!destroyed))
 	{
-		// Controlling player movement based on if they are on the ground or air.
-		//velocity.x += (isGround ? VELOCITY : VELOCITY) * dt;
-		
 		goingRight = true;
 		if (currentAnimation != &runRightAnim)
 		{
 			runRightAnim.Reset();
 			currentAnimation = &runRightAnim;
 		}
-		if (playerState == ON_GROUND)
-		{
-			velocity.x += VELOCITY * 1.5f * dt;
-			if (isWalking == false)
-				isWalking = app->audio->PlayFx(walkingSfx);
-			if (counterWalking.Read() >= 20.0f)
-			{
-				isWalking = false;
-			}
-			counterWalking.Start();
-		}
-		else
-		{
+		if (playerState == ON_GROUND)                   // If player moves to the right when in ground
 			velocity.x += VELOCITY * 1.2f * dt;
-		}
+		else                                            // If player moves to the right when in air
+			velocity.x += VELOCITY * 0.5f * dt;
 	}
-	if (app->input->GetKey(SDL_SCANCODE_D) == KEY_UP && isJump == false && !godMode)
+
+	// Stop left movement when player stop pressing to the right
+	if ((app->input->GetKey(SDL_SCANCODE_D) == KEY_UP) && (playerState == ON_GROUND) && (!godMode) && (!destroyed))
 	{
 		goingRight = false;
 		velocity.x = 0;
+		currentAnimation = &idleRightAnim;
 	}
-	if (app->input->GetKey(SDL_SCANCODE_D) == KEY_REPEAT && godMode)
+
+	// God Mode movement 
+	if ((app->input->GetKey(SDL_SCANCODE_D) == KEY_REPEAT) && (godMode))
 	{
 		goingRight = true;
-		velocity.x = VELOCITY;
+		if (currentAnimation != &runRightAnim)
+		{
+			runRightAnim.Reset();
+			currentAnimation = &runRightAnim;
+		}
+		velocity.x = VELOCITY / 2;
 	}
-	if (app->input->GetKey(SDL_SCANCODE_D) == KEY_UP && godMode)
+	if ((app->input->GetKey(SDL_SCANCODE_D) == KEY_UP) && (godMode))
 	{
 		goingRight = false;
 		velocity.x = 0;
+		currentAnimation = &idleRightAnim;
 	}
 	
-
-	if (app->input->GetKey(SDL_SCANCODE_S) == KEY_REPEAT && godMode)
+	// God Mode movement up && down
+	if ((app->input->GetKey(SDL_SCANCODE_S) == KEY_REPEAT) && (godMode))
 	{
-		velocity.y = VELOCITY;
+		velocity.y = VELOCITY / 2;
 	}
-	if (app->input->GetKey(SDL_SCANCODE_S) == KEY_UP && godMode)
+	if ((app->input->GetKey(SDL_SCANCODE_S) == KEY_UP) && (godMode))
 	{
 		velocity.y = 0;
 	}
-	if (app->input->GetKey(SDL_SCANCODE_W) == KEY_REPEAT && godMode)
+	if ((app->input->GetKey(SDL_SCANCODE_W) == KEY_REPEAT) && (godMode))
 	{
-		velocity.y = -VELOCITY;
+		velocity.y = -VELOCITY / 2;
 	}
-	if (app->input->GetKey(SDL_SCANCODE_W) == KEY_UP && godMode)
+	if ((app->input->GetKey(SDL_SCANCODE_W) == KEY_UP) && (godMode))
 	{
 		velocity.y = 0;
 	}
 	
 
-
-	if (app->input->GetKey(SDL_SCANCODE_SPACE) == KEY_DOWN && playerState == ON_GROUND)
+	// If player wants to jump && its on ground
+	if ((app->input->GetKey(SDL_SCANCODE_SPACE) == KEY_DOWN) && (playerState == ON_GROUND) && (!godMode))
 	{
-		// Stop moving just before jumping
 		velocity.x = velocity.x / 2;
 		if (velocity.y == 0)
 		{
-			velocity.y = -85.0f * 2;
+			velocity.y = -80.0f * 2;
 			playerState = ON_AIR;
 			isJump = true;
-			app->audio->PlayFx(jumpingSfx);
 		}
-	/*	velocity.y = -160.0f * 2;
-		isAir = true;*/
+
 		if (velocity.x > 0)
 			jumpRightAnim.Reset();
 		else if (velocity.x < 0)
 			jumpLeftAnim.Reset();
-	}
-
-	// If last movement was left, set the current animation back to left idle
-	if (app->input->GetKey(SDL_SCANCODE_A) == KeyState::KEY_UP && !destroyed)
-	{
-		goingLeft = false;
-		currentAnimation = &idleLeftAnim;
-	}
-
-	// If last movement was right, set the current animation back to left idle
-	if (app->input->GetKey(SDL_SCANCODE_D) == KeyState::KEY_UP && !destroyed)
-	{
-		goingRight = false;
-		currentAnimation = &idleRightAnim;
 	}
 
 	// Debug Keys
@@ -396,62 +320,6 @@ void ModulePlayer::Input(float dt)
 	{
 		destroyed = true;
 	}
-
-	if (app->input->GetKey(SDL_SCANCODE_C) == KEY_REPEAT)
-	{
-		// Teleport Checkpoint
-		Collider* dstCheckpoint = NULL;
-		for (int i = 0; i < app->map->checkpointsList.Count(); ++i)
-		{
-			// SDL_SCANCODE_0 is 39 SDL_SCANCODE_1 is 30 SDL_SCANCODE_2 is 31
-			if(app->input->GetKey(30+i) == KEY_DOWN)
-			{
-				dstCheckpoint = app->map->checkpointsList.At(i)->data;
-				break;
-			}
-		}
-
-		if (dstCheckpoint != NULL)
-		{
-			playerPos = { (float)dstCheckpoint->rect.x,(float)dstCheckpoint->rect.y };
-			velocity = { 0.0f,0.0f };
-		}
-	}
-
-	BulletLogic(dt);
-}
-
-void ModulePlayer::BulletLogic(float dt)
-{
-	iPoint mousePoint;
-	app->input->GetMousePosition(mousePoint.x, mousePoint.y);
-
-	uPoint window;
-	app->win->GetWindowSize(window.x, window.y);
-
-	fPoint center = { (float)window.x / 2,(float)window.y / 2 };
-
-	fPoint direction;
-	direction = { center.x - mousePoint.x , center.y - mousePoint.y };
-
-	float magnitude = sqrt(direction.x * direction.x + direction.y * direction.y);
-
-	direction = { direction.x / magnitude, direction.y / magnitude }; // Vector unitario/dirección
-	direction.Negate();
-
-	/*printf("mouse = %f %f\n", center.x, center.y);
-	printf("dir = %f %f\n", direction.x, direction.y);*/
-
-	if ((app->input->GetKey(SDL_SCANCODE_B) == KEY_DOWN))
-	{
-		Particle newBullet = app->particles->bullet;
-	
-		newBullet.speed.y = { direction.y * 500.0f +app->player->velocity.y};
-		newBullet.speed.x = { direction.x * 500.0f + app->player->velocity.x};
-
-		app->particles->AddParticle(newBullet, playerPos.x + playerWh.x/2, playerPos.y, Collider::Type::BULLET);
-		app->audio->PlayFx(shootingSfx);
-	}
 }
 
 void ModulePlayer::Logic(float dt)
@@ -461,29 +329,26 @@ void ModulePlayer::Logic(float dt)
 	if (health == 0)
 		destroyed = true;
 
-	printf("Velocity in X = %f\nVelocity in Y = %f\n\n", velocity.x, velocity.y);
-	/*printf("Position in X = %f\nPosition in Y = %f\n\n", playerPos.x, playerPos.y);*/
+	// Borders for the player
+	if (playerPos.x < 0)
+		playerPos.x = 0;
+	if (playerPos.x + playerCollider->rect.w > 100 * 16)
+		playerPos.x = 100 * 16 - playerCollider->rect.w;
+	if (playerPos.y < 0)
+		playerPos.y = 0;
+	if (playerPos.y + playerCollider->rect.h > 50 * 16)
+		playerPos.y = 50 * 16 - playerCollider->rect.y;
 
-	// Integrators
-	if (destroyed == false)
+	// If player is alive, position and collider setters
+	if (destroyed == false) 
 	{
 		playerPos.x = playerPos.x + velocity.x * dt;
 		playerPos.y = playerPos.y + velocity.y * dt;
 
-		// Borders for the player
-		if (playerPos.x < 0)
-			playerPos.x = 0;
-		if (playerPos.x + playerCollider->rect.w > 100 * 16)
-			playerPos.x = 100 * 16 - playerCollider->rect.w;
-		if (playerPos.y < 0)
-			playerPos.y = 0;
-		if (playerPos.y + playerCollider->rect.h > 50 * 16)
-			playerPos.y = 50 * 16 - playerCollider->rect.y;
-
 		playerCollider->SetPos(playerPos.x, playerPos.y);
 	}
 
-	// Limit max velocities
+	// Limit high velocities
 	if (velocity.x > MAXVELOCITY_X)
 		velocity.x = MAXVELOCITY_X;
 	if (velocity.x < -MAXVELOCITY_X)
@@ -493,85 +358,76 @@ void ModulePlayer::Logic(float dt)
 		velocity.y = MAXVELOCITY_Y;
 	if (velocity.y < -MAXVELOCITY_Y)
 		velocity.y = -MAXVELOCITY_Y;
-
-	/*printf("Ground = %s\n", isGround ? "true" : "false");
-	printf("Air = %s\n", isAir ? "true" : "false");*/
-	/*printf("Jump = %s\n", isJump ? "true" : "false");*/
 }
 
 void ModulePlayer::CheckPlayerState(float dt)
 {
-	// Gravity
-	if ((playerState == ON_AIR || collisionExist == false) && godMode == false && destroyed == false)
+	// Up & Down logics 
+	if (((playerState == ON_AIR) || (collisionExist == false)) && (!godMode) && (!destroyed))
 	{
 		if (collisionExist == false)
 			playerState = ON_AIR;
 
-		currentTexture = &jumpTexture;
-		/*currentAnimation = &jumpRightAnim;*/
-
+		// Gravity
 		if (velocity.y <= -200)
 		{
-			//velocity.y += 100.0f/2 * dt;
-			velocity.y += 100.0f * 4.0f * dt;
+			velocity.y += 100.0f * 3.5f * dt;
 		}
 		else
 		{
-			velocity.y += 100.0f * 3.0f * dt;
+			velocity.y += 100.0f * 2.5f * dt;
 		}
 
+		// If player is going up (started jumping)
 		if (velocity.y < 0)
 		{
 			playerDirection = UP;
-			if (velocity.x > 0)
+			if (currentAnimation == &idleRightAnim || currentAnimation == &fallRightAnim || currentAnimation == &jumpRightAnim || currentAnimation == &attackRightAnim || currentAnimation == &runRightAnim)
 				currentAnimation = &jumpRightAnim;
-			else if (velocity.x < 0)
+			if (currentAnimation == &idleLeftAnim || currentAnimation == &fallLeftAnim || currentAnimation == &jumpLeftAnim || currentAnimation == &attackLeftAnim || currentAnimation == &runLeftAnim)
 				currentAnimation = &jumpLeftAnim;
 		}
-		else if (velocity.y >= 0)
+
+		// If player is going down (falling)
+		if (velocity.y > 0)
 		{
 			playerDirection = DOWN;
-			if (velocity.x > 0)
+			if (currentAnimation == &idleRightAnim || currentAnimation == &fallRightAnim || currentAnimation == &jumpRightAnim || currentAnimation == &attackRightAnim || currentAnimation == &runRightAnim)
 				currentAnimation = &fallRightAnim;
-			else if (velocity.x < 0)
+			if (currentAnimation == &idleLeftAnim || currentAnimation == &fallLeftAnim || currentAnimation == &jumpLeftAnim || currentAnimation == &attackLeftAnim || currentAnimation == &runLeftAnim)
 				currentAnimation = &fallLeftAnim;
 		}
-
-		if (velocity.x) // Make player lose some velocity in x while is in air
-		{
-			velocity.x += -0.9f * velocity.x * dt; // Resistence/Friction in the air
-		}
+		
+		// Making the jump and falling velocity in x more realistic
+		velocity.x += -1.5f * velocity.x * dt;
 	}
 
-	if (playerState == ON_GROUND) // Stopping the player gradually while at ground
+	// Ground movement logics
+	if ((playerState == ON_GROUND) && (!godMode)) 
 	{
-		currentTexture = &texture;
-		if (currentAnimation == &jumpLeftAnim)
-		{
+		velocity.y = 0;
+
+		// Making the movement more realistic, adding few frictions
+		velocity.x += -2.75f * velocity.x * dt; 
+		
+		// Make the player to stop moving if the velocity is too small
+		if (fabs(velocity.x) < 0.25f) 
 			velocity.x = 0;
-			currentAnimation = &idleLeftAnim;
-		}
-		else if (currentAnimation == &jumpRightAnim)
-		{
-			velocity.x = 0;
+
+		// Make the player go to idle when the player touches the ground from falling
+		if (currentAnimation == &fallRightAnim)
 			currentAnimation = &idleRightAnim;
-		}
-		if (playerState != ON_AIR && godMode == false)
-		{
-			velocity.y = 0;
-		}
-		velocity.x += -3.2f * velocity.x * dt; // Resistence/Friction in the ground
-		if (fabs(velocity.x) < 0.5f) // Stop the player once velocity is too small
-			velocity.x = 0;
+		if (currentAnimation == &fallLeftAnim)
+			currentAnimation == &idleLeftAnim;
 	}
 
+	// Die animations
 	if (destroyed)
 	{
-		if (velocity.x > 0)
+		if (currentAnimation == &idleRightAnim || currentAnimation == &fallRightAnim || currentAnimation == &jumpRightAnim || currentAnimation == &attackRightAnim || currentAnimation == &runRightAnim)
 			currentAnimation = &dieRightAnim;
-		if (velocity.x < 0)
+		if (currentAnimation == &idleLeftAnim || currentAnimation == &fallLeftAnim || currentAnimation == &jumpLeftAnim || currentAnimation == &attackLeftAnim || currentAnimation == &runLeftAnim)
 			currentAnimation = &dieLeftAnim;
-		currentTexture = &dieTexture;
 	}
 }
 
@@ -594,18 +450,17 @@ bool ModulePlayer::CheckCollisions(float dt)
 	bool ret = true;
 	collisionExist = false;
 	//Check manually all collisions with player
-	//
-	ListItem<Collider*>* listColliders;
 	
-	for (listColliders = app->collisions->colliders.start; listColliders != NULL; listColliders = listColliders->next)
+	ListItem<Collider*>* L;
+	
+	for (L = app->collisions->colliders.start; L != NULL; L = L->next)
 	{
-		if (playerCollider->Intersects(listColliders->data->rect))
+		if (playerCollider->Intersects(L->data->rect))
 		{
-			collisionExist = this->OnCollision(playerCollider, listColliders->data);
-			if (listColliders->data->listener != nullptr && listColliders->data->type != Collider::Type::PLAYER)
+			collisionExist = this->OnCollision(playerCollider, L->data);
+			if (L->data->listener != nullptr && L->data->type != Collider::Type::PLAYER)
 			{
-				if(listColliders->data->type != Collider::Type::BULLET)
-					listColliders->data->listener->OnCollision(listColliders->data, playerCollider);
+					L->data->listener->OnCollision(L->data, playerCollider);
 			}
 		}
 	}
@@ -623,15 +478,15 @@ bool ModulePlayer::OnCollision(Collider* c1, Collider* c2)
 		//If collider of the ground is between the top of the head and the waist
 		if (((playerCollider->rect.y < c2->rect.y) || (playerCollider->rect.y > c2->rect.y)) && (playerCollider->rect.y + playerCollider->rect.h > c2->rect.y +c2->rect.h/2))
 		{
-			collisionFromBelow = true;
+			colliderAbove = true;
 			ret = false;
 			playerPos.y = c2->rect.y + c2->rect.h + 1;
 			velocity.y = 10;
 		}
 		else
-			collisionFromBelow = false;
+			colliderAbove = false;
 
-		if (collisionFromBelow == false)
+		if (colliderAbove == false)
 		{
 			// Maintain the feet to the ground
 			if ((playerCollider->rect.y + playerCollider->rect.h >= c2->rect.y) && (playerCollider->rect.y + playerCollider->rect.h <= c2->rect.y + c2->rect.h/2))
@@ -652,7 +507,6 @@ bool ModulePlayer::OnCollision(Collider* c1, Collider* c2)
 				}
 				playerState = ON_GROUND;
 				isJump = false;
-				LOG("Player feet on ground");
 				ret = true;
 			}
 			else if (goingRight)
@@ -674,26 +528,19 @@ bool ModulePlayer::OnCollision(Collider* c1, Collider* c2)
 		previousCollision = c2;
 	}
 	
-	if (c2->type == Collider::Type::CHECKPOINT && previousCollision->type != Collider::Type::CHECKPOINT)
+	if (c2->type == Collider::Type::CHECKPOINT && (previousCollision->type != Collider::Type::CHECKPOINT))
 	{
-		LOG("SAVING GAME");
 		app->SaveGameRequest();
 		previousCollision = c2;
 	}
 
-	if (c2->type == Collider::Type::DEATH && previousCollision->type != Collider::Type::DEATH && godMode == false)
+	if (c2->type == Collider::Type::DEATH && (previousCollision->type != Collider::Type::DEATH) && !godMode)
 	{
 		destroyed = true;
 		previousCollision = c2;
 	}
 
-	if (c2->type == Collider::Type::ENEMY_HITBOX && previousCollision->type != Collider::Type::ENEMY_HITBOX && godMode == false)
-	{
-		lives -= 1;
-		previousCollision = c2;
-	}
-
-	if (c2->type == Collider::Type::ITEM && previousCollision->type != Collider::Type::ITEM && godMode == false)
+	if (c2->type == Collider::Type::ITEM && (previousCollision->type != Collider::Type::ITEM) && !godMode)
 	{
 
 		switch (c2->item)
@@ -764,7 +611,7 @@ bool ModulePlayer::CleanUp()
 	// TODO 1: Remove ALL remaining resources. Update resource count properly
 
 	app->tex->UnLoad(texture);
-	app->tex->UnLoad(jumpTexture);
+	app->tex->UnLoad(texture);
 	
 	return true;
 }

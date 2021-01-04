@@ -22,12 +22,9 @@ struct Collider
 		DEATH,
 		WIN,
 		CHECKPOINT,
-		ENEMY_HURTBOX,
 		ITEM,
-		ENEMY_HITBOX,
-		BULLET,
 
-		MAX=9,
+		MAX=6,
 	};
 
 	//Methods

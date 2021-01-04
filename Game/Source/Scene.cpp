@@ -51,7 +51,6 @@ bool Scene::Start()
 
 	app->render->background = { 200,210,222,0 };
 	app->audio->PlayMusic("Assets/Audio/Music/wii_music.ogg");
-	// Layers gets gid correctly
 	
 	if (app->collisions->IsEnabled() == false)
 		app->collisions->Enable();
@@ -62,8 +61,8 @@ bool Scene::Start()
 	if (app->entities->IsEnabled() == false)
 		app->entities->Enable();
 
-	if (app->particles->IsEnabled() == false)
-		app->particles->Enable();
+	//if (app->particles->IsEnabled() == false)
+	//	app->particles->Enable();
 
 	if (app->hud->IsEnabled() == false)
 	{
@@ -81,10 +80,9 @@ bool Scene::Start()
 	app->player->health = 3;
 
 	app->entities->AddEntity(EntityType::ITEM_HEALTH, 73 * 16, 31 * 16);
-	app->entities->AddEntity(EntityType::ITEM_HEALTH, 72 * 16, 11 * 16);
 	app->entities->AddEntity(EntityType::ITEM_DIAMOND, 88 * 16, 18 * 16);
 	app->entities->AddEntity(EntityType::ITEM_DIAMOND, 83 * 16, 10 * 16);
-	app->entities->AddEntity(EntityType::ITEM_DIAMOND, 48 * 16, 7 * 16);
+	//app->entities->AddEntity(EntityType::ITEM_DIAMOND, 48 * 16, 7 * 16);
 	app->entities->AddEntity(EntityType::ITEM_DIAMOND, 77 * 16, 25 * 16);
 
 	resetCounter = 0;
@@ -105,7 +103,7 @@ bool Scene::Update(float dt)
 	// The camera follows player(at the center)
 	if (app->win->GetScale() == 1)
 	{
-		app->render->camera.x = app->render->camera.w / 2 - app->player->playerPos.x - app->player->playerWh.x;
+		app->render->camera.x = app->render->camera.w / 2 - app->player->playerPos.x;
 		app->render->camera.y = app->render->camera.h / 2 - app->player->playerPos.y;
 	}
 	else if (app->win->GetScale() == 2)
@@ -139,11 +137,10 @@ bool Scene::Update(float dt)
 
 	if (app->input->GetKey(SDL_SCANCODE_F7) == KEY_DOWN || app->player->destroyed == true)
 	{
-		//Check here if player has lost all lives, if true then do the fade to black (permanent death)
-		if (app->player->lives > 0)
+		
+		if (app->player->lives > 0) // if not dead
 		{
-			//If player still has lives, minus one live and restart him from the last checkpoint (temporal death)
-			app->player->PlayerDied();
+			app->player->PlayerDied(); // -1 life
 		}
 		else if (app->player->lives == 0)
 		{
@@ -209,7 +206,7 @@ bool Scene::CleanUp()
 	app->player->Disable();
 	app->collisions->Disable();
 	app->entities->Disable();
-	app->particles->Disable();
+	/*app->particles->Disable();*/
 	app->map->CleanUp();
 	
 	return true;
