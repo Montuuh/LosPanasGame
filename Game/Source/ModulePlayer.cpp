@@ -316,10 +316,10 @@ void ModulePlayer::Input(float dt)
 		godMode = !godMode;
 	}
 
-	//if (app->input->GetKey(SDL_SCANCODE_F7) == KEY_DOWN)
-	//{
-	//	destroyed = true;
-	//}
+	if (app->input->GetKey(SDL_SCANCODE_F7) == KEY_DOWN)
+	{
+		lives = 0;
+	}
 }
 
 void ModulePlayer::Logic(float dt)
@@ -617,11 +617,6 @@ void ModulePlayer::LoseLife()
 
 bool ModulePlayer::CleanUp()
 {
-	//activeTextures = activeColliders = activeFonts = activeFx = 0;
-
-	// TODO 1: Remove ALL remaining resources. Update resource count properly
-
-	app->tex->UnLoad(texture);
 	app->tex->UnLoad(texture);
 	
 	return true;

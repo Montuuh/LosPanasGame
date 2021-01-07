@@ -135,24 +135,11 @@ bool Scene::Update(float dt)
 	if (app->input->GetKey(SDL_SCANCODE_F1) == KEY_UP || app->input->GetKey(SDL_SCANCODE_F3) == KEY_UP)
 		app->fade->FadeToBlack(this, (Module*)app->scene);
 
-	if (app->input->GetKey(SDL_SCANCODE_F7) == KEY_DOWN /*|| app->player->destroyed == true*/)
+	if (app->input->GetKey(SDL_SCANCODE_F7) == KEY_DOWN)
 	{
-		
-		//if (app->player->lives > 0) // if not dead
-		//{
-		//	app->player->PlayerDied(); // -1 life
-		//}
-		//if (app->player->lives == 0)
-		//{
-		//	if (resetCounter == 60)
-		//	{
-		//		app->fade->FadeToBlack(this, (Module*)app->deathScene);
-		//		resetCounter = 0;
-		//	}
-		//	++resetCounter;
-		//}	
 		app->player->lives = 0;
 	}
+
 	if (app->player->destroyed == true)
 	{
 		if (app->player->lives == 0)
@@ -174,6 +161,7 @@ bool Scene::Update(float dt)
 		}
 		counterSeconds++;
 	}
+
 	if (app->input->GetKey(SDL_SCANCODE_F11) == KEY_DOWN)
 	{
 		if (capFrameRate)
