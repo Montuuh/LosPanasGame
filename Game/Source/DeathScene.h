@@ -30,9 +30,8 @@ public:
 
 private:
 
-	SDL_Texture* logoTex = nullptr;
-	SDL_Texture* tex = nullptr;
-	SDL_Rect logo;
+	SDL_Texture* deathTex = nullptr;
+	SDL_Rect deathRect;
 
 	Uint32 startTime = 0;
 	Uint32 endTime = 0;

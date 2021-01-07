@@ -16,7 +16,7 @@ DeathScene::DeathScene(bool b) : Module(b)
 {
 	name = "Death S";
 
-	logo = { 185, 0, 962, 720 };
+	deathRect = { 185, 0, 962, 720 };
 }
 
 DeathScene::~DeathScene() {}
@@ -37,11 +37,9 @@ bool DeathScene::Start()
 	app->render->background = { 0,0,0,0 };
 	// Include logo
 	app->render->camera = { 0,0,1280,720 };
-	logoTex = app->tex->Load("Assets/textures/death_screen.png");
+	deathTex = app->tex->Load("Assets/Textures/death_screen.png");
 
-
-
-	if (logoTex == nullptr)
+	if (deathTex == nullptr)
 	{
 		ret = false;
 	}
@@ -70,13 +68,7 @@ bool DeathScene::PostUpdate()
 	if (app->input->GetKey(SDL_SCANCODE_ESCAPE) == KEY_DOWN)
 		ret = false;
 
-	actualTime = SDL_GetTicks() - startTime;
-
-	if (actualTime < endTime)
-	{
-
-	}
-	app->render->DrawTexture(logoTex, 0,0);
+	app->render->DrawTexture(deathTex, 0,0);
 	return ret;
 }
 
@@ -88,7 +80,7 @@ bool DeathScene::CleanUp()
 	endTime = 0;
 	actualTime = 0;
 
-	if (!app->tex->UnLoad(logoTex))
+	if (!app->tex->UnLoad(deathTex))
 	{
 		LOG("Start Screen -> Error unloading the texture.");
 		ret = false;

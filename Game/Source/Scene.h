@@ -34,7 +34,7 @@ public:
 	// Called before quitting
 	bool CleanUp();
 
-	int resetCounter = 0;
+	int counterSeconds = 0;
 
 private:
 	SDL_Texture* img;

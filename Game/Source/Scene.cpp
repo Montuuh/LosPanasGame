@@ -71,7 +71,7 @@ bool Scene::Start()
 	app->map->LoadColliders();
 
 	app->player->destroyed = false;
-	app->player->win = false;
+	app->player->hasWon = false;
 	app->player->playerPos = { 4*16, 46*16 };
 	
 	app->player->velocity.y = 0;
@@ -85,7 +85,7 @@ bool Scene::Start()
 	//app->entities->AddEntity(EntityType::ITEM_DIAMOND, 48 * 16, 7 * 16);
 	app->entities->AddEntity(EntityType::ITEM_DIAMOND, 77 * 16, 25 * 16);
 
-	resetCounter = 0;
+	counterSeconds = 0;
 
 	app->SaveGameRequest();
 	return true;
@@ -157,13 +157,22 @@ bool Scene::Update(float dt)
 	{
 		if (app->player->lives == 0)
 		{
-			if (resetCounter == 60)
+			if (counterSeconds == 60)
 			{
 				app->fade->FadeToBlack(this, (Module*)app->deathScene);
-				resetCounter = 0;
+				counterSeconds = 0;
 			}
-		++resetCounter;
+		++counterSeconds;
 		}	
+	}
+	if (app->player->hasWon == true)
+	{
+		if (counterSeconds == 60)
+		{
+			app->fade->FadeToBlack(this, (Module*)app->winScreen);
+			counterSeconds = 0;
+		}
+		counterSeconds++;
 	}
 	if (app->input->GetKey(SDL_SCANCODE_F11) == KEY_DOWN)
 	{

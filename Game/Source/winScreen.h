@@ -24,9 +24,8 @@ public:
 
 private:
 
-	SDL_Texture* logoTex = nullptr;
-	SDL_Texture* tex = nullptr;
-	SDL_Rect logo;
+	SDL_Texture* winTex = nullptr;
+	SDL_Rect winRect;
 
 	Uint32 startTime = 0;
 	Uint32 endTime = 0;

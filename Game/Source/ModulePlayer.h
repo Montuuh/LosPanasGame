@@ -77,7 +77,7 @@ public:
 	bool cameraFollow = false;
 	bool collisionExist = false;
 	bool destroyed = false;
-	bool win = false;
+	bool hasWon = false;
 
 private:
 	enum PlayerState {ON_GROUND, ON_AIR};

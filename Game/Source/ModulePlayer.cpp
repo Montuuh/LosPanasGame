@@ -294,7 +294,7 @@ void ModulePlayer::Input(float dt)
 	
 
 	// If player wants to jump && its on ground
-	if ((app->input->GetKey(SDL_SCANCODE_SPACE) == KEY_DOWN) && (playerState == ON_GROUND) && (!godMode))
+	if ((app->input->GetKey(SDL_SCANCODE_SPACE) == KEY_DOWN) && (playerState == ON_GROUND))
 	{
 		velocity.x = velocity.x / 2;
 		if (velocity.y == 0)
@@ -421,21 +421,13 @@ void ModulePlayer::CheckPlayerState(float dt)
 			currentAnimation == &idleLeftAnim;
 	}
 
-	// Die animations
+	// Die animations && fade to death scene
 	if (destroyed)
 	{
 		if (currentAnimation == &idleRightAnim || currentAnimation == &fallRightAnim || currentAnimation == &jumpRightAnim || currentAnimation == &attackRightAnim || currentAnimation == &runRightAnim)
 			currentAnimation = &dieRightAnim;
 		if (currentAnimation == &idleLeftAnim || currentAnimation == &fallLeftAnim || currentAnimation == &jumpLeftAnim || currentAnimation == &attackLeftAnim || currentAnimation == &runLeftAnim)
 			currentAnimation = &dieLeftAnim;
-
-		int resetCounter = 0;
-		if (resetCounter >= 120 && currentAnimation->HasFinished())
-		{
-			app->fade->FadeToBlack(this, (Module*)app->deathScene);
-			resetCounter = 0;
-		}
-		++resetCounter;
 	}
 }
 
@@ -544,7 +536,6 @@ bool ModulePlayer::OnCollision(Collider* c1, Collider* c2)
 
 	if (c2->type == Collider::Type::DEATH && (previousCollision->type != Collider::Type::DEATH) && !godMode)
 	{
-		// destroyed = true;
 		LoseLife();
 		previousCollision = c2;
 	}
@@ -571,8 +562,14 @@ bool ModulePlayer::OnCollision(Collider* c1, Collider* c2)
 		
 	}
 
-	if (c2->type == Collider::Type::WIN)
-		win = true;
+	if (c2->type == Collider::Type::WIN && (previousCollision->type != Collider::Type::WIN))
+	{
+		if (playerCollider->rect.x / 2 == c2->rect.x / 2)
+		{
+			hasWon = true;
+			previousCollision = c2;
+		}
+	}
 
 	return ret;
 }
