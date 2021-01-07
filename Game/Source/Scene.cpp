@@ -76,8 +76,8 @@ bool Scene::Start()
 	
 	app->player->velocity.y = 0;
 	app->player->cameraFollow = true;
-	app->player->lives = 2;
-	app->player->health = 3;
+	app->player->lives = 3;
+
 
 	app->entities->AddEntity(EntityType::ITEM_HEALTH, 73 * 16, 31 * 16);
 	app->entities->AddEntity(EntityType::ITEM_DIAMOND, 88 * 16, 18 * 16);
@@ -135,23 +135,35 @@ bool Scene::Update(float dt)
 	if (app->input->GetKey(SDL_SCANCODE_F1) == KEY_UP || app->input->GetKey(SDL_SCANCODE_F3) == KEY_UP)
 		app->fade->FadeToBlack(this, (Module*)app->scene);
 
-	if (app->input->GetKey(SDL_SCANCODE_F7) == KEY_DOWN || app->player->destroyed == true)
+	if (app->input->GetKey(SDL_SCANCODE_F7) == KEY_DOWN /*|| app->player->destroyed == true*/)
 	{
 		
-		if (app->player->lives > 0) // if not dead
+		//if (app->player->lives > 0) // if not dead
+		//{
+		//	app->player->PlayerDied(); // -1 life
+		//}
+		//if (app->player->lives == 0)
+		//{
+		//	if (resetCounter == 60)
+		//	{
+		//		app->fade->FadeToBlack(this, (Module*)app->deathScene);
+		//		resetCounter = 0;
+		//	}
+		//	++resetCounter;
+		//}	
+		app->player->lives = 0;
+	}
+	if (app->player->destroyed == true)
+	{
+		if (app->player->lives == 0)
 		{
-			app->player->PlayerDied(); // -1 life
-		}
-		else if (app->player->lives == 0)
-		{
-			if (resetCounter == 3 * 60)
+			if (resetCounter == 60)
 			{
 				app->fade->FadeToBlack(this, (Module*)app->deathScene);
 				resetCounter = 0;
 			}
-			++resetCounter;
-		}
-			
+		++resetCounter;
+		}	
 	}
 	if (app->input->GetKey(SDL_SCANCODE_F11) == KEY_DOWN)
 	{

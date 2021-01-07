@@ -97,7 +97,7 @@ private:
 	void CheckPlayerState(float dt);
 
 public:
-	void PlayerDied(); // Player loses a life and returns to the last checkpoint/start
+	void LoseLife(); // Player loses a life and returns to the last checkpoint/start
 
 	uint lives;
 	uint health;

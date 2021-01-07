@@ -316,17 +316,17 @@ void ModulePlayer::Input(float dt)
 		godMode = !godMode;
 	}
 
-	if (app->input->GetKey(SDL_SCANCODE_F7) == KEY_DOWN)
-	{
-		destroyed = true;
-	}
+	//if (app->input->GetKey(SDL_SCANCODE_F7) == KEY_DOWN)
+	//{
+	//	destroyed = true;
+	//}
 }
 
 void ModulePlayer::Logic(float dt)
 {
 	CheckPlayerState(dt);
 
-	if (health == 0)
+	if (lives == 0)
 		destroyed = true;
 
 	// Borders for the player
@@ -428,6 +428,14 @@ void ModulePlayer::CheckPlayerState(float dt)
 			currentAnimation = &dieRightAnim;
 		if (currentAnimation == &idleLeftAnim || currentAnimation == &fallLeftAnim || currentAnimation == &jumpLeftAnim || currentAnimation == &attackLeftAnim || currentAnimation == &runLeftAnim)
 			currentAnimation = &dieLeftAnim;
+
+		int resetCounter = 0;
+		if (resetCounter >= 120 && currentAnimation->HasFinished())
+		{
+			app->fade->FadeToBlack(this, (Module*)app->deathScene);
+			resetCounter = 0;
+		}
+		++resetCounter;
 	}
 }
 
@@ -536,11 +544,12 @@ bool ModulePlayer::OnCollision(Collider* c1, Collider* c2)
 
 	if (c2->type == Collider::Type::DEATH && (previousCollision->type != Collider::Type::DEATH) && !godMode)
 	{
-		destroyed = true;
+		// destroyed = true;
+		LoseLife();
 		previousCollision = c2;
 	}
 
-	if (c2->type == Collider::Type::ITEM && (previousCollision->type != Collider::Type::ITEM) && !godMode)
+	if (c2->type == Collider::Type::ITEM && (previousCollision->type != Collider::Type::ITEM))
 	{
 
 		switch (c2->item)
@@ -593,14 +602,19 @@ bool ModulePlayer::SaveState(pugi::xml_node& data) const
 	return true;
 }
 
-void ModulePlayer::PlayerDied()
+void ModulePlayer::LoseLife()
 {
-	app->LoadGameRequest();
-	app->player->destroyed = false;
-	app->player->velocity.y = 0;
-	app->player->velocity.x = 0;
 	lives = lives - 1;
-	health = 3;
+	if (lives > 0)
+	{
+		app->player->velocity.x = 0;
+		app->player->velocity.y = 0;
+		app->LoadGameRequest();
+	}
+	else if (lives == 0)
+	{
+		app->player->destroyed = true;
+	}
 }
 
 

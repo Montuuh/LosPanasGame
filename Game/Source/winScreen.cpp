@@ -37,7 +37,7 @@ bool WinScreen::Start()
 
 	app->audio->PlayMusic("Assets/Audio/Music/wii_music.ogg");
 
-	logoTex = app->tex->Load("Assets/textures/win_screen.png");
+	logoTex = app->tex->Load("Assets/Textures/win_screen.png");
 	app->render->background = { 0,0,0,0 };
 	if (logoTex == nullptr)
 	{
