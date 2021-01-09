@@ -47,12 +47,9 @@ bool ModuleInitialScreen::Update(float dt)
 {
 	bool ret = true;
 
-
-	
-	if (app->input->GetKey(SDL_SCANCODE_RETURN) == KEY_DOWN)
-	{
+	timer += 1.0f;
+	if (timer >= 180.0f) // ~= 4 secs
 		app->fade->FadeToBlack(this, (Module*)app->titleScreen);
-	}
 
 	return ret;
 }
@@ -60,16 +57,9 @@ bool ModuleInitialScreen::Update(float dt)
 bool ModuleInitialScreen::PostUpdate()
 {
 	bool ret = true;
-	if (app->input->GetKey(SDL_SCANCODE_ESCAPE) == KEY_DOWN)
-		ret = false;
 
-	actualTime = SDL_GetTicks() - startTime;
-
-	if (actualTime < endTime)
-	{
-		
-	}
 	app->render->DrawTexture(logoTex, 0, 0);
+
 	return ret;
 }
 

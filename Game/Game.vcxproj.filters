@@ -29,7 +29,6 @@
     <ClCompile Include="Source\Window.cpp" />
     <ClCompile Include="Source\Textures.cpp" />
     <ClCompile Include="Source\Render.cpp" />
-    <ClCompile Include="Source\ModuleFonts.cpp" />
     <ClCompile Include="Source\Main.cpp" />
     <ClCompile Include="Source\Input.cpp" />
     <ClCompile Include="Source\Audio.cpp" />
@@ -47,6 +46,7 @@
       <Filter>GUI</Filter>
     </ClCompile>
     <ClCompile Include="Source\GuiManager.cpp" />
+    <ClCompile Include="Source\Font.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Source\Defs.h">
@@ -101,7 +101,6 @@
     <ClInclude Include="Source\Window.h" />
     <ClInclude Include="Source\Textures.h" />
     <ClInclude Include="Source\Render.h" />
-    <ClInclude Include="Source\ModuleFonts.h" />
     <ClInclude Include="Source\Module.h" />
     <ClInclude Include="Source\Input.h" />
     <ClInclude Include="Source\Audio.h" />
@@ -122,6 +121,7 @@
       <Filter>GUI</Filter>
     </ClInclude>
     <ClInclude Include="Source\GuiManager.h" />
+    <ClInclude Include="Source\Font.h" />
   </ItemGroup>
   <ItemGroup>
     <Filter Include="External">

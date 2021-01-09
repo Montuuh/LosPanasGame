@@ -4,7 +4,7 @@
 #include "Module.h"
 
 #include "Point.h"
-
+#include "Font.h"
 #include "SDL/include/SDL.h"
 
 class Render : public Module
@@ -42,13 +42,15 @@ public:
 	// Set background color
 	void SetBackgroundColor(SDL_Color color);
 
+	bool DrawText(Font* font, const char* text, int x, int y, int size, int spacing, SDL_Color tint);
+
 public:
 
 	SDL_Renderer* renderer;
 	SDL_Rect camera;
 	SDL_Rect viewport;
 	SDL_Color background;
-	bool guiDebug = false;
+	bool guiDebug;
 
 	bool vSync = false;
 };

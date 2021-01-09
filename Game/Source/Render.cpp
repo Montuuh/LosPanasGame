@@ -60,6 +60,9 @@ bool Render::Start()
 	LOG("render start");
 	// back background
 	SDL_RenderGetViewport(renderer, &viewport);
+
+	guiDebug = false;
+
 	return true;
 }
 
@@ -72,7 +75,7 @@ bool Render::PreUpdate()
 
 bool Render::Update(float dt)
 {
-	if (app->input->GetKey(SDL_SCANCODE_F8))
+	if (app->input->GetKey(SDL_SCANCODE_F8) == KEY_DOWN)
 	{
 		guiDebug = !guiDebug;
 	}
@@ -230,6 +233,30 @@ bool Render::DrawCircle(int x, int y, int radius, Uint8 r, Uint8 g, Uint8 b, Uin
 	{
 		LOG("Cannot draw quad to screen. SDL_RenderFillRect error: %s", SDL_GetError());
 		ret = false;
+	}
+
+	return ret;
+}
+
+bool Render::DrawText(Font* font, const char* text, int x, int y, int size, int spacing, SDL_Color tint)
+{
+	bool ret = true;
+
+	int length = strlen(text);
+	int posX = x;
+
+	float scale = (float)size / font->GetCharRec(32).h;
+
+	SDL_SetTextureColorMod(font->GetTextureAtlas(), tint.r, tint.g, tint.b);
+
+	for (int i = 0; i < length; i++)
+	{
+		SDL_Rect recGlyph = font->GetCharRec(text[i]);
+		SDL_Rect recDest = { posX, y, (scale * recGlyph.w), size };
+
+		SDL_RenderCopyEx(renderer, font->GetTextureAtlas(), &recGlyph, &recDest, 0.0, { 0 }, SDL_RendererFlip::SDL_FLIP_NONE);
+
+		posX += ((float)recGlyph.w * scale + spacing);
 	}
 
 	return ret;

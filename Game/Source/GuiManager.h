@@ -44,6 +44,7 @@ public:
 	float updateMsCycle = 0.0f;
 	bool doLogic = false;
 	int id = 0;
+	SDL_Texture* titleScreenTexGui;
 };
 
 #endif // __GUIMANAGER_H__

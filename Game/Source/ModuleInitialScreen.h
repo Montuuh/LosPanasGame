@@ -33,6 +33,9 @@ private:
 	Uint32 endTime = 0;
 	Uint32 actualTime = 0;
 
+	float timer = 0.0f;
+
+
 };
 
 #endif

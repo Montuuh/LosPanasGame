@@ -9,6 +9,7 @@
 #include "Scene.h"
 #include "ModulePlayer.h"
 #include "GuiManager.h"
+#include "Font.h"
 
 #include "Defs.h"
 #include "Log.h"
@@ -30,21 +31,38 @@ bool TitleScreen::Start()
 	actualTime = 0;
 	endTime = 3000;
 
-	// Include title
+
+	
 
 	app->audio->PlayMusic("Assets/Audio/Music/wii_music.ogg");
 
 	titleTex = app->tex->Load("Assets/textures/intro_screen.png");
-	app->render->background = { 0,0,0,0 };
 	if (titleTex == nullptr)
-	{
 		ret = false;
-	}
 
-	buttonNewGame = (GuiButton*)app->guimanager->CreateGuiControl(GuiControlType::BUTTON, 1, { 0, 0, 100, 100 });
+	app->render->background = { 0,0,0,0 };
 
 	app->player->playerPos = { -1000,-1000 };
 	app->player->cameraFollow = false;
+
+	font = new Font("Assets/Fonts/dungeon_font3.xml", app->tex);
+
+	//buttonNewGameRect = { 200, 159, 216, 30 };
+	//buttonNewGame = (GuiButton*)app->guimanager->CreateGuiControl(GuiControlType::BUTTON, 1, buttonNewGameRect); // New Game button (id = 1)
+	//buttonNewGame->SetObserver(this);
+
+	//buttonExitRect = { 220, 312, 175, 30 };
+	//buttonExit = (GuiButton*)app->guimanager->CreateGuiControl(GuiControlType::BUTTON, 5, buttonExitRect); // Exit Game button (id = 5)
+	//buttonExit->SetObserver(this);
+
+	buttonNewGameRect = { 50, 300, 150, 30 };
+	buttonNewGame = (GuiButton*)app->guimanager->CreateGuiControl(GuiControlType::BUTTON, 1, buttonNewGameRect); // New Game button (id = 1)
+	buttonNewGame->SetObserver(this);
+
+	buttonExitRect = { 420, 300, 175, 30 };
+	buttonExit = (GuiButton*)app->guimanager->CreateGuiControl(GuiControlType::BUTTON, 5, buttonExitRect); // Exit Game button (id = 5)
+	buttonExit->SetObserver(this);
+
 	return ret;
 }
 
@@ -53,11 +71,7 @@ bool TitleScreen::Update(float dt)
 	bool ret = true;
 
 	buttonNewGame->Update(dt);
-
-	if (app->input->GetKey(SDL_SCANCODE_RETURN) == KEY_DOWN)
-	{
-		app->fade->FadeToBlack(this, (Module*)app->scene);
-	}
+	buttonExit->Update(dt);
 
 	return ret;
 }
@@ -65,18 +79,43 @@ bool TitleScreen::Update(float dt)
 bool TitleScreen::PostUpdate()
 {
 	bool ret = true;
-	if (app->input->GetKey(SDL_SCANCODE_ESCAPE) == KEY_DOWN)
-		ret = false;
+	
+	if (exitRequested) return false;
 
-	actualTime = SDL_GetTicks() - startTime;
+	app->render->DrawTexture(titleTex, 0, 0);
+
+	//buttonNewGame->Draw();
+	//if (buttonNewGame->state == GuiControlState::NORMAL)
+	//	app->render->DrawText(font, "New Game", buttonNewGameRect.x + 190, buttonNewGameRect.y + 110, 170, 0, { 255, 255, 255, 255 });
+	//else if (buttonNewGame->state == GuiControlState::FOCUSED)
+	//	app->render->DrawText(font, "New Game", buttonNewGameRect.x + 190, buttonNewGameRect.y + 110, 170, 0, { 255, 255, 0, 255 });
+	//else if(buttonNewGame->state == GuiControlState::PRESSED)
+	//	app->render->DrawText(font, "New Game", buttonNewGameRect.x + 190, buttonNewGameRect.y + 110, 170, 0, { 255, 0, 0, 255 });
+
+	//buttonExit->Draw();
+	//if (buttonExit->state == GuiControlState::NORMAL)
+	//	app->render->DrawText(font, "Exit Game", buttonExitRect.x + 225, buttonExitRect.y + 280, 130, 0, { 255, 255, 255, 255 });
+	//else if (buttonExit->state == GuiControlState::FOCUSED)
+	//	app->render->DrawText(font, "Exit Game", buttonExitRect.x + 225, buttonExitRect.y + 280, 130, 0, { 255, 255, 0, 255 });
+	//else if (buttonExit->state == GuiControlState::PRESSED)
+	//	app->render->DrawText(font, "Exit Game", buttonExitRect.x + 225, buttonExitRect.y + 280, 130, 0, { 255, 0, 0, 255 });
 
 	buttonNewGame->Draw();
+	if (buttonNewGame->state == GuiControlState::NORMAL)
+		app->render->DrawText(font, "New Game", buttonNewGameRect.x + 190, buttonNewGameRect.y + 110, 170, 0, { 255, 255, 255, 255 });
+	else if (buttonNewGame->state == GuiControlState::FOCUSED)
+		app->render->DrawText(font, "New Game", buttonNewGameRect.x + 190, buttonNewGameRect.y + 110, 170, 0, { 255, 255, 0, 255 });
+	else if (buttonNewGame->state == GuiControlState::PRESSED)
+		app->render->DrawText(font, "New Game", buttonNewGameRect.x + 190, buttonNewGameRect.y + 110, 170, 0, { 255, 0, 0, 255 });
 
-	if (actualTime < endTime)
-	{
+	buttonExit->Draw();
+	if (buttonExit->state == GuiControlState::NORMAL)
+		app->render->DrawText(font, "Exit Game", buttonExitRect.x + 225, buttonExitRect.y + 280, 130, 0, { 255, 255, 255, 255 });
+	else if (buttonExit->state == GuiControlState::FOCUSED)
+		app->render->DrawText(font, "Exit Game", buttonExitRect.x + 225, buttonExitRect.y + 280, 130, 0, { 255, 255, 0, 255 });
+	else if (buttonExit->state == GuiControlState::PRESSED)
+		app->render->DrawText(font, "Exit Game", buttonExitRect.x + 225, buttonExitRect.y + 280, 130, 0, { 255, 0, 0, 255 });
 
-	}
-	app->render->DrawTexture(titleTex, 0, 0);
 	return ret;
 }
 
@@ -99,11 +138,23 @@ bool TitleScreen::CleanUp()
 
 bool TitleScreen::OnGuiMouseClickEvent(GuiControl* control)
 {
-	switch (control->id)
+	switch (control->type)
 	{
-	case 1://NewGame
-		app->fade->FadeToBlack(this, (Module*)app->scene);
-		break;
+		case GuiControlType::BUTTON:
+			switch (control->id)
+			{
+				case 1:
+					app->fade->FadeToBlack(this, (Module*)app->deathScene);
+					break;
+				case 5:
+					exitRequested = true;
+					break;
+				default:
+					break;
+			}
+		default:
+			break;
 	}
+
 	return true;
 }

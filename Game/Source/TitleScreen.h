@@ -5,6 +5,7 @@
 #include "GuiButton.h"
 
 struct SDL_Rect;
+class Font;
 
 class TitleScreen : public Module
 {
@@ -17,19 +18,29 @@ public:
 	bool Update(float dt);
 	bool PostUpdate();
 	bool CleanUp();
-	bool OnGuiMouseClickEvent(GuiControl* control);
+	virtual bool OnGuiMouseClickEvent(GuiControl* control);
+
+	bool exitRequested;
 
 private:
 
 	SDL_Texture* titleTex = nullptr;
+	SDL_Texture* newGameTex = nullptr;
 	SDL_Texture* tex = nullptr;
 	SDL_Rect title;
+
 
 	Uint32 startTime = 0;
 	Uint32 endTime = 0;
 	Uint32 actualTime = 0;
 
+	Font* font;
 	GuiButton* buttonNewGame;
+	SDL_Rect buttonNewGameRect;
+	GuiButton* buttonExit;
+	SDL_Rect buttonExitRect;
+
+
 };
 
 #endif // __SCENE_H__

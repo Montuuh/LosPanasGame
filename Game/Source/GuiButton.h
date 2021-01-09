@@ -10,7 +10,7 @@ class GuiButton : public GuiControl
 {
 public:
 
-    GuiButton(int id, SDL_Rect bounds);
+    GuiButton(uint32 id, SDL_Rect bounds, SDL_Texture* tex);
     virtual ~GuiButton();
 
     bool Update(float dt);

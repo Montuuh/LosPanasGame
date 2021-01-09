@@ -21,6 +21,7 @@ bool GuiManager::Awake(pugi::xml_node& config)
 
 bool GuiManager::Start()
 {
+	//titleScreenTexGui = app->tex->Load(checkBoxPath);
 	return true;
 }
 
@@ -58,7 +59,7 @@ GuiControl* GuiManager::CreateGuiControl(GuiControlType type, int id, SDL_Rect b
 	switch (type)
 	{
 		case GuiControlType::BUTTON:
-			control = new GuiButton(id, { 0, 0, 20, 20 });
+			control = new GuiButton(id, bounds, titleScreenTexGui);
 			break;
 		case GuiControlType::CHECKBOX:
 			control = new GuiCheckBox(id, { 1280 / 2 - 300 / 2, 200, 20, 20 }, "EXIT");

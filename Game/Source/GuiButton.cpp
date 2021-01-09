@@ -2,10 +2,11 @@
 #include "Input.h"
 #include "App.h"
 #include "Render.h"
-GuiButton::GuiButton(int id, SDL_Rect bounds) : GuiControl(GuiControlType::BUTTON, id)
+GuiButton::GuiButton(uint32 id, SDL_Rect bounds, SDL_Texture* tex) : GuiControl(GuiControlType::BUTTON, id)
 {
+    this->id = id;
     this->bounds = bounds;
-    this->texture = texture;
+    this->texture = tex;
 }
 
 GuiButton::~GuiButton()
@@ -58,20 +59,24 @@ bool GuiButton::Draw()
     // Draw the right button depending on state
     switch (state)
     {
-    case GuiControlState::DISABLED: //render->DrawRectangle(bounds, 60, 60, 60, 255, true, false); //Grey
+    case GuiControlState::DISABLED:                                     //Gray
         break;
-    case GuiControlState::NORMAL: //render->DrawRectangle(bounds, 0, 255, 0, 255, true, false); //Green
+    case GuiControlState::NORMAL:                                       //Green
         //app->render->DrawTexture(texture, bounds.x, bounds.y, { 480, 319, 332, 61 });
         if (app->render->guiDebug)
         {
-            app->render->DrawRectangle({ 480, 319, 332, 61 }, 0, 255, 0, 200);
+            app->render->DrawRectangle(bounds, 0, 255, 0, 100);
         }
         break;
-    case GuiControlState::FOCUSED: //render->DrawRectangle(bounds, 255, 255, 0, 255, true, false); //Yellow
-        app->render->DrawTexture(texture, bounds.x, bounds.y, &SDL_Rect({ 0,0,9,7 }));
+    case GuiControlState::FOCUSED:                                      //Yellow
+        // app->render->DrawTexture(texture, bounds.x, bounds.y, &SDL_Rect({ 0,0,9,7 }));
+        if (app->render->guiDebug)
+        {
+            app->render->DrawRectangle(bounds, 255, 255, 0, 100);
+        }
         break;
     case GuiControlState::PRESSED: //render->DrawRectangle(bounds, 0, 255, 255, 255, true, false);//Cyan
-        app->render->DrawTexture(texture, bounds.x, bounds.y, &SDL_Rect({ 9,0,9,7 }));
+        // app->render->DrawTexture(texture, bounds.x, bounds.y, &SDL_Rect({ 9,0,9,7 }));
         break;
     case GuiControlState::SELECTED: //render->DrawRectangle(bounds, 255, 0, 0, 255, true, false);//Red
         app->render->DrawTexture(texture, bounds.x, bounds.y, &SDL_Rect({ 9,0,9,7 }));
@@ -80,5 +85,5 @@ bool GuiButton::Draw()
         break;
     }
 
-    return false;
+    return true;
 }

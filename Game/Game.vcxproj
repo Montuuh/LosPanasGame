@@ -100,6 +100,7 @@
     <ClCompile Include="Source\DeathScene.cpp" />
     <ClCompile Include="Source\EnemyFlying.cpp" />
     <ClCompile Include="Source\EnemyWalking.cpp" />
+    <ClCompile Include="Source\Font.cpp" />
     <ClCompile Include="Source\GuiButton.cpp" />
     <ClCompile Include="Source\GuiCheckBox.cpp" />
     <ClCompile Include="Source\GuiManager.cpp" />
@@ -114,7 +115,6 @@
     <ClCompile Include="Source\ModuleCollisions.cpp" />
     <ClCompile Include="Source\ModuleEntities.cpp" />
     <ClCompile Include="Source\ModuleFadeToBlack.cpp" />
-    <ClCompile Include="Source\ModuleFonts.cpp" />
     <ClCompile Include="Source\ModuleHud.cpp" />
     <ClCompile Include="Source\ModuleInitialScreen.cpp" />
     <ClCompile Include="Source\ModuleParticles.cpp" />
@@ -135,6 +135,7 @@
     <ClInclude Include="Source\DeathScene.h" />
     <ClInclude Include="Source\EnemyFlying.h" />
     <ClInclude Include="Source\EnemyWalking.h" />
+    <ClInclude Include="Source\Font.h" />
     <ClInclude Include="Source\GuiButton.h" />
     <ClInclude Include="Source\GuiCheckBox.h" />
     <ClInclude Include="Source\GuiControl.h" />
@@ -148,7 +149,6 @@
     <ClInclude Include="Source\ModuleCollisions.h" />
     <ClInclude Include="Source\ModuleEntities.h" />
     <ClInclude Include="Source\ModuleFadeToBlack.h" />
-    <ClInclude Include="Source\ModuleFonts.h" />
     <ClInclude Include="Source\ModuleHud.h" />
     <ClInclude Include="Source\ModuleInitialScreen.h" />
     <ClInclude Include="Source\ModuleParticles.h" />
