@@ -36,6 +36,7 @@ A platformer game created and developed by two students from CITM TTC (Barcelona
  - F3: Restart current level.
  - F5: Save current game state.
  - F6: Load previous game state.
+ - F8: Enter debug for GUI
  - F9: View colliders, paths and logic.
  - F10: God Mode.
  - F11: Enable / Disable FPS cap to 30 or 60.
