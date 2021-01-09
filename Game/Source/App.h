@@ -33,6 +33,7 @@ class Entities;
 class ModuleHud;
 class ModuleParticles;
 class PathFinding;
+class GuiManager;
 
 class App
 {
@@ -119,6 +120,7 @@ public:
 	ModuleDebugInfo* debug;
 	ModuleFadeToBlack* fade;
 	Entities* entities;
+	GuiManager* guimanager;
 
 	float cappedMs = -1;
 private:

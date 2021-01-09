@@ -194,6 +194,11 @@ bool Scene::Update(float dt)
 	return true;
 }
 
+bool Scene::OnGuiMouseClickEvent(GuiControl* control)
+{
+	return true;
+}
+
 // Called each loop iteration
 bool Scene::PostUpdate()
 {

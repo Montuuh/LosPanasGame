@@ -17,6 +17,7 @@
 #include "Pathfinding.h"
 #include "ModuleEntities.h"
 #include "ModuleParticles.h"
+#include "GuiManager.h"
 
 #include "Defs.h"
 #include "Log.h"
@@ -49,6 +50,7 @@ App::App(int argc, char* args[]) : argc(argc), args(args)
 	entities = new Entities(false);
 	/*particles = new ModuleParticles(false);*/
 	pathfinding = new PathFinding();
+	guimanager = new GuiManager();
 
 	AddModule(win);
 	AddModule(input);
@@ -65,6 +67,7 @@ App::App(int argc, char* args[]) : argc(argc), args(args)
 	AddModule(player);
 	AddModule(hud);
 	AddModule(pathfinding);
+	AddModule(guimanager);
 
 	AddModule(entities);
 	/*AddModule(particles);*/

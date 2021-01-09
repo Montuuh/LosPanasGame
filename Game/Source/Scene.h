@@ -4,6 +4,7 @@
 #include "Module.h"
 
 struct SDL_Texture;
+class GuiControl;
 
 class Scene : public Module
 {
@@ -34,10 +35,7 @@ public:
 	// Called before quitting
 	bool CleanUp();
 
-	virtual bool OnGuiMouseClickEvent(GuiControl* control)
-	{
-		return true;
-	}
+	virtual bool OnGuiMouseClickEvent(GuiControl* control);
 
 	int counterSeconds = 0;
 
