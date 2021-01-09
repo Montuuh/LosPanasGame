@@ -7,6 +7,7 @@
 
 class App;
 struct Collider;
+class GuiControl;
 
 class Module
 {

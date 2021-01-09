@@ -100,6 +100,10 @@
     <ClCompile Include="Source\DeathScene.cpp" />
     <ClCompile Include="Source\EnemyFlying.cpp" />
     <ClCompile Include="Source\EnemyWalking.cpp" />
+    <ClCompile Include="Source\GuiButton.cpp" />
+    <ClCompile Include="Source\GuiCheckBox.cpp" />
+    <ClCompile Include="Source\GuiManager.cpp" />
+    <ClCompile Include="Source\GuiSlider.cpp" />
     <ClCompile Include="Source\ItemHealth.cpp" />
     <ClCompile Include="Source\Entity.cpp" />
     <ClCompile Include="Source\ItemDiamond.cpp" />
@@ -131,6 +135,11 @@
     <ClInclude Include="Source\DeathScene.h" />
     <ClInclude Include="Source\EnemyFlying.h" />
     <ClInclude Include="Source\EnemyWalking.h" />
+    <ClInclude Include="Source\GuiButton.h" />
+    <ClInclude Include="Source\GuiCheckBox.h" />
+    <ClInclude Include="Source\GuiControl.h" />
+    <ClInclude Include="Source\GuiManager.h" />
+    <ClInclude Include="Source\GuiSlider.h" />
     <ClInclude Include="Source\ItemHealth.h" />
     <ClInclude Include="Source\Entity.h" />
     <ClInclude Include="Source\ItemDiamond.h" />
