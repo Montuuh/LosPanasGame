@@ -8,6 +8,7 @@
 #include "ModuleFadeToBlack.h"
 #include "Scene.h"
 #include "ModulePlayer.h"
+#include "GuiManager.h"
 
 #include "Defs.h"
 #include "Log.h"
@@ -40,6 +41,8 @@ bool TitleScreen::Start()
 		ret = false;
 	}
 
+	buttonNewGame = (GuiButton*)app->guimanager->CreateGuiControl(GuiControlType::BUTTON, 1, { 0, 0, 100, 100 });
+
 	app->player->playerPos = { -1000,-1000 };
 	app->player->cameraFollow = false;
 	return ret;
@@ -49,7 +52,7 @@ bool TitleScreen::Update(float dt)
 {
 	bool ret = true;
 
-
+	buttonNewGame->Update(dt);
 
 	if (app->input->GetKey(SDL_SCANCODE_RETURN) == KEY_DOWN)
 	{
@@ -66,6 +69,8 @@ bool TitleScreen::PostUpdate()
 		ret = false;
 
 	actualTime = SDL_GetTicks() - startTime;
+
+	buttonNewGame->Draw();
 
 	if (actualTime < endTime)
 	{
@@ -90,4 +95,15 @@ bool TitleScreen::CleanUp()
 	}
 
 	return ret;
+}
+
+bool TitleScreen::OnGuiMouseClickEvent(GuiControl* control)
+{
+	switch (control->id)
+	{
+	case 1://NewGame
+		app->fade->FadeToBlack(this, (Module*)app->scene);
+		break;
+	}
+	return true;
 }

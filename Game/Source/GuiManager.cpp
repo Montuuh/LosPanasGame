@@ -51,14 +51,14 @@ bool GuiManager::CleanUp()
 	return true;
 }
 
-GuiControl* GuiManager::CreateGuiControl(GuiControlType type)
+GuiControl* GuiManager::CreateGuiControl(GuiControlType type, int id, SDL_Rect bounds)
 {
 	GuiControl* control = nullptr;
 
 	switch (type)
 	{
 		case GuiControlType::BUTTON:
-			control = new GuiButton(id, { 1280 / 2 - 300 / 2, 200, 20, 20 }, "EXIT");
+			control = new GuiButton(id, { 0, 0, 20, 20 });
 			break;
 		case GuiControlType::CHECKBOX:
 			control = new GuiCheckBox(id, { 1280 / 2 - 300 / 2, 200, 20, 20 }, "EXIT");
@@ -84,7 +84,9 @@ void GuiManager::AddGuiControl(GuiControl* control)
 
 void GuiManager::DestroyGuiControl(GuiControl* control)
 {
-	//controls.Del(control);
+	int index = controls.Find(control);
+	ListItem<GuiControl*>* L = controls.At(index);
+	controls.Del(L);
 }
 
 void GuiManager::UpdateAll(float dt, bool doLogic)
