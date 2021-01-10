@@ -1,5 +1,6 @@
 #include "Window.h"
 #include "App.h"
+#include "Render.h"
 
 #include "Defs.h"
 #include "Log.h"
@@ -101,4 +102,19 @@ void Window::GetWindowSize(uint& width, uint& height) const
 uint Window::GetScale() const
 {
 	return scale;
+}
+
+void Window::FullScreen()
+{
+	isFullScreen = !isFullScreen;
+	Uint32 flag = SDL_WINDOW_SHOWN;
+	if (isFullScreen == true)
+	{
+		flag |= SDL_WINDOW_FULLSCREEN_DESKTOP;
+	}
+
+	SDL_SetWindowFullscreen(window, flag);
+	SDL_RenderSetLogicalSize(app->render->renderer, width, height);
+
+	screenSurface = SDL_GetWindowSurface(window);
 }
