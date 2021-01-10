@@ -1,5 +1,5 @@
-#ifndef __SCENE2_H__
-#define __SCENE2_H__
+#ifndef __PAUSE_SCENE_H__
+#define __PAUSE_SCENE_H__
 
 #include "Module.h"
 #include "GuiButton.h"
@@ -7,12 +7,12 @@
 struct SDL_Rect;
 class Font;
 
-class TitleScreen : public Module
+class PauseScreen : public Module
 {
 public:
 
-	TitleScreen(bool startEnabled);
-	~TitleScreen();
+	PauseScreen(bool startEnabled);
+	~PauseScreen();
 
 	bool Start();
 	bool Update(float dt);
@@ -24,10 +24,10 @@ public:
 
 private:
 
-	SDL_Texture* titleTex = nullptr;
-	SDL_Texture* newGameTex = nullptr;
+	SDL_Texture* pauseTex = nullptr;
+	SDL_Texture* resumeTex = nullptr;
 	SDL_Texture* tex = nullptr;
-	SDL_Rect title;
+	SDL_Rect pause;
 
 
 	Uint32 startTime = 0;
@@ -35,18 +35,15 @@ private:
 	Uint32 actualTime = 0;
 
 	Font* font;
-	GuiButton* buttonNewGame;
-	SDL_Rect buttonNewGameRect;
+	GuiButton* buttonResume;
+	SDL_Rect buttonResumeRect;
 	GuiButton* buttonExit;
 	SDL_Rect buttonExitRect;
-	GuiButton* buttonContinue;
-	SDL_Rect buttonContinueRect;
+	GuiButton* buttonBackToMenu;
+	SDL_Rect buttonBackToMenuRect;
 	GuiButton* buttonSettings;
 	SDL_Rect buttonSettingsRect;
-	GuiButton* buttonCredits;
-	SDL_Rect buttonCreditsRect;
-
 
 };
 
-#endif // __SCENE_H__
+#endif __PAUSE_SCENE_H__

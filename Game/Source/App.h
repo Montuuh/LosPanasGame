@@ -34,6 +34,7 @@ class ModuleHud;
 class ModuleParticles;
 class PathFinding;
 class GuiManager;
+class PauseScreen;
 
 class App
 {
@@ -113,6 +114,7 @@ public:
 	Map* map;
 	ModulePlayer* player;
 	PathFinding* pathfinding;
+	PauseScreen* pauseScreen;
 
 	ModuleCollisions* collisions;
 	ModuleParticles* particles;

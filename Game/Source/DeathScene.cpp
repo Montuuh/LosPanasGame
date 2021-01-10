@@ -51,6 +51,7 @@ bool DeathScene::Start()
 	buttonBackToMainMenuRect = { 50, 300, 150, 30 };
 	buttonBackToMainMenu = (GuiButton*)app->guimanager->CreateGuiControl(GuiControlType::BUTTON, 1, buttonBackToMainMenuRect); // Main menu button (id = 1)
 	buttonBackToMainMenu->SetObserver(this);
+
 	buttonExitRect = { 420, 300, 175, 30 };
 	buttonExit = (GuiButton*)app->guimanager->CreateGuiControl(GuiControlType::BUTTON, 2, buttonExitRect); // Exit Game button (id = 2)
 	buttonExit->SetObserver(this);
@@ -79,25 +80,25 @@ bool DeathScene::PostUpdate()
 {
 	bool ret = true;
 
-	if (app->titleScreen->exitRequested) return false;
+	if (exitRequested) return false;
 
 	app->render->DrawTexture(deathTex, 0,0);
 
 	buttonBackToMainMenu->Draw();
 	if (buttonBackToMainMenu->state == GuiControlState::NORMAL)
-		app->render->DrawText(font, "Main Menu", buttonBackToMainMenuRect.x + 225, buttonBackToMainMenuRect.y + 280, 90, 0, { 255, 255, 255, 255 });
+		app->render->DrawText(font, "Main Menu", buttonBackToMainMenuRect.x + 75, buttonBackToMainMenuRect.y + 280, 90, 0, { 255, 255, 255, 255 });
 	else if (buttonBackToMainMenu->state == GuiControlState::FOCUSED)
-		app->render->DrawText(font, "Main Menu", buttonBackToMainMenuRect.x + 225, buttonBackToMainMenuRect.y + 280, 90, 0, { 255, 255, 0, 255 });
+		app->render->DrawText(font, "Main Menu", buttonBackToMainMenuRect.x + 75, buttonBackToMainMenuRect.y + 280, 90, 0, { 255, 255, 0, 255 });
 	else if (buttonBackToMainMenu->state == GuiControlState::PRESSED)
-		app->render->DrawText(font, "Main Menu", buttonBackToMainMenuRect.x + 225, buttonBackToMainMenuRect.y + 280, 90, 0, { 255, 0, 0, 255 });
+		app->render->DrawText(font, "Main Menu", buttonBackToMainMenuRect.x + 75, buttonBackToMainMenuRect.y + 280, 90, 0, { 255, 0, 0, 255 });
 
 	buttonExit->Draw();
 	if (buttonExit->state == GuiControlState::NORMAL)
-		app->render->DrawText(font, "Exit Game", buttonExitRect.x + 225, buttonExitRect.y + 280, 90, 0, { 255, 255, 255, 255 });
+		app->render->DrawText(font, "Exit Game", buttonExitRect.x + 475, buttonExitRect.y + 280, 90, 0, { 255, 255, 255, 255 });
 	else if (buttonExit->state == GuiControlState::FOCUSED)
-		app->render->DrawText(font, "Exit Game", buttonExitRect.x + 225, buttonExitRect.y + 280, 90, 0, { 255, 255, 0, 255 });
+		app->render->DrawText(font, "Exit Game", buttonExitRect.x + 475, buttonExitRect.y + 280, 90, 0, { 255, 255, 0, 255 });
 	else if (buttonExit->state == GuiControlState::PRESSED)
-		app->render->DrawText(font, "Exit Game", buttonExitRect.x + 225, buttonExitRect.y + 280, 90, 0, { 255, 0, 0, 255 });
+		app->render->DrawText(font, "Exit Game", buttonExitRect.x + 475, buttonExitRect.y + 280, 90, 0, { 255, 0, 0, 255 });
 
 	return ret;
 }
@@ -123,20 +124,20 @@ bool DeathScene::OnGuiMouseClickEvent(GuiControl* control)
 {
 	switch (control->type)
 	{
-	case GuiControlType::BUTTON:
-		switch (control->id)
-		{
-		case 1:
-			app->fade->FadeToBlack(this, (Module*)app->titleScreen);
-			break;
-		case 2:
-			app->titleScreen->exitRequested = true;
-			break;
+		case GuiControlType::BUTTON:
+			switch (control->id)
+			{
+				case 1:
+					app->fade->FadeToBlack(this, (Module*)app->titleScreen);
+					break;
+				case 2:
+					exitRequested = true;
+					break;
+				default:
+					break;
+			}
 		default:
 			break;
-		}
-	default:
-		break;
 	}
 
 	return true;

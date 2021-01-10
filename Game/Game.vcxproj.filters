@@ -47,6 +47,7 @@
     </ClCompile>
     <ClCompile Include="Source\GuiManager.cpp" />
     <ClCompile Include="Source\Font.cpp" />
+    <ClCompile Include="Source\PauseScreen.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Source\Defs.h">
@@ -122,6 +123,7 @@
     </ClInclude>
     <ClInclude Include="Source\GuiManager.h" />
     <ClInclude Include="Source\Font.h" />
+    <ClInclude Include="Source\PauseScreen.h" />
   </ItemGroup>
   <ItemGroup>
     <Filter Include="External">

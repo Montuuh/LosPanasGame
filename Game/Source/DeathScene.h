@@ -29,6 +29,8 @@ public:
 	bool CleanUp();
 	virtual bool OnGuiMouseClickEvent(GuiControl* control);
 
+	bool exitRequested;
+
 private:
 
 	SDL_Texture* deathTex = nullptr;

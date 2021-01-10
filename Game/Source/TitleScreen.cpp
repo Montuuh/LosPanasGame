@@ -55,11 +55,23 @@ bool TitleScreen::Start()
 	//buttonExit = (GuiButton*)app->guimanager->CreateGuiControl(GuiControlType::BUTTON, 5, buttonExitRect); // Exit Game button (id = 5)
 	//buttonExit->SetObserver(this);
 
-	buttonNewGameRect = { 50, 300, 150, 30 };
+	buttonNewGameRect = {215, 145, 165, 30 };
 	buttonNewGame = (GuiButton*)app->guimanager->CreateGuiControl(GuiControlType::BUTTON, 1, buttonNewGameRect); // New Game button (id = 1)
 	buttonNewGame->SetObserver(this);
 
-	buttonExitRect = { 420, 300, 175, 30 };
+	buttonContinueRect = { 225, 180, 140, 30 };
+	buttonContinue = (GuiButton*)app->guimanager->CreateGuiControl(GuiControlType::BUTTON, 1, buttonContinueRect); // Continue Game button (id = WIP)
+	buttonContinue->SetObserver(this);
+
+	buttonSettingsRect = { 230, 225, 130, 30 };
+	buttonSettings = (GuiButton*)app->guimanager->CreateGuiControl(GuiControlType::BUTTON, 1, buttonSettingsRect); // Settings button (id = WIP)
+	buttonSettings->SetObserver(this);
+
+	buttonCreditsRect = { 245, 260, 100, 30 };
+	buttonCredits = (GuiButton*)app->guimanager->CreateGuiControl(GuiControlType::BUTTON, 1, buttonCreditsRect); // Credits button (id = WIP)
+	buttonCredits->SetObserver(this);
+
+	buttonExitRect = { 215, 300, 165, 30 };
 	buttonExit = (GuiButton*)app->guimanager->CreateGuiControl(GuiControlType::BUTTON, 5, buttonExitRect); // Exit Game button (id = 5)
 	buttonExit->SetObserver(this);
 
@@ -71,6 +83,9 @@ bool TitleScreen::Update(float dt)
 	bool ret = true;
 
 	buttonNewGame->Update(dt);
+	buttonContinue->Update(dt);
+	buttonSettings->Update(dt);
+	buttonCredits->Update(dt);
 	buttonExit->Update(dt);
 
 	return ret;
@@ -102,19 +117,43 @@ bool TitleScreen::PostUpdate()
 
 	buttonNewGame->Draw();
 	if (buttonNewGame->state == GuiControlState::NORMAL)
-		app->render->DrawText(font, "New Game", buttonNewGameRect.x + 190, buttonNewGameRect.y + 110, 170, 0, { 255, 255, 255, 255 });
+		app->render->DrawText(font, "New Game", buttonNewGameRect.x + 226, buttonNewGameRect.y + 124, 120, 0, { 255, 255, 255, 255 });
 	else if (buttonNewGame->state == GuiControlState::FOCUSED)
-		app->render->DrawText(font, "New Game", buttonNewGameRect.x + 190, buttonNewGameRect.y + 110, 170, 0, { 255, 255, 0, 255 });
+		app->render->DrawText(font, "New Game", buttonNewGameRect.x + 226, buttonNewGameRect.y + 124, 120, 0, { 255, 255, 0, 255 });
 	else if (buttonNewGame->state == GuiControlState::PRESSED)
-		app->render->DrawText(font, "New Game", buttonNewGameRect.x + 190, buttonNewGameRect.y + 110, 170, 0, { 255, 0, 0, 255 });
+		app->render->DrawText(font, "New Game", buttonNewGameRect.x + 226, buttonNewGameRect.y + 124, 120, 0, { 255, 0, 0, 255 });
+
+	buttonContinue->Draw();
+	if (buttonContinue->state == GuiControlState::NORMAL)
+		app->render->DrawText(font, "Continue", buttonContinueRect.x + 235, buttonContinueRect.y + 160, 120, 0, { 255, 255, 255, 255 });
+	else if (buttonContinue->state == GuiControlState::FOCUSED)
+		app->render->DrawText(font, "Continue", buttonContinueRect.x + 235, buttonContinueRect.y + 160, 120, 0, { 255, 255, 0, 255 });
+	else if (buttonContinue->state == GuiControlState::PRESSED)
+		app->render->DrawText(font, "Continue", buttonContinueRect.x + 235, buttonContinueRect.y + 160, 120, 0, { 255, 0, 0, 255 });
+
+	buttonSettings->Draw();
+	if (buttonSettings->state == GuiControlState::NORMAL)
+		app->render->DrawText(font, "Settings", buttonSettingsRect.x + 240, buttonSettingsRect.y + 196, 120, 0, { 255, 255, 255, 255 });
+	else if (buttonSettings->state == GuiControlState::FOCUSED)
+		app->render->DrawText(font, "Settings", buttonSettingsRect.x + 240, buttonSettingsRect.y + 196, 120, 0, { 255, 255, 0, 255 });
+	else if (buttonSettings->state == GuiControlState::PRESSED)
+		app->render->DrawText(font, "Settings", buttonSettingsRect.x + 240, buttonSettingsRect.y + 196, 120, 0, { 255, 0, 0, 255 });
+
+	buttonCredits->Draw();
+	if (buttonCredits->state == GuiControlState::NORMAL)
+		app->render->DrawText(font, "Credits", buttonCreditsRect.x + 245, buttonCreditsRect.y + 240, 120, 0, { 255, 255, 255, 255 });
+	else if (buttonCredits->state == GuiControlState::FOCUSED)
+		app->render->DrawText(font, "Credits", buttonCreditsRect.x + 245, buttonCreditsRect.y + 240, 120, 0, { 255, 255, 0, 255 });
+	else if (buttonCredits->state == GuiControlState::PRESSED)
+		app->render->DrawText(font, "Credits", buttonCreditsRect.x + 245, buttonCreditsRect.y + 240, 120, 0, { 255, 0, 0, 255 });
 
 	buttonExit->Draw();
 	if (buttonExit->state == GuiControlState::NORMAL)
-		app->render->DrawText(font, "Exit Game", buttonExitRect.x + 225, buttonExitRect.y + 280, 130, 0, { 255, 255, 255, 255 });
+		app->render->DrawText(font, "Exit Game", buttonExitRect.x + 226, buttonExitRect.y + 280, 120, 0, { 255, 255, 255, 255 });
 	else if (buttonExit->state == GuiControlState::FOCUSED)
-		app->render->DrawText(font, "Exit Game", buttonExitRect.x + 225, buttonExitRect.y + 280, 130, 0, { 255, 255, 0, 255 });
+		app->render->DrawText(font, "Exit Game", buttonExitRect.x + 226, buttonExitRect.y + 280, 120, 0, { 255, 255, 0, 255 });
 	else if (buttonExit->state == GuiControlState::PRESSED)
-		app->render->DrawText(font, "Exit Game", buttonExitRect.x + 225, buttonExitRect.y + 280, 130, 0, { 255, 0, 0, 255 });
+		app->render->DrawText(font, "Exit Game", buttonExitRect.x + 226, buttonExitRect.y + 280, 120, 0, { 255, 0, 0, 255 });
 
 	return ret;
 }
@@ -144,7 +183,7 @@ bool TitleScreen::OnGuiMouseClickEvent(GuiControl* control)
 			switch (control->id)
 			{
 				case 1:
-					app->fade->FadeToBlack(this, (Module*)app->deathScene);
+					app->fade->FadeToBlack(this, (Module*)app->scene);
 					break;
 				case 5:
 					exitRequested = true;

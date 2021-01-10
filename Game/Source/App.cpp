@@ -18,6 +18,7 @@
 #include "ModuleEntities.h"
 #include "ModuleParticles.h"
 #include "GuiManager.h"
+#include "PauseScreen.h"
 
 #include "Defs.h"
 #include "Log.h"
@@ -51,6 +52,7 @@ App::App(int argc, char* args[]) : argc(argc), args(args)
 	/*particles = new ModuleParticles(false);*/
 	pathfinding = new PathFinding();
 	guimanager = new GuiManager();
+	pauseScreen = new PauseScreen(false);
 
 	AddModule(win);
 	AddModule(input);
@@ -68,6 +70,7 @@ App::App(int argc, char* args[]) : argc(argc), args(args)
 	AddModule(hud);
 	AddModule(pathfinding);
 	AddModule(guimanager);
+	AddModule(pauseScreen);
 
 	AddModule(entities);
 	/*AddModule(particles);*/
