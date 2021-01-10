@@ -47,6 +47,7 @@ private:
 	GuiButton* buttonPlayAgain;
 	SDL_Rect buttonPlayAgainRect;
 
+
 };
 
 

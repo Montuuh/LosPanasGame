@@ -131,6 +131,10 @@ ModulePlayer::ModulePlayer(bool b) : Module(b)
 	fallRightAnim.loop = true;
 	fallRightAnim.speed = 0.1f;
 
+
+ 
+
+
 }
 
 ModulePlayer::~ModulePlayer()
@@ -143,6 +147,12 @@ bool ModulePlayer::Start()
 	LOG("Loading player textures");
 
 	bool ret = true;
+
+	checkpointFx = app->audio->LoadFx("Assets/Audio/Fx/checkpoint_fx.flac");
+	diamondFx = app->audio->LoadFx("Assets/Audio/Fx/diamond_fx.wav");
+	fallFx = app->audio->LoadFx("Assets/Audio/Fx/fall_fx.flac");
+	jumpFx = app->audio->LoadFx("Assets/Audio/Fx/jump_fx.wav");
+	liveFx = app->audio->LoadFx("Assets/Audio/Fx/diamond_fx.wav");
 
 	texture = app->tex->Load("Assets/textures/spritesheet.png"); 
 
@@ -294,6 +304,7 @@ void ModulePlayer::Input(float dt)
 	// If player wants to jump && its on ground
 	if ((app->input->GetKey(SDL_SCANCODE_SPACE) == KEY_DOWN) && (playerState == ON_GROUND))
 	{
+		app->audio->PlayFx(jumpFx);
 		velocity.x = velocity.x / 2;
 		if (velocity.y == 0)
 		{
@@ -379,6 +390,7 @@ void ModulePlayer::CheckPlayerState(float dt)
 		// If player is going up (started jumping)
 		if (velocity.y < 0)
 		{
+
 			playerDirection = UP;
 			if (currentAnimation == &idleRightAnim || currentAnimation == &fallRightAnim || currentAnimation == &jumpRightAnim || currentAnimation == &attackRightAnim || currentAnimation == &runRightAnim)
 				currentAnimation = &jumpRightAnim;
@@ -389,6 +401,7 @@ void ModulePlayer::CheckPlayerState(float dt)
 		// If player is going down (falling)
 		if (velocity.y > 0)
 		{
+			app->audio->PlayFx(fallFx);
 			playerDirection = DOWN;
 			if (currentAnimation == &idleRightAnim || currentAnimation == &fallRightAnim || currentAnimation == &jumpRightAnim || currentAnimation == &attackRightAnim || currentAnimation == &runRightAnim)
 				currentAnimation = &fallRightAnim;
@@ -486,14 +499,12 @@ bool ModulePlayer::OnCollision(Collider* c1, Collider* c2)
 
 		if (colliderAbove == false)
 		{
-			// Maintain the feet to the ground
 			if ((playerCollider->rect.y + playerCollider->rect.h >= c2->rect.y) && (playerCollider->rect.y + playerCollider->rect.h <= c2->rect.y + c2->rect.h/2))
 			{
 				if (!(playerCollider->rect.y + playerCollider->rect.h <= c2->rect.y + 4))
 					playerPos.y += -0.5f;
 				else
 					playerPos.y = c2->rect.y - playerCollider->rect.h;
-				/*isGround = true;*/
 				//playerState = ON_GROUND;
 				if (playerState == ON_AIR)
 				{
@@ -528,6 +539,7 @@ bool ModulePlayer::OnCollision(Collider* c1, Collider* c2)
 	
 	if (c2->type == Collider::Type::CHECKPOINT && (previousCollision->type != Collider::Type::CHECKPOINT))
 	{
+		app->audio->PlayFx(checkpointFx);
 		app->SaveGameRequest();
 		previousCollision = c2;
 	}
@@ -545,11 +557,13 @@ bool ModulePlayer::OnCollision(Collider* c1, Collider* c2)
 		{
 		case Collider::Items::HEALTH:
 			lives += 1;
+			app->audio->PlayFx(liveFx);
 			previousCollision = c2;
 			c2->listener->OnCollision(c2, c1);
 			break;
 		case Collider::Items::DIAMOND:
 			diamonds += 1;
+			app->audio->PlayFx(diamondFx);
 			previousCollision = c2;
 			c2->listener->OnCollision(c2, c1);
 			break;

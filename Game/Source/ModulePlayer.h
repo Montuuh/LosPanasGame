@@ -106,6 +106,15 @@ public:
 	uint health;
 	uint diamonds;
 
+	uint checkpointFx;
+	uint diamondFx;
+	uint fallFx;
+	uint jumpFx;
+	uint liveFx;
+
+	uint loseFx;
+	uint winFx;
+
 	int isWalking = false;
 	Timer counterWalking;
 };

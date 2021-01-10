@@ -43,8 +43,8 @@ bool WinScreen::Start()
 	{
 		ret = false;
 	}
-	
-	/*app->audio->PlayFx()*/
+	winFx = app->audio->LoadFx("Assets/Audio/Fx/win_fx.ogg");
+	app->audio->PlayFx(winFx);
 
 	app->render->background = { 0,0,0,0 };
 	app->render->camera = { 0,0,1280,720 };
