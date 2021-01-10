@@ -34,6 +34,9 @@ private:
 	Uint32 endTime = 0;
 	Uint32 actualTime = 0;
 
+	int focusedFx = 0;
+	int pressedFx = 0;
+
 	Font* font;
 	GuiButton* buttonNewGame;
 	SDL_Rect buttonNewGameRect;

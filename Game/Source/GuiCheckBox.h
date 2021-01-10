@@ -15,6 +15,7 @@ public:
 
     bool Update(Input* input, float dt);
     bool Draw(Render* render);
+    bool DrawTexture(Render* render);
 
 private:
 
@@ -23,5 +24,5 @@ private:
     bool checked;
 };
 
-#endif // __GUICHECKBOX_H__
+#endif __GUICHECKBOX_H__
 
