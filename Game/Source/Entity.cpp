@@ -4,9 +4,7 @@
 #include "ModuleCollisions.h"
 #include "Audio.h"
 #include "Render.h"
-//#include "ModuleParticles.h"
-//include scene 
-#include "ModuleEntities.h"
+#include "EntityManager.h"
 
 
 Entity::Entity(int x, int y) : position(x, y)

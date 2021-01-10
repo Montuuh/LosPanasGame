@@ -3,7 +3,7 @@
 
 #include "Point.h"
 #include "Animation.h"
-#include "ModuleEntities.h"
+#include "EntityManager.h"
 
 struct SDL_Texture;
 struct Collider;

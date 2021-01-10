@@ -78,6 +78,8 @@ public:
 	bool collisionExist = false;
 	bool destroyed = false;
 	bool hasWon = false;
+	bool hasLostLife = false;
+
 
 private:
 	enum PlayerState {ON_GROUND, ON_AIR};
@@ -90,6 +92,7 @@ private:
 	bool godMode = false;
 	bool goingLeft = false;
 	bool goingRight = false;
+	
 	void Input(float dt);
 	void Logic(float dt);
 	bool CheckCollisions(float dt);

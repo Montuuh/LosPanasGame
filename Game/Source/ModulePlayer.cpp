@@ -161,7 +161,7 @@ bool ModulePlayer::Start()
 	playerState = ON_AIR;
 
 	godMode = false;
-
+	hasLostLife = false;
 	isWalking = false;
 
 	return ret;
@@ -576,26 +576,38 @@ bool ModulePlayer::OnCollision(Collider* c1, Collider* c2)
 
 bool ModulePlayer::LoadState(pugi::xml_node& data)
 {
-	//...
-	LOG("Loading Player state...");
-	playerPos.x = data.child("position").attribute("x").as_int();
-	playerPos.y = data.child("position").attribute("y").as_int();
-	LOG("Player state succesfully loaded.\n Pos.x = %d Pos.y = %d", playerPos.x, playerPos.y);
+	if (!destroyed)
+	{
+		playerPos.x = data.child("player").attribute("x").as_float();
+		playerPos.y = data.child("player").attribute("y").as_float();
+		if (!hasLostLife)
+		{
+			lives = data.child("player").attribute("lives").as_int();
+			diamonds = data.child("player").attribute("diamonds").as_int();
+		}
+		else
+		{
+			hasLostLife = false;
+		}
+	}
+
 	return true;
 }
 
 
 bool ModulePlayer::SaveState(pugi::xml_node& data) const
 {
-	//...
-	// Delete old data
-	data.remove_child("position");
-	// Add new data
+
+	data.remove_child("player");
+	
 	LOG("Saving Player state...");
-	pugi::xml_node pos = data.append_child("position");
+	pugi::xml_node pos = data.append_child("player");
 	pos.append_attribute("x").set_value(playerPos.x);
 	pos.append_attribute("y").set_value(playerPos.y);
-	LOG("Player state succesfully saved. \n Pos.x = %d Pos.y = %d", playerPos.x, playerPos.y);
+	pos.append_attribute("lives").set_value(this->lives);
+	pos.append_attribute("diamonds").set_value(this->diamonds);
+
+
 	return true;
 }
 
@@ -606,6 +618,7 @@ void ModulePlayer::LoseLife()
 	{
 		app->player->velocity.x = 0;
 		app->player->velocity.y = 0;
+		hasLostLife = true;
 		app->LoadGameRequest();
 	}
 	else if (lives == 0)

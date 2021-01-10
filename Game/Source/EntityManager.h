@@ -6,12 +6,11 @@
 
 
 
-enum class EntityType
+enum EntityType
 {
 	NO_TYPE,
 	ITEM_HEALTH,
 	ITEM_DIAMOND,
-	ENEMY_FLYING,
 };
 
 struct EntitySpawnpoint

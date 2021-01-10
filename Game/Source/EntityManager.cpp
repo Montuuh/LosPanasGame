@@ -1,4 +1,4 @@
-#include "ModuleEntities.h"
+#include "EntityManager.h"
 
 #include "App.h"
 
@@ -49,28 +49,29 @@ bool Entities::Start()
 bool Entities::PreUpdate()
 {
 	bool ret = true;
-	// Remove all enemies scheduled for deletion
-	/*for (uint i = 0; i < MAX_ENEMIES; ++i)
-	{
-		if (enemies[i] != nullptr && enemies[i]->pendingToDelete)
-		{
-			delete enemies[i];
-			enemies[i] = nullptr;
-		}
-	}*/
-	ListItem<Entity*>* list;
-	list = entities.start;
 
-	for (int i = 0; i < entities.Count(); ++i)
+	ListItem<Entity*>* list;
+	for (list = entities.start; list != NULL && list->data != nullptr; list = list->next)
 	{
 		if (list != NULL && list->data->pendingToDelete)
 		{
-			/*delete newEntity;
-			enemies[i] = nullptr;*/
 			entities.Del(list);
 		}
-		list = list->next;
 	}
+
+	//ListItem<Entity*>* list;
+	//list = entities.start;
+
+	//for (int i = 0; i < entities.Count(); ++i)
+	//{
+	//	if (list != NULL && list->data->pendingToDelete)
+	//	{
+	//		/*delete newEntity;
+	//		enemies[i] = nullptr;*/
+	//		entities.Del(list);
+	//	}
+	//	list = list->next;
+	//}
 
 	return ret;
 }
@@ -80,23 +81,21 @@ bool Entities::Update(float dt)
 	bool ret = true;
 	HandleEnemiesSpawn();
 
-	/*for (uint i = 0; i < MAX_ENEMIES; ++i)
-	{
-		if(enemies[i] != nullptr)
-			enemies[i]->Update();
-	}*/
+	//ListItem<Entity*>* list;
+	//list = entities.start;
 
+	//for (int i = 0; i < entities.Count(); ++i)
+	//{
+	//	if (list != NULL)
+	//		list->data->Update(dt);
+	//	list = list->next;
+	//}
 	ListItem<Entity*>* list;
-	list = entities.start;
-
-	for (int i = 0; i < entities.Count(); ++i)
+	for (list = entities.start; list != NULL && list->data != nullptr; list = list->next)
 	{
-		if (list != NULL)
-			list->data->Update(dt);
-		list = list->next;
+		list->data->Update(dt);
 	}
-
-	//HandleEnemiesDespawn();
+	
 
 	return ret;
 }
@@ -104,20 +103,23 @@ bool Entities::Update(float dt)
 bool Entities::PostUpdate()
 {
 	bool ret = true;
-	/*for (uint i = 0; i < MAX_ENEMIES; ++i)
-	{
-		if (enemies[i] != nullptr)
-			enemies[i]->Draw();
-	}*/
-	ListItem<Entity*>* list;
-	list = entities.start;
 
-	for (int i = 0; i < entities.Count(); ++i)
+	//ListItem<Entity*>* list;
+	//list = entities.start;
+
+	//for (int i = 0; i < entities.Count(); ++i)
+	//{
+	//	if (list != NULL)
+	//		list->data->Draw();
+	//	list = list->next;
+	//}
+
+	ListItem<Entity*>* list;
+	for (list = entities.start;  list != NULL && list->data != nullptr; list = list->next)
 	{
-		if (list != NULL)
-			list->data->Draw();
-		list = list->next;
+		list->data->Draw();
 	}
+
 
 	return ret;
 }
@@ -165,25 +167,17 @@ bool Entities::AddEntity(EntityType type, int x, int y)
 
 void Entities::HandleEnemiesSpawn()
 {
-	// Iterate all the enemies queue
-	//for (uint i = 0; i < MAX_ENEMIES; ++i)
-	//{
-	//	if (spawnQueue[i].type != EntityType::NO_TYPE)
-	//	{
-	//		SpawnEnemy(spawnQueue[i]);
-	//		spawnQueue[i].type = EntityType::NO_TYPE; // Removing the newly spawned enemy from the queue
-	//	}
-	//}
 
 	ListItem<EntitySpawnpoint>* list;
 	list = spawnQueue.start;
+	int count = spawnQueue.Count();
 
-	for (int i = 0; i < spawnQueue.Count(); ++i)
+	for (int i = 0; i < count; ++i)
 	{
 		if (list->data.type != EntityType::NO_TYPE)
 		{
 			SpawnEnemy(list->data);
-			list->data.type = EntityType::NO_TYPE; // Removing the newly spawned enemy from the queue
+			list->data.type = EntityType::NO_TYPE; 
 		}
 		list = list->next;
 	}
@@ -231,7 +225,6 @@ void Entities::SpawnEnemy(const EntitySpawnpoint& info)
 	case EntityType::ITEM_HEALTH:
 	{
 		newEntity = new ItemHealth(info.x, info.y);
-		newEntity->destroyedFx = itemPickedFx;
 		newEntity->texture = texture;
 
 		break;
@@ -240,19 +233,10 @@ void Entities::SpawnEnemy(const EntitySpawnpoint& info)
 	{
 		newEntity = new ItemDiamond(info.x, info.y);
 		newEntity->texture = texture;
-		newEntity->destroyedFx = itemPickedFx;
+
 		break;
 	}
-	/*case EntityType::ENEMY_FLYING:
-	{
-		newEntity = new EnemyFlying(info.x, info.y);
-		newEntity->texture = texture;
-		newEntity->debugTexture = texture;
-		newEntity->name = "EnemyFlying";
-		newEntity->entityType = EntityType::ENEMY_FLYING;
-		newEntity->isDead = info.isDead;
-		break;
-	}*/
+
 	}
 	entities.Add(newEntity);
 }
@@ -284,46 +268,74 @@ bool Entities::OnCollision(Collider* c1, Collider* c2) // This is called through
 	return true;
 }
 
-bool Entities::SaveState(pugi::xml_node& data) const // Node is pointing to "entity"
+bool Entities::SaveState(pugi::xml_node& data) const
 {
 	bool ret = true;
-	// First change total num of ent
-	pugi::xml_node entityCount;
-	entityCount = data;
-	entityCount.child("entitiesCount").attribute("Num").set_value(this->entities.Count());
+
+	pugi::xml_node entitiesCountNode;
+	entitiesCountNode = data;
+	entitiesCountNode.child("entitiesCount").attribute("Num").set_value(this->entities.Count());
 	
-	// Then erase all ent in the xml
-	pugi::xml_node listEnt;
-	listEnt = data.child("entitiesList");
+
+	pugi::xml_node entitiesNode;
+	entitiesNode = data.child("entitiesList");
 	for (int i=0; i< MAX_ENTITIES;++i)
 	{
-		bool remove = listEnt.remove_child("entities");
-		if (remove == false)
+		bool isRemoved = entitiesNode.remove_child("entities");
+		if (isRemoved == false)
 			break;
 	}
 
-	// Finally add all ent in the xml
-	ListItem<Entity*>* list;
-	list = entities.start;
+
+	ListItem<Entity*>* L2;
+	L2 = entities.start;
 	for (int i = 0; i < this->entities.Count(); ++i)
 	{
-		list->data = entities.At(i)->data;
+		L2->data = entities.At(i)->data;
 
-		pugi::xml_node newEnt = data.child("entitiesList");
-		newEnt = newEnt.append_child("entities");
-		newEnt.append_attribute("Num").set_value(i);
-		newEnt.append_attribute("Item").set_value(list->data->GetCollider()->item);
-		newEnt.append_attribute("Type").set_value(list->data->GetCollider()->type);
-		newEnt.append_attribute("x").set_value(list->data->GetCollider()->rect.x);
-		newEnt.append_attribute("y").set_value(list->data->GetCollider()->rect.y);
+		pugi::xml_node newEntitiesNode = data.child("entitiesList");
+		newEntitiesNode = newEntitiesNode.append_child("entities");
+		newEntitiesNode.append_attribute("id").set_value(i);
+		newEntitiesNode.append_attribute("Type").set_value(L2->data->entityType);
+		newEntitiesNode.append_attribute("Item").set_value(L2->data->GetCollider()->item);
+		newEntitiesNode.append_attribute("x").set_value(L2->data->GetCollider()->rect.x);
+		newEntitiesNode.append_attribute("y").set_value(L2->data->GetCollider()->rect.y);
 
 	}
 	return ret;
 }
 
-bool Entities::LoadState(pugi::xml_node& data)  // Node is pointing to "entity"
+bool Entities::LoadState(pugi::xml_node& data)
 {
 	bool ret = true;
+
+	int count = entities.Count();
+	for (int i = 0; i < count; i++)
+	{
+		entities.At(i)->data->SetToDelete();
+	}
+	entities.Clear();
+
+	pugi::xml_node entitiesCountNode;
+	entitiesCountNode = data.child("entitiesCount");
+	int entitiesCount = entitiesCountNode.attribute("Num").as_int();
+
+	pugi::xml_node entitiesListNode;
+	entitiesListNode = data.child("entitiesList").child("entities");
+	for (int i = 0; i < entitiesCount; i++)
+	{
+		int x = entitiesListNode.attribute("x").as_int();
+		int y = entitiesListNode.attribute("y").as_int();
+		int type = entitiesListNode.attribute("Type").as_int();
+		int item = entitiesListNode.attribute("Item").as_int();
+
+		EntityType val = static_cast<EntityType>(type);
+
+		AddEntity(val, x, y);
+
+		entitiesListNode = entitiesListNode.next_sibling();
+	}
+
 
 	return ret;
 }

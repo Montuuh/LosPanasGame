@@ -7,7 +7,7 @@
 ItemHealth::ItemHealth(int x, int y) : Entity(x, y)
 {
 	spawnDelay = 0;
-
+	this->entityType = EntityType::ITEM_HEALTH;
 	anim.PushBack({ 419,400,10,16 });
 	currentAnim = &anim;
 

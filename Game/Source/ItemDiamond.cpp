@@ -7,7 +7,7 @@
 ItemDiamond::ItemDiamond(int x, int y) : Entity(x, y)
 {
 	spawnDelay = 0;
-
+	this->entityType = EntityType::ITEM_DIAMOND;
 	anim.PushBack({ 560,817,15,13 });
 	currentAnim = &anim;
 

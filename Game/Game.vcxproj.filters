@@ -8,9 +8,7 @@
       <Filter>External\PugiXml</Filter>
     </ClCompile>
     <ClCompile Include="Source\Collider.cpp" />
-    <ClCompile Include="Source\ModuleCollisions.cpp" />
     <ClCompile Include="Source\ModuleFadeToBlack.cpp" />
-    <ClCompile Include="Source\ModuleEntities.cpp" />
     <ClCompile Include="Source\Map.cpp" />
     <ClCompile Include="Source\ModuleParticles.cpp" />
     <ClCompile Include="Source\ModulePlayer.cpp" />
@@ -51,6 +49,8 @@
     <ClCompile Include="Source\SettingsScreen.cpp" />
     <ClCompile Include="Source\TitleSettingsScreen.cpp" />
     <ClCompile Include="Source\CreditsScreen.cpp" />
+    <ClCompile Include="Source\ModuleCollisions.cpp" />
+    <ClCompile Include="Source\EntityManager.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Source\Defs.h">
@@ -87,7 +87,6 @@
     <ClInclude Include="Source\Animation.h">
       <Filter>Utils</Filter>
     </ClInclude>
-    <ClInclude Include="Source\ModuleEntities.h" />
     <ClInclude Include="Source\ModuleParticles.h" />
     <ClInclude Include="Source\ModulePlayer.h" />
     <ClInclude Include="Source\ModuleHud.h" />
@@ -130,6 +129,7 @@
     <ClInclude Include="Source\SettingsScreen.h" />
     <ClInclude Include="Source\TitleSettingsScreen.h" />
     <ClInclude Include="Source\CreditsScreen.h" />
+    <ClInclude Include="Source\EntityManager.h" />
   </ItemGroup>
   <ItemGroup>
     <Filter Include="External">

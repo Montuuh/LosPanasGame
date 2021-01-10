@@ -15,7 +15,7 @@
 #include "ModuleCollisions.h"
 #include "WinScreen.h"
 #include "Pathfinding.h"
-#include "ModuleEntities.h"
+#include "EntityManager.h"
 #include "ModuleParticles.h"
 #include "GuiManager.h"
 #include "PauseScreen.h"
@@ -452,14 +452,12 @@ bool App::SaveGame() const
 {
 	bool ret = true;
 
-	//...
-
 	SString newName("save_game");
 	newName += ".xml";
-	pugi::xml_document docData;
-	pugi::xml_node docNode;
+	pugi::xml_document docSaveGame;
+	pugi::xml_node docParentNode;
 
-	pugi::xml_parse_result result = docData.load_file(newName.GetString());
+	pugi::xml_parse_result result = docSaveGame.load_file(newName.GetString());
 
 	// Check result for loading errors
 	if (result == NULL)
@@ -469,21 +467,21 @@ bool App::SaveGame() const
 	}
 	else
 	{
-		LOG("Starting to SaveState of each Module");
-		docNode = docData.child("game_state");
+		LOG("Starting to Save each Module");
+		docParentNode = docSaveGame.child("game_state");
 
-		ListItem<Module*>* item;
-		item = modules.start;
+		ListItem<Module*>* L;
+		L = modules.start;
 
-		while (item != NULL && ret == true)
+		while (L != NULL && ret == true)
 		{
 			// Create a node for each module and send it to their Save function
-			ret = item->data->SaveState(docNode.child(item->data->name.GetString()));
-			item = item->next;
+			ret = L->data->SaveState(docParentNode.child(L->data->name.GetString()));
+			L = L->next;
 		}
 	}
 	LOG("Saving file %s",newName.GetString());
-	docData.save_file(newName.GetString());
+	docSaveGame.save_file(newName.GetString());
 
 	saveGameRequested = false;
 

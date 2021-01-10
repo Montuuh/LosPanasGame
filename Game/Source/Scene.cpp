@@ -11,7 +11,7 @@
 #include "Map.h"
 #include "ModuleCollisions.h"
 #include "ModulePlayer.h"
-#include "ModuleEntities.h"
+#include "EntityManager.h"
 #include "ModuleParticles.h"
 
 #include "Defs.h"
@@ -79,11 +79,14 @@ bool Scene::Start()
 	app->player->lives = 3;
 
 
+	app->entities->AddEntity(EntityType::ITEM_HEALTH, -1 * 16, 31 * 16);
+	app->entities->AddEntity(EntityType::ITEM_HEALTH, 3 * 16, 31 * 16);
 	app->entities->AddEntity(EntityType::ITEM_HEALTH, 73 * 16, 31 * 16);
 	app->entities->AddEntity(EntityType::ITEM_DIAMOND, 88 * 16, 18 * 16);
 	app->entities->AddEntity(EntityType::ITEM_DIAMOND, 83 * 16, 10 * 16);
-	//app->entities->AddEntity(EntityType::ITEM_DIAMOND, 48 * 16, 7 * 16);
+	app->entities->AddEntity(EntityType::ITEM_DIAMOND, 48 * 16, 7 * 16);
 	app->entities->AddEntity(EntityType::ITEM_DIAMOND, 77 * 16, 25 * 16);
+	app->entities->AddEntity(EntityType::ITEM_DIAMOND, -1 * 16, 25 * 16);
 
 	counterSeconds = 0;
 
@@ -164,6 +167,7 @@ bool Scene::Update(float dt)
 
 	if (app->input->GetKey(SDL_SCANCODE_ESCAPE) == KEY_DOWN)
 	{
+		app->SaveGameRequest();
 		app->fade->FadeToBlack(this, (Module*)app->pauseScreen);
 		/*counterSeconds += dt;*/
 	}
