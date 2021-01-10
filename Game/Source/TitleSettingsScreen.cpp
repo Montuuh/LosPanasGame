@@ -40,7 +40,6 @@ bool TitleSettingsScreen::Start()
 	titleSettingsTex = app->tex->Load("Assets/textures/titlesettings_menu.png");
 	skull = app->tex->Load("Assets/textures/skull.png");
 	tickTex = app->tex->Load("Assets/textures/ticks.png");
-	app->audio->PlayMusic("Assets/Audio/Music/title_music.ogg");
 	if (titleSettingsTex == nullptr)
 		ret = false;
 
@@ -50,8 +49,6 @@ bool TitleSettingsScreen::Start()
 	app->player->cameraFollow = false;
 
 	font = new Font("Assets/Fonts/dungeon_font3.xml", app->tex);
-
-
 
 	musicVolume = (GuiSlider*)app->guimanager->CreateGuiControl(GuiControlType::SLIDER, 2, {325, 90, 220, 30});
 	musicVolume->anim.PushBack({ 0, 0, 29, 40 });
@@ -71,7 +68,7 @@ bool TitleSettingsScreen::Start()
 	buttonBack = (GuiButton*)app->guimanager->CreateGuiControl(GuiControlType::BUTTON, 1, buttonBackRect); // Back button (id = WIP)
 	buttonBack->SetObserver(this);
 
-	checkBoxFullScreen = (GuiCheckBox*)app->guimanager->CreateGuiControl(GuiControlType::CHECKBOX, 4, { 335, 205, 35, 35 });
+	checkBoxFullScreen = (GuiCheckBox*)app->guimanager->CreateGuiControl(GuiControlType::CHECKBOX, 1, { 335, 205, 35, 35 });
 	checkBoxFullScreen->SetObserver(this);
 	checkBoxFullScreen->SetTexture(tickTex);
 	checkBoxFullScreen->anim.PushBack({ 34,0,34,32 }); // Normal with tick
@@ -81,7 +78,7 @@ bool TitleSettingsScreen::Start()
 	checkBoxFullScreen->anim.PushBack({ 102,0,34,32 }); // Pressed with tick
 	checkBoxFullScreen->anim.PushBack({ 0,0,34,32 }); // Pressed without tick
 
-	checkBoxVsync = (GuiCheckBox*)app->guimanager->CreateGuiControl(GuiControlType::CHECKBOX, 5, { 335, 254, 35, 35 });
+	checkBoxVsync = (GuiCheckBox*)app->guimanager->CreateGuiControl(GuiControlType::CHECKBOX, 2, { 335, 254, 35, 35 });
 	checkBoxVsync->SetObserver(this);
 	checkBoxVsync->SetTexture(tickTex);
 	checkBoxVsync->anim.PushBack({ 34,0,34,32 }); // Normal with tick
@@ -90,12 +87,6 @@ bool TitleSettingsScreen::Start()
 	checkBoxVsync->anim.PushBack({ 0,0,34,32 }); // Focused without tick
 	checkBoxVsync->anim.PushBack({ 102,0,34,32 }); // Pressed with tick
 	checkBoxVsync->anim.PushBack({ 0,0,34,32 }); // Pressed without tick
-
-	//this->musicVol = app->audio->GetMusicVolume();
-	//this->fxVol = app->audio->GetFxVolume();
-
-	//musicVolume->value = this->musicVol;
-	//fxVolume->value = this->fxVol;
 
 	return ret;
 }
@@ -179,11 +170,18 @@ bool TitleSettingsScreen::OnGuiMouseClickEvent(GuiControl* control)
 	case GuiControlType::BUTTON:
 		switch (control->id)
 		{
-		case 1:
-			app->fade->FadeToBlack(this, (Module*)app->titleScreen);
-			break;
-		default:
-			break;
+			case 1:
+				app->fade->FadeToBlack(this, (Module*)app->titleScreen);
+				break;
+			default:
+				break;
+		}
+	case GuiControlType::CHECKBOX:
+		switch (control->id)
+		{
+			case 1:
+				app->win->FullScreen();
+				break;						
 		}
 	default:
 		break;

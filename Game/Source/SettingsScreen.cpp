@@ -39,6 +39,7 @@ bool SettingsScreen::Start()
 	app->render->camera = { 0,0,1280,720 };
 	settingsTex = app->tex->Load("Assets/textures/settings_menu.png");
 	skull = app->tex->Load("Assets/textures/skull.png");
+	tickTex = app->tex->Load("Assets/textures/ticks.png");
 	if (settingsTex == nullptr)
 		ret = false;
 
@@ -67,6 +68,26 @@ bool SettingsScreen::Start()
 	buttonBack = (GuiButton*)app->guimanager->CreateGuiControl(GuiControlType::BUTTON, 1, buttonBackRect); // Back button (id = WIP)
 	buttonBack->SetObserver(this);
 
+	checkBoxFullScreen = (GuiCheckBox*)app->guimanager->CreateGuiControl(GuiControlType::CHECKBOX, 1, { 338, 207, 35, 35 });
+	checkBoxFullScreen->SetObserver(this);
+	checkBoxFullScreen->SetTexture(tickTex);
+	checkBoxFullScreen->anim.PushBack({ 34,0,34,32 }); // Normal with tick
+	checkBoxFullScreen->anim.PushBack({ 0,0,34,32 }); // Normal without tick
+	checkBoxFullScreen->anim.PushBack({ 68,0,34,32 }); // Focused with tick
+	checkBoxFullScreen->anim.PushBack({ 0,0,34,32 }); // Focused without tick
+	checkBoxFullScreen->anim.PushBack({ 102,0,34,32 }); // Pressed with tick
+	checkBoxFullScreen->anim.PushBack({ 0,0,34,32 }); // Pressed without tick
+
+	checkBoxVsync = (GuiCheckBox*)app->guimanager->CreateGuiControl(GuiControlType::CHECKBOX, 2, { 338, 256, 35, 35 });
+	checkBoxVsync->SetObserver(this);
+	checkBoxVsync->SetTexture(tickTex);
+	checkBoxVsync->anim.PushBack({ 34,0,34,32 }); // Normal with tick
+	checkBoxVsync->anim.PushBack({ 0,0,34,32 }); // Normal without tick
+	checkBoxVsync->anim.PushBack({ 68,0,34,32 }); // Focused with tick
+	checkBoxVsync->anim.PushBack({ 0,0,34,32 }); // Focused without tick
+	checkBoxVsync->anim.PushBack({ 102,0,34,32 }); // Pressed with tick
+	checkBoxVsync->anim.PushBack({ 0,0,34,32 }); // Pressed without tick
+
 	return ret;
 }
 
@@ -81,6 +102,10 @@ bool SettingsScreen::Update(float dt)
 
 	app->audio->ChangeMusicVolume(musicVolume->value);
 	app->audio->ChangeFxVolume(fxVolume->value);
+
+	checkBoxFullScreen->Update(dt);
+	checkBoxVsync->Update(dt);
+
 
 	return ret;
 }
@@ -106,6 +131,11 @@ bool SettingsScreen::PostUpdate()
 	fxVolume->DrawDebug(app->render);
 	fxVolume->Draw(app->render);
 
+	checkBoxFullScreen->DrawDebug();
+	checkBoxFullScreen->DrawTexture();
+	checkBoxVsync->DrawDebug();
+	checkBoxVsync->DrawTexture();
+
 	return ret;
 }
 
@@ -119,6 +149,9 @@ bool SettingsScreen::CleanUp()
 
 	app->guimanager->DestroyGuiControl(musicVolume);
 	app->guimanager->DestroyGuiControl(fxVolume);
+
+	app->guimanager->DestroyGuiControl(checkBoxFullScreen);
+	app->guimanager->DestroyGuiControl(checkBoxVsync);
 
 	if (!app->tex->UnLoad(settingsTex))
 	{
@@ -141,6 +174,14 @@ bool SettingsScreen::OnGuiMouseClickEvent(GuiControl* control)
 			break;
 		default:
 			break;
+		}
+	case GuiControlType::CHECKBOX:
+		switch (control->id)
+		{
+		case 1:
+			app->win->FullScreen();
+			break;
+
 		}
 	default:
 		break;

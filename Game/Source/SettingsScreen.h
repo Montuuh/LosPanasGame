@@ -4,6 +4,7 @@
 #include "Module.h"
 #include "GuiButton.h"
 #include "GuiSlider.h"
+#include "GuiCheckBox.h"
 
 struct SDL_Rect;
 class Font;
@@ -29,6 +30,8 @@ private:
 	SDL_Texture* tex = nullptr;
 	SDL_Rect settings;
 	SDL_Texture* skull;
+	SDL_Texture* tickTex = nullptr;
+
 
 	Uint32 startTime = 0;
 	Uint32 endTime = 0;
@@ -40,6 +43,9 @@ private:
 
 	GuiSlider* musicVolume;
 	GuiSlider* fxVolume;
+
+	GuiCheckBox* checkBoxFullScreen;
+	GuiCheckBox* checkBoxVsync;
 
 };
 
