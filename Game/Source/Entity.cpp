@@ -40,7 +40,6 @@ void Entity::Draw()
 
 void Entity::OnCollision(Collider* collider)
 {
-	//Check collision type
 	if (this->collider->type == Collider::ITEM && collider->type==Collider::Type::PLAYER)
 	{
 		switch (this->collider->item)
