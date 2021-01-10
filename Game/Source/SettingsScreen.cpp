@@ -38,6 +38,7 @@ bool SettingsScreen::Start()
 
 	app->render->camera = { 0,0,1280,720 };
 	settingsTex = app->tex->Load("Assets/textures/settings_menu.png");
+	skull = app->tex->Load("Assets/textures/skull.png");
 	if (settingsTex == nullptr)
 		ret = false;
 
@@ -47,6 +48,20 @@ bool SettingsScreen::Start()
 	app->player->cameraFollow = false;
 
 	font = new Font("Assets/Fonts/dungeon_font3.xml", app->tex);
+
+	musicVolume = (GuiSlider*)app->guimanager->CreateGuiControl(GuiControlType::SLIDER, 2, { 335, 100, 220, 30 });
+	musicVolume->anim.PushBack({ 0, 0, 29, 40 });
+	musicVolume->anim.PushBack({ 0, 0, 29, 40 });
+	musicVolume->anim.PushBack({ 0, 0, 29, 40 });
+	musicVolume->SetTexture(skull);
+	musicVolume->SetObserver(this);
+
+	fxVolume = (GuiSlider*)app->guimanager->CreateGuiControl(GuiControlType::SLIDER, 2, { 335, 155, 220, 30 });
+	fxVolume->anim.PushBack({ 0, 0, 29, 40 });
+	fxVolume->anim.PushBack({ 0, 0, 29, 40 });
+	fxVolume->anim.PushBack({ 0, 0, 29, 40 });
+	fxVolume->SetTexture(skull);
+	fxVolume->SetObserver(this);
 
 	buttonBackRect = { 450, 300, 140, 30 };
 	buttonBack = (GuiButton*)app->guimanager->CreateGuiControl(GuiControlType::BUTTON, 1, buttonBackRect); // Back button (id = WIP)
@@ -59,12 +74,13 @@ bool SettingsScreen::Update(float dt)
 {
 	bool ret = true;
 
-	if (app->input->GetKey(SDL_SCANCODE_ESCAPE) == KEY_DOWN)
-	{
-		app->fade->FadeToBlack(this, (Module*)app->scene);
-	}
-
 	buttonBack->Update(dt);
+
+	musicVolume->Update(app->input, dt);
+	fxVolume->Update(app->input, dt);
+
+	app->audio->ChangeMusicVolume(musicVolume->value);
+	app->audio->ChangeFxVolume(fxVolume->value);
 
 	return ret;
 }
@@ -85,6 +101,11 @@ bool SettingsScreen::PostUpdate()
 	else if (buttonBack->state == GuiControlState::PRESSED)
 		app->render->DrawText(font, "Back", buttonBackRect.x + 500, buttonBackRect.y + 270, 130, 0, { 255, 0, 0, 255 });
 
+	musicVolume->DrawDebug(app->render);
+	musicVolume->Draw(app->render);
+	fxVolume->DrawDebug(app->render);
+	fxVolume->Draw(app->render);
+
 	return ret;
 }
 
@@ -95,6 +116,9 @@ bool SettingsScreen::CleanUp()
 	startTime = 0;
 	endTime = 0;
 	actualTime = 0;
+
+	app->guimanager->DestroyGuiControl(musicVolume);
+	app->guimanager->DestroyGuiControl(fxVolume);
 
 	if (!app->tex->UnLoad(settingsTex))
 	{

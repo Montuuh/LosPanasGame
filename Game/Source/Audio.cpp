@@ -176,3 +176,17 @@ bool Audio::PlayFx(unsigned int id, int repeat)
 
 	return ret;
 }
+
+void Audio::ChangeMusicVolume(int value)
+{
+	Mix_VolumeMusic(value);
+}
+
+void Audio::ChangeFxVolume(int value)
+{
+	for (int i = 0; i < fx.Count(); ++i)
+	{
+		Mix_VolumeChunk(fx.At(i)->data, value);
+	}
+	
+}

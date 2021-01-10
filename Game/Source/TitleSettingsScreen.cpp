@@ -18,7 +18,7 @@ TitleSettingsScreen::TitleSettingsScreen(bool b) : Module(b)
 {
 	name = "Settings S";
 
-	titlesettings = { 185,0,962,720 };
+	titleSettings = { 185,0,962,720 };
 }
 
 TitleSettingsScreen::~TitleSettingsScreen() {}
@@ -37,8 +37,10 @@ bool TitleSettingsScreen::Start()
 	endTime = 3000;
 
 	app->render->camera = { 0,0,1280,720 };
-	titlesettingsTex = app->tex->Load("Assets/textures/titlesettings_menu.png");
-	if (titlesettingsTex == nullptr)
+	titleSettingsTex = app->tex->Load("Assets/textures/titlesettings_menu.png");
+	skull = app->tex->Load("Assets/textures/skull.png");
+	tickTex = app->tex->Load("Assets/textures/ticks.png");
+	if (titleSettingsTex == nullptr)
 		ret = false;
 
 	app->render->background = { 0,0,0,0 };
@@ -48,9 +50,43 @@ bool TitleSettingsScreen::Start()
 
 	font = new Font("Assets/Fonts/dungeon_font3.xml", app->tex);
 
+	musicVolume = (GuiSlider*)app->guimanager->CreateGuiControl(GuiControlType::SLIDER, 2, {325, 90, 220, 30});
+	musicVolume->anim.PushBack({ 0, 0, 29, 40 });
+	musicVolume->anim.PushBack({ 0, 0, 29, 40 });
+	musicVolume->anim.PushBack({ 0, 0, 29, 40 });
+	musicVolume->SetTexture(skull);
+	musicVolume->SetObserver(this);
+
+	fxVolume = (GuiSlider*)app->guimanager->CreateGuiControl(GuiControlType::SLIDER, 3, { 325, 139, 220, 30 });
+	fxVolume->anim.PushBack({ 0, 0, 29, 40 });
+	fxVolume->anim.PushBack({ 0, 0, 29, 40 });
+	fxVolume->anim.PushBack({ 0, 0, 29, 40 });
+	fxVolume->SetTexture(skull);
+	fxVolume->SetObserver(this);
+
 	buttonBackRect = { 450, 300, 140, 30 };
 	buttonBack = (GuiButton*)app->guimanager->CreateGuiControl(GuiControlType::BUTTON, 1, buttonBackRect); // Back button (id = WIP)
 	buttonBack->SetObserver(this);
+
+	checkBoxFullScreen = (GuiCheckBox*)app->guimanager->CreateGuiControl(GuiControlType::CHECKBOX, 4, { 335, 205, 35, 35 });
+	checkBoxFullScreen->SetObserver(this);
+	checkBoxFullScreen->SetTexture(tickTex);
+	checkBoxFullScreen->anim.PushBack({ 34,0,34,32 }); // Normal with tick
+	checkBoxFullScreen->anim.PushBack({ 0,0,34,32 }); // Normal without tick
+	checkBoxFullScreen->anim.PushBack({ 68,0,34,32 }); // Focused with tick
+	checkBoxFullScreen->anim.PushBack({ 0,0,34,32 }); // Focused without tick
+	checkBoxFullScreen->anim.PushBack({ 102,0,34,32 }); // Pressed with tick
+	checkBoxFullScreen->anim.PushBack({ 0,0,34,32 }); // Pressed without tick
+
+	checkBoxVsync = (GuiCheckBox*)app->guimanager->CreateGuiControl(GuiControlType::CHECKBOX, 5, { 335, 254, 35, 35 });
+	checkBoxVsync->SetObserver(this);
+	checkBoxVsync->SetTexture(tickTex);
+	checkBoxVsync->anim.PushBack({ 34,0,34,32 }); // Normal with tick
+	checkBoxVsync->anim.PushBack({ 0,0,34,32 }); // Normal without tick
+	checkBoxVsync->anim.PushBack({ 68,0,34,32 }); // Focused with tick
+	checkBoxVsync->anim.PushBack({ 0,0,34,32 }); // Focused without tick
+	checkBoxVsync->anim.PushBack({ 102,0,34,32 }); // Pressed with tick
+	checkBoxVsync->anim.PushBack({ 0,0,34,32 }); // Pressed without tick
 
 	return ret;
 }
@@ -59,12 +95,16 @@ bool TitleSettingsScreen::Update(float dt)
 {
 	bool ret = true;
 
-	if (app->input->GetKey(SDL_SCANCODE_ESCAPE) == KEY_DOWN)
-	{
-		app->fade->FadeToBlack(this, (Module*)app->titleScreen);
-	}
-
 	buttonBack->Update(dt);
+
+	musicVolume->Update(app->input, dt);
+	fxVolume->Update(app->input, dt);
+
+	app->audio->ChangeMusicVolume(musicVolume->value);
+	app->audio->ChangeFxVolume(fxVolume->value);
+
+	checkBoxFullScreen->Update(dt);
+	checkBoxVsync->Update(dt);
 
 	return ret;
 }
@@ -75,7 +115,7 @@ bool TitleSettingsScreen::PostUpdate()
 
 	if (exitRequested) return false;
 
-	app->render->DrawTexture(titlesettingsTex, 0, 0);
+	app->render->DrawTexture(titleSettingsTex, 0, 0);
 
 	buttonBack->Draw();
 	if (buttonBack->state == GuiControlState::NORMAL)
@@ -84,6 +124,17 @@ bool TitleSettingsScreen::PostUpdate()
 		app->render->DrawText(font, "Back", buttonBackRect.x + 500, buttonBackRect.y + 270, 130, 0, { 255, 255, 0, 255 });
 	else if (buttonBack->state == GuiControlState::PRESSED)
 		app->render->DrawText(font, "Back", buttonBackRect.x + 500, buttonBackRect.y + 270, 130, 0, { 255, 0, 0, 255 });
+
+	musicVolume->DrawDebug(app->render);
+	musicVolume->Draw(app->render);
+	fxVolume->DrawDebug(app->render);
+	fxVolume->Draw(app->render);
+
+	checkBoxFullScreen->DrawDebug();
+	checkBoxFullScreen->DrawTexture();
+	checkBoxVsync->DrawDebug();
+	checkBoxVsync->DrawTexture();
+	
 
 	return ret;
 }
@@ -96,7 +147,14 @@ bool TitleSettingsScreen::CleanUp()
 	endTime = 0;
 	actualTime = 0;
 
-	if (!app->tex->UnLoad(titlesettingsTex))
+	app->guimanager->DestroyGuiControl(musicVolume);
+	app->guimanager->DestroyGuiControl(fxVolume);
+
+	app->guimanager->DestroyGuiControl(checkBoxFullScreen);
+	app->guimanager->DestroyGuiControl(checkBoxVsync);
+
+
+	if (!app->tex->UnLoad(titleSettingsTex))
 	{
 		LOG("Start Screen -> Error unloading the texture.");
 		ret = false;

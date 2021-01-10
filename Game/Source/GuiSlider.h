@@ -17,15 +17,17 @@ public:
     bool Draw(Render* render);
     bool DrawDebug(Render* render);
 
-private:
-
-    // GuiSlider specific properties
-    // Maybe some animation properties for state change?
     SDL_Rect slider;
     int value;
 
     int minValue;
     int maxValue;
+
+private:
+
+    // GuiSlider specific properties
+    // Maybe some animation properties for state change?
+    
 };
 
 #endif // __GUISLIDER_H__

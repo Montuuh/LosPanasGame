@@ -5,6 +5,7 @@
 #include "Render.h"
 #include "Scene.h"
 #include "Module.h"
+#include "Animation.h"
 
 #include "Point.h"
 #include "SString.h"
@@ -88,7 +89,7 @@ public:
 
     SDL_Texture* texture;   // Texture atlas reference
     SDL_Rect section;       // Texture atlas base section
-
+    Animation anim;
     //Font font;              // Text font
 
     Module* observer;        // Observer module (it should probably be an array/list)

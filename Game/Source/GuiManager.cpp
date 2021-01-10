@@ -62,10 +62,10 @@ GuiControl* GuiManager::CreateGuiControl(GuiControlType type, int id, SDL_Rect b
 			control = new GuiButton(id, bounds, titleScreenTexGui);
 			break;
 		case GuiControlType::CHECKBOX:
-			control = new GuiCheckBox(id, { 1280 / 2 - 300 / 2, 200, 20, 20 }, "EXIT");
+			control = new GuiCheckBox(id, bounds, "EXIT");
 			break;
 		case GuiControlType::SLIDER:
-			control = new GuiSlider(id, { 1280 / 2 - 300 / 2, 200, 20, 20 }, "EXIT");
+			control = new GuiSlider(id, bounds, "EXIT");
 			break;
 		default: break;
 	}

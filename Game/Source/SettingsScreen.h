@@ -3,6 +3,7 @@
 
 #include "Module.h"
 #include "GuiButton.h"
+#include "GuiSlider.h"
 
 struct SDL_Rect;
 class Font;
@@ -27,7 +28,7 @@ private:
 	SDL_Texture* settingsTex = nullptr;
 	SDL_Texture* tex = nullptr;
 	SDL_Rect settings;
-
+	SDL_Texture* skull;
 
 	Uint32 startTime = 0;
 	Uint32 endTime = 0;
@@ -36,6 +37,9 @@ private:
 	Font* font;
 	GuiButton* buttonBack;
 	SDL_Rect buttonBackRect;
+
+	GuiSlider* musicVolume;
+	GuiSlider* fxVolume;
 
 };
 
