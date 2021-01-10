@@ -48,24 +48,34 @@ bool GuiCheckBox::Draw(Render* render)
     // Draw the right button depending on state
     switch (state)
     {
-    case GuiControlState::DISABLED:
-    {
-        if (checked) render->DrawRectangle(bounds, 100, 100, 100, 255);
-        else render->DrawRectangle(bounds, 100, 100, 100, 255);
-    } break;
-    case GuiControlState::NORMAL:
-    {
-        if (checked) render->DrawRectangle(bounds, 0, 255, 0, 255);
-        else render->DrawRectangle(bounds, 0, 255, 0, 255);
-    } break;
-    case GuiControlState::FOCUSED: render->DrawRectangle(bounds, 255, 255, 0, 255);
+        case GuiControlState::DISABLED:
+        {
+            if (checked) render->DrawRectangle(bounds, 100, 100, 100, 255);
+            else render->DrawRectangle(bounds, 100, 100, 100, 255);
+        } 
         break;
-    case GuiControlState::PRESSED: render->DrawRectangle(bounds, 0, 255, 255, 255);
+        case GuiControlState::NORMAL:
+        {
+            if (app->render->guiDebug)
+            {
+                app->render->DrawRectangle(bounds, 0, 255, 0, 100);
+            }
+        } 
         break;
-    case GuiControlState::SELECTED: render->DrawRectangle(bounds, 0, 255, 0, 255);
-        break;
-    default:
-        break;
+        case GuiControlState::FOCUSED:
+        {
+            if (app->render->guiDebug)
+            {
+                app->render->DrawRectangle(bounds, 225, 255, 0, 100);
+            }
+        }
+            break;
+        case GuiControlState::PRESSED: render->DrawRectangle(bounds, 0, 255, 255, 255);
+            break;
+        case GuiControlState::SELECTED: render->DrawRectangle(bounds, 0, 255, 0, 255);
+            break;
+        default:
+            break;
     }
 
     return false;
@@ -73,20 +83,20 @@ bool GuiCheckBox::Draw(Render* render)
 
 bool GuiCheckBox::DrawTexture(Render* render)
 {
-    switch (state)
+    /*switch (state)
     {
         case GuiControlState::NORMAL:
         {
             if (checked)
             {
-                /*render->DrawTexture(this->texture, this->bounds.x, this->bounds.y, &this->anim.frames[0], 0.0f);*/
+                render->DrawTexture(this->texture, this->bounds.x, this->bounds.y, &this->anim.frames[0], 0.0f);
             }
             else
             {
-               /* render->DrawTexture(this->texture, this->bounds.x, this->bounds.y, &this->anim.frames[1], 0.0f); */              
+                           
             }    
             break;
         }
-    }
+    }*/
     return true;
 }
