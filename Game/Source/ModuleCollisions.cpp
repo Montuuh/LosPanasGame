@@ -101,10 +101,8 @@ bool ModuleCollisions::PreUpdate()
 
 		ListItem<Collider*>* list2;
 		list2 = colliders.start;
-		// avoid checking collisions already checked
 		for(int k = i+1; k < colliders.Count(); ++k)
 		{
-			// skip empty colliders
 			if (list2 == NULL)
 			{
 				if (list2->next == NULL)
@@ -124,7 +122,7 @@ bool ModuleCollisions::PreUpdate()
 						app->player->collisionExist = c1->listener->OnCollision(c1, c2);
 					}
 					else
-						c1->listener->OnCollision(c1, c2); //efecto de la colisión
+						c1->listener->OnCollision(c1, c2); 
 				}
 					
 			
@@ -189,8 +187,8 @@ void ModuleCollisions::DebugDraw()
 			app->render->DrawRectangle(list1->data->rect, 0, 0, 139, alpha);
 			break;
 			case Collider::Type::ITEM: // Dark blue	
-				app->render->DrawRectangle(list1->data->rect, 238, 130, 238, alpha);
-				break;
+			app->render->DrawRectangle(list1->data->rect, 238, 130, 238, alpha);
+			break;
 		}
 		list1 = list1->next;
 	}

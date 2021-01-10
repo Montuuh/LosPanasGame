@@ -52,21 +52,6 @@ bool Entities::PreUpdate()
 			entities.Del(list);
 		}
 	}
-
-	//ListItem<Entity*>* list;
-	//list = entities.start;
-
-	//for (int i = 0; i < entities.Count(); ++i)
-	//{
-	//	if (list != NULL && list->data->pendingToDelete)
-	//	{
-	//		/*delete newEntity;
-	//		enemies[i] = nullptr;*/
-	//		entities.Del(list);
-	//	}
-	//	list = list->next;
-	//}
-
 	return ret;
 }
 
@@ -74,16 +59,6 @@ bool Entities::Update(float dt)
 {
 	bool ret = true;
 	HandleEnemiesSpawn();
-
-	//ListItem<Entity*>* list;
-	//list = entities.start;
-
-	//for (int i = 0; i < entities.Count(); ++i)
-	//{
-	//	if (list != NULL)
-	//		list->data->Update(dt);
-	//	list = list->next;
-	//}
 	ListItem<Entity*>* list;
 	for (list = entities.start; list != NULL && list->data != nullptr; list = list->next)
 	{
@@ -98,16 +73,6 @@ bool Entities::PostUpdate()
 {
 	bool ret = true;
 
-	//ListItem<Entity*>* list;
-	//list = entities.start;
-
-	//for (int i = 0; i < entities.Count(); ++i)
-	//{
-	//	if (list != NULL)
-	//		list->data->Draw();
-	//	list = list->next;
-	//}
-
 	ListItem<Entity*>* list;
 	for (list = entities.start;  list != NULL && list->data != nullptr; list = list->next)
 	{
@@ -118,17 +83,11 @@ bool Entities::PostUpdate()
 	return ret;
 }
 
-// Called before quitting
 bool Entities::CleanUp()
 {
 	bool ret = true;
-	//app->audio->UnloadFx(enemyDestroyedFx);
-	//app->audio->UnloadFx(itemPickedFx);
 	
 	app->tex->UnLoad(texture);
-
-
-	LOG("Freeing all enemies");
 
 	ListItem<Entity*>* list;
 	list = entities.start;
@@ -179,21 +138,6 @@ void Entities::HandleEnemiesSpawn()
 
 void Entities::HandleEnemiesDespawn()
 {
-	// Iterate existing enemies
-	//for (uint i = 0; i < MAX_ENEMIES; ++i)
-	//{
-	//	if (enemies[i] != nullptr)
-	//	{
-	//		// Delete the enemy when it has reached the end of the screen
-	//		if (enemies[i]->position.x * SCREEN_SIZE < (App->render->camera.x) - SPAWN_MARGIN)
-	//		{
-	//			LOG("DeSpawning enemy at %d", enemies[i]->position.x * SCREEN_SIZE);
-
-	//			enemies[i]->SetToDelete();
-	//		}
-	//	}
-	//}
-
 	ListItem<Entity*>* list;
 	list = entities.start;
 	for (int i = 0; i < entities.Count(); ++i)
@@ -245,19 +189,6 @@ bool Entities::OnCollision(Collider* c1, Collider* c2) // This is called through
 		if (entitiesList->data->GetCollider() == c1)
 			entitiesList->data->OnCollision(c2);
 	}
-	
-	/*for (int i = 0; i < ent.Count(); ++i)
-	{
-		for (ListItem<Collider*>*collsList = app->collisions->colliders.start; collsList != NULL ; collsList = collsList->next)
-		{
-			if (entitiesList->data->GetCollider()->Intersects(collsList->data->rect))
-			{
-				entitiesList->data->OnCollision(collsList->data);
-			}
-			collsList = collsList->next;
-		}
-		entitiesList = entitiesList->next;
-	}*/
 	
 	return true;
 }
