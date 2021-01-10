@@ -20,8 +20,8 @@ public:
     SDL_Rect slider;
     int value;
 
-    int minValue;
-    int maxValue;
+    int minValue = 0;
+    int maxValue = 100;
 
 private:
 

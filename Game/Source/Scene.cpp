@@ -49,7 +49,7 @@ bool Scene::Start()
 	app->map->Load("level1.tmx");
 
 	app->render->background = { 200,210,222,0 };
-	app->audio->PlayMusic("Assets/Audio/Music/wii_music.ogg");
+	app->audio->PlayMusic("Assets/Audio/Music/dungeon_music.ogg");
 	
 	if (app->collisions->IsEnabled() == false)
 		app->collisions->Enable();

@@ -177,6 +177,16 @@ bool Audio::PlayFx(unsigned int id, int repeat)
 	return ret;
 }
 
+int Audio::GetMusicVolume()
+{
+	return Mix_VolumeMusic(-1);
+}
+
+int Audio::GetFxVolume()
+{
+	return Mix_VolumeChunk(fx.start->data, -1);
+}
+
 void Audio::ChangeMusicVolume(int value)
 {
 	Mix_VolumeMusic(value);

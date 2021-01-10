@@ -13,6 +13,7 @@
 #include "ModuleHud.h"
 #include "Font.h"
 #include "GuiManager.h"
+#include "Audio.h"
 
 WinScreen::WinScreen(bool b) : Module(b)
 {
@@ -42,6 +43,8 @@ bool WinScreen::Start()
 	{
 		ret = false;
 	}
+	
+	/*app->audio->PlayFx()*/
 
 	app->render->background = { 0,0,0,0 };
 	app->render->camera = { 0,0,1280,720 };

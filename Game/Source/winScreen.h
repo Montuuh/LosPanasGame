@@ -31,6 +31,7 @@ public:
 
 	bool exitRequested;
 
+	uint winFx;
 private:
 
 	SDL_Texture* winTex = nullptr;

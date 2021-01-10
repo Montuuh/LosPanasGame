@@ -40,6 +40,7 @@ bool TitleSettingsScreen::Start()
 	titleSettingsTex = app->tex->Load("Assets/textures/titlesettings_menu.png");
 	skull = app->tex->Load("Assets/textures/skull.png");
 	tickTex = app->tex->Load("Assets/textures/ticks.png");
+	app->audio->PlayMusic("Assets/Audio/Music/title_music.ogg");
 	if (titleSettingsTex == nullptr)
 		ret = false;
 
@@ -49,6 +50,8 @@ bool TitleSettingsScreen::Start()
 	app->player->cameraFollow = false;
 
 	font = new Font("Assets/Fonts/dungeon_font3.xml", app->tex);
+
+
 
 	musicVolume = (GuiSlider*)app->guimanager->CreateGuiControl(GuiControlType::SLIDER, 2, {325, 90, 220, 30});
 	musicVolume->anim.PushBack({ 0, 0, 29, 40 });
@@ -87,6 +90,12 @@ bool TitleSettingsScreen::Start()
 	checkBoxVsync->anim.PushBack({ 0,0,34,32 }); // Focused without tick
 	checkBoxVsync->anim.PushBack({ 102,0,34,32 }); // Pressed with tick
 	checkBoxVsync->anim.PushBack({ 0,0,34,32 }); // Pressed without tick
+
+	//this->musicVol = app->audio->GetMusicVolume();
+	//this->fxVol = app->audio->GetFxVolume();
+
+	//musicVolume->value = this->musicVol;
+	//fxVolume->value = this->fxVol;
 
 	return ret;
 }

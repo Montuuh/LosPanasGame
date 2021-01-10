@@ -24,6 +24,8 @@ public:
 
 	bool exitRequested;
 
+	int musicVol;
+	int fxVol;
 private:
 
 	SDL_Texture* titleSettingsTex = nullptr;

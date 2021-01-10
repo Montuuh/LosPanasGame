@@ -7,13 +7,22 @@
 	<scene />
 	<player>
 		<position x="64" y="736" />
-		<player x="259.787781" y="736" lives="3" diamonds="0" />
+		<player x="126.112801" y="736" lives="3" diamonds="0" />
 	</player>
 	<renderer>
 		<camera x="-1696" y="253" />
 	</renderer>
 	<entity>
-		<entitiesCount Num="0" />
-		<entitiesList />
+		<entitiesCount Num="8" />
+		<entitiesList>
+			<entities id="0" Type="1" Item="0" x="-16" y="496" />
+			<entities id="1" Type="1" Item="0" x="48" y="496" />
+			<entities id="2" Type="1" Item="0" x="1168" y="496" />
+			<entities id="3" Type="2" Item="1" x="1408" y="288" />
+			<entities id="4" Type="2" Item="1" x="1328" y="160" />
+			<entities id="5" Type="2" Item="1" x="768" y="112" />
+			<entities id="6" Type="2" Item="1" x="1232" y="400" />
+			<entities id="7" Type="2" Item="1" x="-16" y="400" />
+		</entitiesList>
 	</entity>
 </game_state>
