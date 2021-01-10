@@ -14,6 +14,11 @@
 
 #include "ItemHealth.h"
 #include "ItemDiamond.h"
+//#include "Item_Iron.h"
+//#include "Item_Umbrella.h"
+//#include "Item_Bag.h"
+//#include "Item_Hammer.h"
+//#include "Enemy_Minecart.h"
 
 
 #define SPAWN_MARGIN 50
@@ -54,6 +59,20 @@ bool Entities::PreUpdate()
 		}
 	}
 
+	//ListItem<Entity*>* list;
+	//list = entities.start;
+
+	//for (int i = 0; i < entities.Count(); ++i)
+	//{
+	//	if (list != NULL && list->data->pendingToDelete)
+	//	{
+	//		/*delete newEntity;
+	//		enemies[i] = nullptr;*/
+	//		entities.Del(list);
+	//	}
+	//	list = list->next;
+	//}
+
 	return ret;
 }
 
@@ -62,6 +81,15 @@ bool Entities::Update(float dt)
 	bool ret = true;
 	HandleEnemiesSpawn();
 
+	//ListItem<Entity*>* list;
+	//list = entities.start;
+
+	//for (int i = 0; i < entities.Count(); ++i)
+	//{
+	//	if (list != NULL)
+	//		list->data->Update(dt);
+	//	list = list->next;
+	//}
 	ListItem<Entity*>* list;
 	for (list = entities.start; list != NULL && list->data != nullptr; list = list->next)
 	{
@@ -76,6 +104,16 @@ bool Entities::PostUpdate()
 {
 	bool ret = true;
 
+	//ListItem<Entity*>* list;
+	//list = entities.start;
+
+	//for (int i = 0; i < entities.Count(); ++i)
+	//{
+	//	if (list != NULL)
+	//		list->data->Draw();
+	//	list = list->next;
+	//}
+
 	ListItem<Entity*>* list;
 	for (list = entities.start;  list != NULL && list->data != nullptr; list = list->next)
 	{
@@ -86,10 +124,12 @@ bool Entities::PostUpdate()
 	return ret;
 }
 
-
+// Called before quitting
 bool Entities::CleanUp()
 {
 	bool ret = true;
+	//app->audio->UnloadFx(enemyDestroyedFx);
+	//app->audio->UnloadFx(itemPickedFx);
 	
 	app->tex->UnLoad(texture);
 
