@@ -49,6 +49,8 @@
     <ClCompile Include="Source\Font.cpp" />
     <ClCompile Include="Source\PauseScreen.cpp" />
     <ClCompile Include="Source\SettingsScreen.cpp" />
+    <ClCompile Include="Source\TitleSettingsScreen.cpp" />
+    <ClCompile Include="Source\CreditsScreen.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Source\Defs.h">
@@ -126,6 +128,8 @@
     <ClInclude Include="Source\Font.h" />
     <ClInclude Include="Source\PauseScreen.h" />
     <ClInclude Include="Source\SettingsScreen.h" />
+    <ClInclude Include="Source\TitleSettingsScreen.h" />
+    <ClInclude Include="Source\CreditsScreen.h" />
   </ItemGroup>
   <ItemGroup>
     <Filter Include="External">

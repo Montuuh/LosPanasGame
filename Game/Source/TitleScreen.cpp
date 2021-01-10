@@ -60,15 +60,15 @@ bool TitleScreen::Start()
 	buttonNewGame->SetObserver(this);
 
 	buttonContinueRect = { 225, 180, 140, 30 };
-	buttonContinue = (GuiButton*)app->guimanager->CreateGuiControl(GuiControlType::BUTTON, 1, buttonContinueRect); // Continue Game button (id = WIP)
+	buttonContinue = (GuiButton*)app->guimanager->CreateGuiControl(GuiControlType::BUTTON, 2, buttonContinueRect); // Continue Game button (id = WIP)
 	buttonContinue->SetObserver(this);
 
 	buttonSettingsRect = { 230, 225, 130, 30 };
-	buttonSettings = (GuiButton*)app->guimanager->CreateGuiControl(GuiControlType::BUTTON, 1, buttonSettingsRect); // Settings button (id = WIP)
+	buttonSettings = (GuiButton*)app->guimanager->CreateGuiControl(GuiControlType::BUTTON, 3, buttonSettingsRect); // Settings button (id = WIP)
 	buttonSettings->SetObserver(this);
 
 	buttonCreditsRect = { 245, 260, 100, 30 };
-	buttonCredits = (GuiButton*)app->guimanager->CreateGuiControl(GuiControlType::BUTTON, 1, buttonCreditsRect); // Credits button (id = WIP)
+	buttonCredits = (GuiButton*)app->guimanager->CreateGuiControl(GuiControlType::BUTTON, 4, buttonCreditsRect); // Credits button (id = WIP)
 	buttonCredits->SetObserver(this);
 
 	buttonExitRect = { 215, 300, 165, 30 };
@@ -184,6 +184,15 @@ bool TitleScreen::OnGuiMouseClickEvent(GuiControl* control)
 			{
 				case 1:
 					app->fade->FadeToBlack(this, (Module*)app->scene);
+					break;
+				case 2:
+					app->fade->FadeToBlack(this, (Module*)app->scene);
+					break;
+				case 3:
+					app->fade->FadeToBlack(this, (Module*)app->titlesettingsScreen);
+					break;
+				case 4:
+					app->fade->FadeToBlack(this, (Module*)app->creditsScreen);
 					break;
 				case 5:
 					exitRequested = true;

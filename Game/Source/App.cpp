@@ -20,6 +20,8 @@
 #include "GuiManager.h"
 #include "PauseScreen.h"
 #include "SettingsScreen.h"
+#include "TitleSettingsScreen.h"
+#include "CreditsScreen.h"
 
 #include "Defs.h"
 #include "Log.h"
@@ -55,6 +57,8 @@ App::App(int argc, char* args[]) : argc(argc), args(args)
 	guimanager = new GuiManager();
 	pauseScreen = new PauseScreen(false);
 	settingsScreen = new SettingsScreen(false);
+	titlesettingsScreen = new TitleSettingsScreen(false);
+	creditsScreen = new CreditsScreen(false);
 
 	AddModule(win);
 	AddModule(input);
@@ -74,6 +78,8 @@ App::App(int argc, char* args[]) : argc(argc), args(args)
 	AddModule(guimanager);
 	AddModule(pauseScreen);
 	AddModule(settingsScreen);
+	AddModule(titlesettingsScreen);
+	AddModule(creditsScreen);
 
 	AddModule(entities);
 	/*AddModule(particles);*/

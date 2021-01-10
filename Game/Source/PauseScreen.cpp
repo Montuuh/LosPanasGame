@@ -158,6 +158,7 @@ bool PauseScreen::OnGuiMouseClickEvent(GuiControl* control)
 			app->fade->FadeToBlack(this, (Module*)app->settingsScreen);
 			break;
 		case 3:
+			app->SaveGameRequest();
 			app->fade->FadeToBlack(this, (Module*)app->titleScreen);
 			break;
 		case 4:

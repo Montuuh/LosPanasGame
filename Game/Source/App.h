@@ -36,6 +36,8 @@ class PathFinding;
 class GuiManager;
 class PauseScreen;
 class SettingsScreen;
+class TitleSettingsScreen;
+class CreditsScreen;
 
 class App
 {
@@ -117,6 +119,8 @@ public:
 	PathFinding* pathfinding;
 	PauseScreen* pauseScreen;
 	SettingsScreen* settingsScreen;
+	TitleSettingsScreen* titlesettingsScreen;
+	CreditsScreen* creditsScreen;
 
 	ModuleCollisions* collisions;
 	ModuleParticles* particles;
