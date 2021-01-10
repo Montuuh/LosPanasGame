@@ -35,6 +35,7 @@ class ModuleParticles;
 class PathFinding;
 class GuiManager;
 class PauseScreen;
+class SettingsScreen;
 
 class App
 {
@@ -115,6 +116,7 @@ public:
 	ModulePlayer* player;
 	PathFinding* pathfinding;
 	PauseScreen* pauseScreen;
+	SettingsScreen* settingsScreen;
 
 	ModuleCollisions* collisions;
 	ModuleParticles* particles;

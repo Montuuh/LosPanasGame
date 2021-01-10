@@ -162,6 +162,12 @@ bool Scene::Update(float dt)
 		counterSeconds++;
 	}
 
+	if (app->input->GetKey(SDL_SCANCODE_P) == KEY_DOWN)
+	{
+		app->fade->FadeToBlack(this, (Module*)app->pauseScreen);
+		counterSeconds += dt;
+	}
+
 	if (app->input->GetKey(SDL_SCANCODE_F11) == KEY_DOWN)
 	{
 		if (capFrameRate)

@@ -19,6 +19,7 @@
 #include "ModuleParticles.h"
 #include "GuiManager.h"
 #include "PauseScreen.h"
+#include "SettingsScreen.h"
 
 #include "Defs.h"
 #include "Log.h"
@@ -53,6 +54,7 @@ App::App(int argc, char* args[]) : argc(argc), args(args)
 	pathfinding = new PathFinding();
 	guimanager = new GuiManager();
 	pauseScreen = new PauseScreen(false);
+	settingsScreen = new SettingsScreen(false);
 
 	AddModule(win);
 	AddModule(input);
@@ -71,6 +73,7 @@ App::App(int argc, char* args[]) : argc(argc), args(args)
 	AddModule(pathfinding);
 	AddModule(guimanager);
 	AddModule(pauseScreen);
+	AddModule(settingsScreen);
 
 	AddModule(entities);
 	/*AddModule(particles);*/

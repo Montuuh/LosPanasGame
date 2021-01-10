@@ -36,6 +36,7 @@ bool PauseScreen::Start()
 	actualTime = 0;
 	endTime = 3000;
 
+	app->render->camera = { 0,0,1280,720 };
 	pauseTex = app->tex->Load("Assets/textures/pause_menu.png");
 	if (pauseTex == nullptr)
 		ret = false;
@@ -47,19 +48,19 @@ bool PauseScreen::Start()
 
 	font = new Font("Assets/Fonts/dungeon_font3.xml", app->tex);
 
-	buttonResumeRect = { 215, 145, 165, 30 };
+	buttonResumeRect = { 225, 145, 165, 30 };
 	buttonResume = (GuiButton*)app->guimanager->CreateGuiControl(GuiControlType::BUTTON, 1, buttonResumeRect); // New Game button (id = 1)
 	buttonResume->SetObserver(this);
 
 	buttonSettingsRect = { 225, 180, 140, 30 };
-	buttonSettings = (GuiButton*)app->guimanager->CreateGuiControl(GuiControlType::BUTTON, 1, buttonSettingsRect); // Continue Game button (id = WIP)
+	buttonSettings = (GuiButton*)app->guimanager->CreateGuiControl(GuiControlType::BUTTON, 2, buttonSettingsRect); // Continue Game button (id = WIP)
 	buttonSettings->SetObserver(this);
 
-	buttonBackToMenuRect = { 230, 225, 130, 30 };
+	buttonBackToMenuRect = { 230, 225, 165, 30 };
 	buttonBackToMenu = (GuiButton*)app->guimanager->CreateGuiControl(GuiControlType::BUTTON, 3, buttonBackToMenuRect); // Settings button (id = WIP)
 	buttonBackToMenu->SetObserver(this);
 
-	buttonExitRect = { 245, 260, 100, 30 };
+	buttonExitRect = { 260, 260, 120, 30 };
 	buttonExit = (GuiButton*)app->guimanager->CreateGuiControl(GuiControlType::BUTTON, 4, buttonExitRect); // Credits button (id = WIP)
 	buttonExit->SetObserver(this);
 
@@ -93,35 +94,35 @@ bool PauseScreen::PostUpdate()
 
 	buttonResume->Draw();
 	if (buttonResume->state == GuiControlState::NORMAL)
-		app->render->DrawText(font, "Resume", buttonResumeRect.x + 475, buttonResumeRect.y + 280, 90, 0, { 255, 255, 255, 255 });
+		app->render->DrawText(font, "Resume", buttonResumeRect.x + 320, buttonResumeRect.y + 130, 90, 0, { 255, 255, 255, 255 });
 	else if (buttonResume->state == GuiControlState::FOCUSED)
-		app->render->DrawText(font, "Resume", buttonResumeRect.x + 475, buttonResumeRect.y + 280, 90, 0, { 255, 255, 0, 255 });
+		app->render->DrawText(font, "Resume", buttonResumeRect.x + 320, buttonResumeRect.y + 130, 90, 0, { 255, 255, 0, 255 });
 	else if (buttonResume->state == GuiControlState::PRESSED)
-		app->render->DrawText(font, "Resume", buttonResumeRect.x + 475, buttonResumeRect.y + 280, 90, 0, { 255, 0, 0, 255 });
+		app->render->DrawText(font, "Resume", buttonResumeRect.x + 320, buttonResumeRect.y + 130, 90, 0, { 255, 0, 0, 255 });
 
 	buttonSettings->Draw();
 	if (buttonSettings->state == GuiControlState::NORMAL)
-		app->render->DrawText(font, "Resume", buttonSettingsRect.x + 475, buttonSettingsRect.y + 280, 90, 0, { 255, 255, 255, 255 });
+		app->render->DrawText(font, "Settings", buttonSettingsRect.x + 310, buttonSettingsRect.y + 160, 90, 0, { 255, 255, 255, 255 });
 	else if (buttonSettings->state == GuiControlState::FOCUSED)
-		app->render->DrawText(font, "Resume", buttonSettingsRect.x + 475, buttonSettingsRect.y + 280, 90, 0, { 255, 255, 0, 255 });
+		app->render->DrawText(font, "Settings", buttonSettingsRect.x + 310, buttonSettingsRect.y + 160, 90, 0, { 255, 255, 0, 255 });
 	else if (buttonSettings->state == GuiControlState::PRESSED)
-		app->render->DrawText(font, "Resume", buttonSettingsRect.x + 475, buttonSettingsRect.y + 280, 90, 0, { 255, 0, 0, 255 });
+		app->render->DrawText(font, "Settings", buttonSettingsRect.x + 310, buttonSettingsRect.y + 160, 90, 0, { 255, 0, 0, 255 });
 
 	buttonBackToMenu->Draw();
 	if (buttonBackToMenu->state == GuiControlState::NORMAL)
-		app->render->DrawText(font, "Back to Main Menu", buttonBackToMenuRect.x + 75, buttonBackToMenuRect.y + 280, 90, 0, { 255, 255, 255, 255 });
+		app->render->DrawText(font, "Back to Main Menu", buttonBackToMenuRect.x + 200, buttonBackToMenuRect.y + 200, 90, 0, { 255, 255, 255, 255 });
 	else if (buttonBackToMenu->state == GuiControlState::FOCUSED)
-		app->render->DrawText(font, "Back to Main Menu", buttonBackToMenuRect.x + 75, buttonBackToMenuRect.y + 280, 90, 0, { 255, 255, 0, 255 });
+		app->render->DrawText(font, "Back to Main Menu", buttonBackToMenuRect.x + 200, buttonBackToMenuRect.y + 200, 90, 0, { 255, 255, 0, 255 });
 	else if (buttonBackToMenu->state == GuiControlState::PRESSED)
-		app->render->DrawText(font, "Back to Main Menu", buttonBackToMenuRect.x + 75, buttonBackToMenuRect.y + 280, 90, 0, { 255, 0, 0, 255 });
+		app->render->DrawText(font, "Back to Main Menu", buttonBackToMenuRect.x + 200, buttonBackToMenuRect.y + 200, 90, 0, { 255, 0, 0, 255 });
 
 	buttonExit->Draw();
 	if (buttonExit->state == GuiControlState::NORMAL)
-		app->render->DrawText(font, "Exit Game", buttonExitRect.x + 475, buttonExitRect.y + 280, 90, 0, { 255, 255, 255, 255 });
+		app->render->DrawText(font, "Exit Game", buttonExitRect.x + 250, buttonExitRect.y + 250, 90, 0, { 255, 255, 255, 255 });
 	else if (buttonExit->state == GuiControlState::FOCUSED)
-		app->render->DrawText(font, "Exit Game", buttonExitRect.x + 475, buttonExitRect.y + 280, 90, 0, { 255, 255, 0, 255 });
+		app->render->DrawText(font, "Exit Game", buttonExitRect.x + 250, buttonExitRect.y + 250, 90, 0, { 255, 255, 0, 255 });
 	else if (buttonExit->state == GuiControlState::PRESSED)
-		app->render->DrawText(font, "Exit Game", buttonExitRect.x + 475, buttonExitRect.y + 280, 90, 0, { 255, 0, 0, 255 });
+		app->render->DrawText(font, "Exit Game", buttonExitRect.x + 250, buttonExitRect.y + 250, 90, 0, { 255, 0, 0, 255 });
 
 	return ret;
 }
@@ -152,6 +153,9 @@ bool PauseScreen::OnGuiMouseClickEvent(GuiControl* control)
 		{
 		case 1:
 			app->fade->FadeToBlack(this, (Module*)app->scene);
+			break;
+		case 2:
+			app->fade->FadeToBlack(this, (Module*)app->settingsScreen);
 			break;
 		case 3:
 			app->fade->FadeToBlack(this, (Module*)app->titleScreen);
