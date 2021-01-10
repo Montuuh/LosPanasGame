@@ -12,7 +12,6 @@
 #include "ModuleCollisions.h"
 #include "ModulePlayer.h"
 #include "EntityManager.h"
-#include "ModuleParticles.h"
 
 #include "Defs.h"
 #include "Log.h"

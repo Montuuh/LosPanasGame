@@ -14,9 +14,7 @@
 #include "ModuleInitialScreen.h"
 #include "ModuleCollisions.h"
 #include "WinScreen.h"
-#include "Pathfinding.h"
 #include "EntityManager.h"
-#include "ModuleParticles.h"
 #include "GuiManager.h"
 #include "PauseScreen.h"
 #include "SettingsScreen.h"
@@ -53,8 +51,6 @@ App::App(int argc, char* args[]) : argc(argc), args(args)
 	initialScreen = new ModuleInitialScreen(true);
 	collisions = new ModuleCollisions(true);
 	entities = new Entities(false);
-	/*particles = new ModuleParticles(false);*/
-	pathfinding = new PathFinding();
 	guimanager = new GuiManager();
 	pauseScreen = new PauseScreen(false);
 	settingsScreen = new SettingsScreen(false);
@@ -75,7 +71,6 @@ App::App(int argc, char* args[]) : argc(argc), args(args)
 	AddModule(winScreen);
 	AddModule(player);
 	AddModule(hud);
-	AddModule(pathfinding);
 	AddModule(guimanager);
 	AddModule(pauseScreen);
 	AddModule(settingsScreen);
@@ -83,11 +78,9 @@ App::App(int argc, char* args[]) : argc(argc), args(args)
 	AddModule(creditsScreen);
 
 	AddModule(entities);
-	/*AddModule(particles);*/
 	AddModule(collisions);
 	AddModule(fade);
 
-	// render last to swap buffer
 	AddModule(render);
 	
 	PERF_PEEK(ptimer);

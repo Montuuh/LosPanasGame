@@ -8,9 +8,7 @@
 #include "ModuleCollisions.h"
 #include "Audio.h"
 #include "ModuleFadeToBlack.h"
-//#include "ModuleHud.h"
 #include "DeathScene.h"
-#include "ModuleParticles.h"
 #include "Window.h"
 #include "Map.h"
 

@@ -10,30 +10,8 @@
     <ClCompile Include="Source\Collider.cpp" />
     <ClCompile Include="Source\ModuleFadeToBlack.cpp" />
     <ClCompile Include="Source\Map.cpp" />
-    <ClCompile Include="Source\ModuleParticles.cpp" />
-    <ClCompile Include="Source\ModulePlayer.cpp" />
     <ClCompile Include="Source\ModuleHud.cpp" />
-    <ClCompile Include="Source\WinScreen.cpp" />
-    <ClCompile Include="Source\TitleScreen.cpp" />
-    <ClCompile Include="Source\Scene.cpp" />
-    <ClCompile Include="Source\ModuleInitialScreen.cpp" />
-    <ClCompile Include="Source\DeathScene.cpp" />
-    <ClCompile Include="Source\Timer.cpp" />
-    <ClCompile Include="Source\PerfTimer.cpp" />
     <ClCompile Include="Source\Particle.cpp" />
-    <ClCompile Include="Source\ItemDiamond.cpp" />
-    <ClCompile Include="Source\ItemHealth.cpp" />
-    <ClCompile Include="Source\Entity.cpp" />
-    <ClCompile Include="Source\Window.cpp" />
-    <ClCompile Include="Source\Textures.cpp" />
-    <ClCompile Include="Source\Render.cpp" />
-    <ClCompile Include="Source\Main.cpp" />
-    <ClCompile Include="Source\Input.cpp" />
-    <ClCompile Include="Source\Audio.cpp" />
-    <ClCompile Include="Source\App.cpp" />
-    <ClCompile Include="Source\EnemyFlying.cpp" />
-    <ClCompile Include="Source\Pathfinding.cpp" />
-    <ClCompile Include="Source\EnemyWalking.cpp" />
     <ClCompile Include="Source\GuiButton.cpp">
       <Filter>GUI</Filter>
     </ClCompile>
@@ -43,14 +21,82 @@
     <ClCompile Include="Source\GuiSlider.cpp">
       <Filter>GUI</Filter>
     </ClCompile>
-    <ClCompile Include="Source\GuiManager.cpp" />
-    <ClCompile Include="Source\Font.cpp" />
-    <ClCompile Include="Source\PauseScreen.cpp" />
-    <ClCompile Include="Source\SettingsScreen.cpp" />
-    <ClCompile Include="Source\TitleSettingsScreen.cpp" />
-    <ClCompile Include="Source\CreditsScreen.cpp" />
     <ClCompile Include="Source\ModuleCollisions.cpp" />
-    <ClCompile Include="Source\EntityManager.cpp" />
+    <ClCompile Include="Source\ModuleInitialScreen.cpp">
+      <Filter>Scenes</Filter>
+    </ClCompile>
+    <ClCompile Include="Source\CreditsScreen.cpp">
+      <Filter>Scenes</Filter>
+    </ClCompile>
+    <ClCompile Include="Source\DeathScene.cpp">
+      <Filter>Scenes</Filter>
+    </ClCompile>
+    <ClCompile Include="Source\PauseScreen.cpp">
+      <Filter>Scenes</Filter>
+    </ClCompile>
+    <ClCompile Include="Source\Scene.cpp">
+      <Filter>Scenes</Filter>
+    </ClCompile>
+    <ClCompile Include="Source\SettingsScreen.cpp">
+      <Filter>Scenes</Filter>
+    </ClCompile>
+    <ClCompile Include="Source\TitleScreen.cpp">
+      <Filter>Scenes</Filter>
+    </ClCompile>
+    <ClCompile Include="Source\TitleSettingsScreen.cpp">
+      <Filter>Scenes</Filter>
+    </ClCompile>
+    <ClCompile Include="Source\WinScreen.cpp">
+      <Filter>Scenes</Filter>
+    </ClCompile>
+    <ClCompile Include="Source\Entity.cpp">
+      <Filter>Entities</Filter>
+    </ClCompile>
+    <ClCompile Include="Source\EntityManager.cpp">
+      <Filter>Entities</Filter>
+    </ClCompile>
+    <ClCompile Include="Source\ItemDiamond.cpp">
+      <Filter>Entities</Filter>
+    </ClCompile>
+    <ClCompile Include="Source\ItemHealth.cpp">
+      <Filter>Entities</Filter>
+    </ClCompile>
+    <ClCompile Include="Source\ModulePlayer.cpp">
+      <Filter>Entities</Filter>
+    </ClCompile>
+    <ClCompile Include="Source\App.cpp">
+      <Filter>Core</Filter>
+    </ClCompile>
+    <ClCompile Include="Source\Audio.cpp">
+      <Filter>Core</Filter>
+    </ClCompile>
+    <ClCompile Include="Source\Font.cpp">
+      <Filter>Core</Filter>
+    </ClCompile>
+    <ClCompile Include="Source\Input.cpp">
+      <Filter>Core</Filter>
+    </ClCompile>
+    <ClCompile Include="Source\Main.cpp">
+      <Filter>Core</Filter>
+    </ClCompile>
+    <ClCompile Include="Source\PerfTimer.cpp">
+      <Filter>Core</Filter>
+    </ClCompile>
+    <ClCompile Include="Source\Render.cpp">
+      <Filter>Core</Filter>
+    </ClCompile>
+    <ClCompile Include="Source\Textures.cpp">
+      <Filter>Core</Filter>
+    </ClCompile>
+    <ClCompile Include="Source\Timer.cpp">
+      <Filter>Core</Filter>
+    </ClCompile>
+    <ClCompile Include="Source\Window.cpp">
+      <Filter>Core</Filter>
+    </ClCompile>
+    <ClCompile Include="Source\GuiManager.cpp">
+      <Filter>GUI</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Source\Defs.h">
@@ -87,30 +133,8 @@
     <ClInclude Include="Source\Animation.h">
       <Filter>Utils</Filter>
     </ClInclude>
-    <ClInclude Include="Source\ModuleParticles.h" />
-    <ClInclude Include="Source\ModulePlayer.h" />
     <ClInclude Include="Source\ModuleHud.h" />
-    <ClInclude Include="Source\WinScreen.h" />
-    <ClInclude Include="Source\TitleScreen.h" />
-    <ClInclude Include="Source\Scene.h" />
-    <ClInclude Include="Source\ModuleInitialScreen.h" />
-    <ClInclude Include="Source\DeathScene.h" />
-    <ClInclude Include="Source\Timer.h" />
-    <ClInclude Include="Source\PerfTimer.h" />
     <ClInclude Include="Source\Particle.h" />
-    <ClInclude Include="Source\ItemDiamond.h" />
-    <ClInclude Include="Source\ItemHealth.h" />
-    <ClInclude Include="Source\Entity.h" />
-    <ClInclude Include="Source\Window.h" />
-    <ClInclude Include="Source\Textures.h" />
-    <ClInclude Include="Source\Render.h" />
-    <ClInclude Include="Source\Module.h" />
-    <ClInclude Include="Source\Input.h" />
-    <ClInclude Include="Source\Audio.h" />
-    <ClInclude Include="Source\App.h" />
-    <ClInclude Include="Source\EnemyFlying.h" />
-    <ClInclude Include="Source\Pathfinding.h" />
-    <ClInclude Include="Source\EnemyWalking.h" />
     <ClInclude Include="Source\GuiButton.h">
       <Filter>GUI</Filter>
     </ClInclude>
@@ -123,13 +147,81 @@
     <ClInclude Include="Source\GuiSlider.h">
       <Filter>GUI</Filter>
     </ClInclude>
-    <ClInclude Include="Source\GuiManager.h" />
-    <ClInclude Include="Source\Font.h" />
-    <ClInclude Include="Source\PauseScreen.h" />
-    <ClInclude Include="Source\SettingsScreen.h" />
-    <ClInclude Include="Source\TitleSettingsScreen.h" />
-    <ClInclude Include="Source\CreditsScreen.h" />
-    <ClInclude Include="Source\EntityManager.h" />
+    <ClInclude Include="Source\CreditsScreen.h">
+      <Filter>Scenes</Filter>
+    </ClInclude>
+    <ClInclude Include="Source\DeathScene.h">
+      <Filter>Scenes</Filter>
+    </ClInclude>
+    <ClInclude Include="Source\ModuleInitialScreen.h">
+      <Filter>Scenes</Filter>
+    </ClInclude>
+    <ClInclude Include="Source\PauseScreen.h">
+      <Filter>Scenes</Filter>
+    </ClInclude>
+    <ClInclude Include="Source\Scene.h">
+      <Filter>Scenes</Filter>
+    </ClInclude>
+    <ClInclude Include="Source\SettingsScreen.h">
+      <Filter>Scenes</Filter>
+    </ClInclude>
+    <ClInclude Include="Source\TitleScreen.h">
+      <Filter>Scenes</Filter>
+    </ClInclude>
+    <ClInclude Include="Source\TitleSettingsScreen.h">
+      <Filter>Scenes</Filter>
+    </ClInclude>
+    <ClInclude Include="Source\WinScreen.h">
+      <Filter>Scenes</Filter>
+    </ClInclude>
+    <ClInclude Include="Source\Entity.h">
+      <Filter>Entities</Filter>
+    </ClInclude>
+    <ClInclude Include="Source\EntityManager.h">
+      <Filter>Entities</Filter>
+    </ClInclude>
+    <ClInclude Include="Source\ItemDiamond.h">
+      <Filter>Entities</Filter>
+    </ClInclude>
+    <ClInclude Include="Source\ItemHealth.h">
+      <Filter>Entities</Filter>
+    </ClInclude>
+    <ClInclude Include="Source\ModulePlayer.h">
+      <Filter>Entities</Filter>
+    </ClInclude>
+    <ClInclude Include="Source\App.h">
+      <Filter>Core</Filter>
+    </ClInclude>
+    <ClInclude Include="Source\Audio.h">
+      <Filter>Core</Filter>
+    </ClInclude>
+    <ClInclude Include="Source\Font.h">
+      <Filter>Core</Filter>
+    </ClInclude>
+    <ClInclude Include="Source\Input.h">
+      <Filter>Core</Filter>
+    </ClInclude>
+    <ClInclude Include="Source\Module.h">
+      <Filter>Core</Filter>
+    </ClInclude>
+    <ClInclude Include="Source\PerfTimer.h">
+      <Filter>Core</Filter>
+    </ClInclude>
+    <ClInclude Include="Source\Render.h">
+      <Filter>Core</Filter>
+    </ClInclude>
+    <ClInclude Include="Source\Textures.h">
+      <Filter>Core</Filter>
+    </ClInclude>
+    <ClInclude Include="Source\Timer.h">
+      <Filter>Core</Filter>
+    </ClInclude>
+    <ClInclude Include="Source\Window.h">
+      <Filter>Core</Filter>
+    </ClInclude>
+    <ClInclude Include="Source\GuiManager.h">
+      <Filter>GUI</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <Filter Include="External">
@@ -143,6 +235,15 @@
     </Filter>
     <Filter Include="GUI">
       <UniqueIdentifier>{73a70b63-5622-467b-b16b-233c6953562b}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Scenes">
+      <UniqueIdentifier>{c408fb9c-e322-48ed-8201-e55eefbdbf8c}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Entities">
+      <UniqueIdentifier>{37b7eb53-9bae-493e-9197-8a55aad8f4c2}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Core">
+      <UniqueIdentifier>{b131d701-55dc-4910-ab79-b82b03f8f5d4}</UniqueIdentifier>
     </Filter>
   </ItemGroup>
 </Project>

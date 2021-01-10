@@ -9,16 +9,10 @@
 #include "Log.h"
 #include "List.h"
 #include "ModuleCollisions.h"
-#include "EnemyFlying.h"
 #include "Entity.h"
 
 #include "ItemHealth.h"
 #include "ItemDiamond.h"
-//#include "Item_Iron.h"
-//#include "Item_Umbrella.h"
-//#include "Item_Bag.h"
-//#include "Item_Hammer.h"
-//#include "Enemy_Minecart.h"
 
 
 #define SPAWN_MARGIN 50
