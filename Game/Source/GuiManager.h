@@ -12,22 +12,18 @@ public:
 
 	GuiManager();
 
-	// Destructor
 	virtual ~GuiManager();
 
-	// Called before render is available
 	bool Awake(pugi::xml_node&);
 
-	// Called before the first frame
 	bool Start();
 
 	bool Update(float dt);
 
 	bool PostUpdate();
-	// Called before quitting
+
 	bool CleanUp();
 
-	// Additional methods
 	GuiControl* CreateGuiControl(GuiControlType type, int id, SDL_Rect bounds);
 	void DestroyGuiControl(GuiControl* entity);
 
@@ -47,5 +43,5 @@ public:
 	SDL_Texture* titleScreenTexGui;
 };
 
-#endif // __GUIMANAGER_H__
+#endif
 

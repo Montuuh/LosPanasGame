@@ -7,7 +7,7 @@
 	<scene />
 	<player>
 		<position x="64" y="736" />
-		<player x="64" y="736" lives="3" diamonds="0" />
+		<player x="259.787781" y="736" lives="3" diamonds="0" />
 	</player>
 	<renderer>
 		<camera x="-1696" y="253" />

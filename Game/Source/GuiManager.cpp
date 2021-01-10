@@ -21,7 +21,6 @@ bool GuiManager::Awake(pugi::xml_node& config)
 
 bool GuiManager::Start()
 {
-	//titleScreenTexGui = app->tex->Load(checkBoxPath);
 	return true;
 }
 

@@ -18,9 +18,7 @@ public:
 
 private:
 
-    // Gui Button specific properties
-    // Maybe some animation properties for state change?
 };
 
-#endif // __GUIBUTTON_H__
+#endif
 

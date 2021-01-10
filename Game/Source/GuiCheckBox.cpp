@@ -21,9 +21,7 @@ bool GuiCheckBox::Update(float dt)
         int mouseX, mouseY;
         app->input->GetMousePosition(mouseX, mouseY);
 
-        // Check collision between mouse and button bounds
-        if ((mouseX > bounds.x) && (mouseX < (bounds.x + bounds.w)) &&
-            (mouseY > bounds.y) && (mouseY < (bounds.y + bounds.h)))
+        if ((mouseX > bounds.x) && (mouseX < (bounds.x + bounds.w)) && (mouseY > bounds.y) && (mouseY < (bounds.y + bounds.h)))
         {
             state = GuiControlState::FOCUSED;
 
@@ -32,7 +30,6 @@ bool GuiCheckBox::Update(float dt)
                 state = GuiControlState::PRESSED;
             }
 
-            // If mouse button pressed -> Generate event!
             if (app->input->GetMouseButtonDown(SDL_BUTTON_LEFT) == KeyState::KEY_UP)
             {
                 checked = !checked;
@@ -41,70 +38,63 @@ bool GuiCheckBox::Update(float dt)
         }
         else state = GuiControlState::NORMAL;
     }
-
     return false;
 }
 
 bool GuiCheckBox::DrawDebug()
 {
-    // Draw the right button depending on state
     switch (state)
     {
-    case GuiControlState::NORMAL:
-    {
-        if (app->render->guiDebug)
+        case GuiControlState::NORMAL:
         {
-            if (checked)
+            if (app->render->guiDebug)
             {
-                app->render->DrawRectangle(bounds, 0, 255, 0, 255); // Green
+                if (checked)
+                {
+                    app->render->DrawRectangle(bounds, 0, 255, 0, 255);
+                }
+                else
+                {
+                    app->render->DrawRectangle(bounds, 0, 255, 0, 150);
+                }
             }
-            else
-            {
-                app->render->DrawRectangle(bounds, 0, 255, 0, 150); // Light green
-            }
+            break;
         }
 
-        break;
-    }
-
-    case GuiControlState::FOCUSED:
-    {
-        if (app->render->guiDebug)
+        case GuiControlState::FOCUSED:
         {
-            if (checked)
+            if (app->render->guiDebug)
             {
-                app->render->DrawRectangle(bounds, 255, 255, 0, 255); // Yellow
+                if (checked)
+                {
+                    app->render->DrawRectangle(bounds, 255, 255, 0, 255);
+                }
+                else
+                {
+                    app->render->DrawRectangle(bounds, 250, 250, 210, 255);
+                }
             }
-            else
-            {
-                app->render->DrawRectangle(bounds, 250, 250, 210, 255); // Light yellow
-            }
+            break;
         }
 
-        break;
-    }
-
-    case GuiControlState::PRESSED:
-    {
-        if (app->render->guiDebug)
+        case GuiControlState::PRESSED:
         {
-            if (checked)
+            if (app->render->guiDebug)
             {
-                app->render->DrawRectangle(bounds, 255, 0, 0, 255); // Red
+                if (checked)
+                {
+                    app->render->DrawRectangle(bounds, 255, 0, 0, 255);
+                }
+                else
+                {
+                    app->render->DrawRectangle(bounds, 255, 0, 0, 150);
+                }
             }
-            else
-            {
-                app->render->DrawRectangle(bounds, 255, 0, 0, 150); // Light red
-            }
+            break;
         }
-
-        break;
+        default:
+            break;
     }
-
-    default:
-        break;
-    }
-
     return false;
 }
 
@@ -112,42 +102,42 @@ bool GuiCheckBox::DrawTexture()
 {
     switch (state)
     {
-    case GuiControlState::NORMAL:
-    {
-        if (checked)
+        case GuiControlState::NORMAL:
         {
-            app->render->DrawTexture(this->texture, this->bounds.x, this->bounds.y, &this->anim.frames[0]); // Normal with tick
+            if (checked)
+            {
+                app->render->DrawTexture(this->texture, this->bounds.x, this->bounds.y, &this->anim.frames[0]);
+            }
+            else
+            {
+                app->render->DrawTexture(this->texture, this->bounds.x, this->bounds.y, &this->anim.frames[1]);
+            }
+            break;
         }
-        else
+        case GuiControlState::FOCUSED:
         {
-            app->render->DrawTexture(this->texture, this->bounds.x, this->bounds.y, &this->anim.frames[1]); // Normal without tick
+            if (checked)
+            {
+                app->render->DrawTexture(this->texture, this->bounds.x, this->bounds.y, &this->anim.frames[2]);
+            }
+            else
+            {
+                app->render->DrawTexture(this->texture, this->bounds.x, this->bounds.y, &this->anim.frames[3]);
+            }
+            break;
         }
-        break;
-    }
-    case GuiControlState::FOCUSED:
-    {
-        if (checked)
+        case GuiControlState::PRESSED:
         {
-            app->render->DrawTexture(this->texture, this->bounds.x, this->bounds.y, &this->anim.frames[2]); // Focused with tick
+            if (checked)
+            {
+                app->render->DrawTexture(this->texture, this->bounds.x, this->bounds.y, &this->anim.frames[4]);
+            }
+            else
+            {
+                app->render->DrawTexture(this->texture, this->bounds.x, this->bounds.y, &this->anim.frames[5]);
+            }
+            break;
         }
-        else
-        {
-            app->render->DrawTexture(this->texture, this->bounds.x, this->bounds.y, &this->anim.frames[3]); // Focused without tick
-        }
-        break;
-    }
-    case GuiControlState::PRESSED:
-    {
-        if (checked)
-        {
-            app->render->DrawTexture(this->texture, this->bounds.x, this->bounds.y, &this->anim.frames[4]); // Pressed with tick
-        }
-        else
-        {
-            app->render->DrawTexture(this->texture, this->bounds.x, this->bounds.y, &this->anim.frames[5]); // Pressed without tick
-        }
-        break;
-    }
     }
     return true;
 }
