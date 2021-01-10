@@ -13,6 +13,7 @@
 #include "ModuleHud.h"
 #include "Font.h"
 #include "GuiManager.h"
+#include "Scene.h"
 
 PauseScreen::PauseScreen(bool b) : Module(b)
 {
@@ -69,12 +70,7 @@ bool PauseScreen::Start()
 
 bool PauseScreen::Update(float dt)
 {
-	bool ret = true;
-
-	if (app->input->GetKey(SDL_SCANCODE_ESCAPE) == KEY_DOWN)
-	{
-		app->fade->FadeToBlack(this, (Module*)app->scene);
-	}
+	bool ret = true;		
 
 	buttonResume->Update(dt);
 	buttonSettings->Update(dt);
@@ -152,13 +148,13 @@ bool PauseScreen::OnGuiMouseClickEvent(GuiControl* control)
 		switch (control->id)
 		{
 		case 1:
+			app->scene->loaded = true;
 			app->fade->FadeToBlack(this, (Module*)app->scene);
 			break;
 		case 2:
 			app->fade->FadeToBlack(this, (Module*)app->settingsScreen);
 			break;
 		case 3:
-			app->SaveGameRequest();
 			app->fade->FadeToBlack(this, (Module*)app->titleScreen);
 			break;
 		case 4:

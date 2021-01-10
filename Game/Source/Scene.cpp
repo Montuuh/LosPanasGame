@@ -70,24 +70,32 @@ bool Scene::Start()
 	}
 	app->map->LoadColliders();
 
-	app->player->destroyed = false;
-	app->player->hasWon = false;
-	app->player->playerPos = { 4*16, 46*16 };
+	if (!loaded)
+	{
+		app->player->destroyed = false;
+		app->player->hasWon = false;
+		app->player->playerPos = { 4 * 16, 46 * 16 };
+
+		app->player->velocity.y = 0;
+		app->player->cameraFollow = true;
+		app->player->lives = 3;
+
+
+		app->entities->AddEntity(EntityType::ITEM_HEALTH, -1 * 16, 31 * 16);
+		app->entities->AddEntity(EntityType::ITEM_HEALTH, 3 * 16, 31 * 16);
+		app->entities->AddEntity(EntityType::ITEM_HEALTH, 73 * 16, 31 * 16);
+		app->entities->AddEntity(EntityType::ITEM_DIAMOND, 88 * 16, 18 * 16);
+		app->entities->AddEntity(EntityType::ITEM_DIAMOND, 83 * 16, 10 * 16);
+		app->entities->AddEntity(EntityType::ITEM_DIAMOND, 48 * 16, 7 * 16);
+		app->entities->AddEntity(EntityType::ITEM_DIAMOND, 77 * 16, 25 * 16);
+		app->entities->AddEntity(EntityType::ITEM_DIAMOND, -1 * 16, 25 * 16);
+	}
+	else
+	{
+		app->LoadGameRequest();
+		loaded = false;
+	}
 	
-	app->player->velocity.y = 0;
-	app->player->cameraFollow = true;
-	app->player->lives = 3;
-
-
-	app->entities->AddEntity(EntityType::ITEM_HEALTH, -1 * 16, 31 * 16);
-	app->entities->AddEntity(EntityType::ITEM_HEALTH, 3 * 16, 31 * 16);
-	app->entities->AddEntity(EntityType::ITEM_HEALTH, 73 * 16, 31 * 16);
-	app->entities->AddEntity(EntityType::ITEM_DIAMOND, 88 * 16, 18 * 16);
-	app->entities->AddEntity(EntityType::ITEM_DIAMOND, 83 * 16, 10 * 16);
-	app->entities->AddEntity(EntityType::ITEM_DIAMOND, 48 * 16, 7 * 16);
-	app->entities->AddEntity(EntityType::ITEM_DIAMOND, 77 * 16, 25 * 16);
-	app->entities->AddEntity(EntityType::ITEM_DIAMOND, -1 * 16, 25 * 16);
-
 	counterSeconds = 0;
 
 	app->SaveGameRequest();

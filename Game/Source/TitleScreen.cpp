@@ -31,7 +31,7 @@ bool TitleScreen::Start()
 	actualTime = 0;
 	endTime = 3000;
 
-	app->audio->PlayMusic("Assets/Audio/Music/wii_music.ogg");
+	app->audio->PlayMusic("Assets/Audio/Music/title_music.ogg");
 
 	focusedFx = app->audio->LoadFx("Assets/Audio/Fx/Gui/focused_fx.wav");
 	pressedFx = app->audio->LoadFx("Assets/Audio/Fx/Gui/pressed_fx.wav");
@@ -187,6 +187,7 @@ bool TitleScreen::OnGuiMouseClickEvent(GuiControl* control)
 					app->fade->FadeToBlack(this, (Module*)app->scene);
 					break;
 				case 2:
+					app->scene->loaded = true;
 					app->fade->FadeToBlack(this, (Module*)app->scene);
 					break;
 				case 3:

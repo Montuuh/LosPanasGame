@@ -1,9 +1,21 @@
 #include "GuiSlider.h"
+#include "App.h"
+#include "GuiManager.h"
+#include "Audio.h"
+#include "Window.h"
+#include "Render.h"
+#include "Input.h"
+#include "TitleScreen.h"
 
-GuiSlider::GuiSlider(uint32 id, SDL_Rect bounds, const char* text) : GuiControl(GuiControlType::SLIDER, id)
+
+GuiSlider::GuiSlider(uint32 id, SDL_Rect bounds, const char* texture) : GuiControl(GuiControlType::SLIDER, id)
 {
     this->bounds = bounds;
-    this->text = text;
+    this->text = texture;
+    slider.x = bounds.x;
+    slider.y = bounds.y;
+    slider.w = 20;
+    slider.h = bounds.h;
 }
 
 GuiSlider::~GuiSlider()
@@ -23,6 +35,15 @@ bool GuiSlider::Update(Input* input, float dt)
         {
             state = GuiControlState::FOCUSED;
 
+            if (input->GetMouseButtonDown(SDL_BUTTON_LEFT) == KeyState::KEY_REPEAT)
+            {
+                state = GuiControlState::PRESSED;
+                int posX;
+                int posY;
+                input->GetMousePosition(posX, posY);
+                slider.x = posX;
+                    
+            }
             // TODO.
         }
         else state = GuiControlState::NORMAL;

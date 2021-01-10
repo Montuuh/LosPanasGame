@@ -22,6 +22,7 @@
 #include "SettingsScreen.h"
 #include "TitleSettingsScreen.h"
 #include "CreditsScreen.h"
+#include "GuiSlider.h"
 
 #include "Defs.h"
 #include "Log.h"

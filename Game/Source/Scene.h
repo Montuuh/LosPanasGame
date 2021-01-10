@@ -45,9 +45,12 @@ private:
 
 	int storeFrameRateCap;
 	bool capFrameRate = true;
+	
 
 public:
 	
+	bool loaded = false;
+
 };
 
 #endif // __SCENE_H__
