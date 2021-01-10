@@ -31,10 +31,10 @@ bool TitleScreen::Start()
 	actualTime = 0;
 	endTime = 3000;
 
-
-	
-
 	app->audio->PlayMusic("Assets/Audio/Music/wii_music.ogg");
+
+	focusedFx = app->audio->LoadFx("Assets/Audio/Fx/Gui/focused_fx.wav");
+	pressedFx = app->audio->LoadFx("Assets/Audio/Fx/Gui/pressed_fx.wav");
 
 	titleTex = app->tex->Load("Assets/textures/intro_screen.png");
 	if (titleTex == nullptr)
@@ -116,12 +116,13 @@ bool TitleScreen::PostUpdate()
 	//	app->render->DrawText(font, "Exit Game", buttonExitRect.x + 225, buttonExitRect.y + 280, 130, 0, { 255, 0, 0, 255 });
 
 	buttonNewGame->Draw();
-	if (buttonNewGame->state == GuiControlState::NORMAL)
-		app->render->DrawText(font, "New Game", buttonNewGameRect.x + 226, buttonNewGameRect.y + 124, 120, 0, { 255, 255, 255, 255 });
-	else if (buttonNewGame->state == GuiControlState::FOCUSED)
-		app->render->DrawText(font, "New Game", buttonNewGameRect.x + 226, buttonNewGameRect.y + 124, 120, 0, { 255, 255, 0, 255 });
+	if (buttonNewGame->state == GuiControlState::NORMAL) 
+		app->render->DrawText(font, "New Game", buttonNewGameRect.x + 226, buttonNewGameRect.y + 124, 120, 0, { 255, 255, 255, 255 });	
+	else if (buttonNewGame->state == GuiControlState::FOCUSED) 
+		app->render->DrawText(font, "New Game", buttonNewGameRect.x + 226, buttonNewGameRect.y + 124, 120, 0, { 255, 255, 0, 255 });		
 	else if (buttonNewGame->state == GuiControlState::PRESSED)
 		app->render->DrawText(font, "New Game", buttonNewGameRect.x + 226, buttonNewGameRect.y + 124, 120, 0, { 255, 0, 0, 255 });
+		
 
 	buttonContinue->Draw();
 	if (buttonContinue->state == GuiControlState::NORMAL)

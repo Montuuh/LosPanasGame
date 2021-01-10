@@ -1,9 +1,11 @@
 #include "GuiCheckBox.h"
+#include "App.h"
 
 GuiCheckBox::GuiCheckBox(uint32 id, SDL_Rect bounds, const char* text) : GuiControl(GuiControlType::CHECKBOX, id)
 {
     this->bounds = bounds;
     this->text = text;
+    this->checked = false;
 }
 
 GuiCheckBox::~GuiCheckBox()
@@ -67,4 +69,24 @@ bool GuiCheckBox::Draw(Render* render)
     }
 
     return false;
+}
+
+bool GuiCheckBox::DrawTexture(Render* render)
+{
+    switch (state)
+    {
+        case GuiControlState::NORMAL:
+        {
+            if (checked)
+            {
+                /*render->DrawTexture(this->texture, this->bounds.x, this->bounds.y, &this->anim.frames[0], 0.0f);*/
+            }
+            else
+            {
+               /* render->DrawTexture(this->texture, this->bounds.x, this->bounds.y, &this->anim.frames[1], 0.0f); */              
+            }    
+            break;
+        }
+    }
+    return true;
 }
