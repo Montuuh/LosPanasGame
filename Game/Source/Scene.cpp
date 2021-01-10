@@ -49,7 +49,7 @@ bool Scene::Start()
 	app->map->Load("level1.tmx");
 
 	app->render->background = { 200,210,222,0 };
-	app->audio->PlayMusic("Assets/Audio/Music/dungeon_music.ogg");
+	app->audio->PlayMusic("Assets/Audio/Music/dungeon_music.flac");
 	
 	if (app->collisions->IsEnabled() == false)
 		app->collisions->Enable();
@@ -81,12 +81,11 @@ bool Scene::Start()
 
 
 		app->entities->AddEntity(EntityType::ITEM_HEALTH, -1 * 16, 31 * 16);
-		app->entities->AddEntity(EntityType::ITEM_HEALTH, 3 * 16, 31 * 16);
 		app->entities->AddEntity(EntityType::ITEM_HEALTH, 73 * 16, 31 * 16);
 		app->entities->AddEntity(EntityType::ITEM_DIAMOND, 88 * 16, 18 * 16);
 		app->entities->AddEntity(EntityType::ITEM_DIAMOND, 83 * 16, 10 * 16);
 		app->entities->AddEntity(EntityType::ITEM_DIAMOND, 48 * 16, 7 * 16);
-		app->entities->AddEntity(EntityType::ITEM_DIAMOND, 77 * 16, 25 * 16);
+		app->entities->AddEntity(EntityType::ITEM_DIAMOND, 78 * 16, 25 * 16);
 		app->entities->AddEntity(EntityType::ITEM_DIAMOND, -1 * 16, 25 * 16);
 	}
 	else
