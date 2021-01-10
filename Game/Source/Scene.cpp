@@ -162,10 +162,10 @@ bool Scene::Update(float dt)
 		counterSeconds++;
 	}
 
-	if (app->input->GetKey(SDL_SCANCODE_P) == KEY_DOWN)
+	if (app->input->GetKey(SDL_SCANCODE_ESCAPE) == KEY_DOWN)
 	{
 		app->fade->FadeToBlack(this, (Module*)app->pauseScreen);
-		counterSeconds += dt;
+		/*counterSeconds += dt;*/
 	}
 
 	if (app->input->GetKey(SDL_SCANCODE_F11) == KEY_DOWN)
@@ -209,9 +209,6 @@ bool Scene::OnGuiMouseClickEvent(GuiControl* control)
 bool Scene::PostUpdate()
 {
 	bool ret = true;
-
-	if (app->input->GetKey(SDL_SCANCODE_ESCAPE) == KEY_DOWN)
-		ret = false;
 
 	app->map->Draw();
 	return ret;
